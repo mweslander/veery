@@ -6,3 +6,6 @@
 We're doing this as a project to learn a little more Node & React.
 
 ### Installation
+
+### Contributing
+I'm going to try to remember to follow [these git rules](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#).
