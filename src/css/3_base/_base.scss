@@ -1,0 +1,30 @@
+//=============================================================================
+// Base
+//=============================================================================
+
+* {
+  box-sizing: border-box;
+
+  &:before, &:after {
+    box-sizing: inherit;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+html, body, .main {
+  position: relative;
+  display: block;
+  min-height: 100vh;
+}
+
+body {
+  background: $deep-blue;
+  background-attachment: fixed;
+  background-image: url('/map.png');
+  background-size: 100%;
+  background-position: center top;
+  background-repeat: no-repeat;
+}

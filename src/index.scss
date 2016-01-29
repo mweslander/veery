@@ -4,3 +4,11 @@
 
 // Vendor
 @import "css/1_vendor/normalize";
+
+// Utilities
+@import "css/2_utilities/variables";
+@import "css/2_utilities/mixins";
+@import "css/2_utilities/helpers";
+
+// Base
+@import "css/3_base/base";

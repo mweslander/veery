@@ -1,0 +1,79 @@
+//=============================================================================
+// Variables
+//=============================================================================
+
+// Typography
+$base-font-family: Helvetica, sans-serif;
+$heading-font-family: Helvetica, sans-serif;
+$extended-letter-spacing: 2px;
+
+// Font Sizes
+$base-font-size: 16px;
+$base-font-weight: 100;
+$small-font-size: $base-font-size * 0.8;
+
+
+//=============================================================================
+// Variables
+//=============================================================================
+
+// Typography
+$base-font-family: 'Open Sans', sans-serif;
+$heading-font-family: 'Open Sans', sans-serif;
+$extended-letter-spacing: 2px;
+
+// Font Sizes
+$base-font-size: 16px;
+$base-font-weight: 100;
+$small-font-size: $base-font-size * 0.8;
+
+// Headings
+$h1-font-size: $base-font-size * 2 !default;
+$h2-font-size: $base-font-size * 1.75 !default;
+$h3-font-size: $base-font-size * 1.5 !default;
+$h4-font-size: $base-font-size * 1.25 !default;
+$h5-font-size: $base-font-size * 1 !default;
+$h6-font-size: $base-font-size * 0.8 !default;
+$h1-font-weight: 800 !default;
+$h2-font-weight: 800 !default;
+$h3-font-weight: 700 !default;
+$h4-font-weight: 700 !default;
+$h5-font-weight: 700 !default;
+$h6-font-weight: 700 !default;
+$headings: (h1, $h1-font-size, $h1-font-weight),
+           (h2, $h2-font-size, $h2-font-weight),
+           (h3, $h3-font-size, $h3-font-weight),
+           (h4, $h4-font-size, $h4-font-weight),
+           (h5, $h5-font-size, $h5-font-weight),
+           (h6, $h6-font-size, $h6-font-weight);
+
+// Line height
+$base-line-height: 1.5;
+$heading-line-height: 1.2;
+
+// Other Sizes
+$base-border-radius: 3px;
+$base-spacing: $base-line-height * $base-font-size;
+$small-spacing: $base-spacing / 2;
+$base-z-index: 0;
+
+// Colors
+$black: #000000;
+$white: #ffffff;
+$deep-blue: #042B63; // rgba(4, 43, 99, 1.0);
+$medium-blue: #0066CC; // rgba(0, 102, 204, 1.0);
+$light-blue: #CDE1F7; // rgba(205, 225, 247, 1.0);
+$gold: #FF9900; // rgba(255, 153, 0, 1.0);
+
+$overlay-deep-blue: rgba(4, 43, 99, 0.70);
+$overlay-gold-highlight: rgba(255, 153, 0, 0.35);
+$overlay-gold: rgba(255, 153, 0, 0.20);
+
+$base-font-color: $white;
+$action-color: $gold;
+
+$base-background-color: $deep-blue;
+
+// Animations
+$base-duration: 150ms;
+$base-timing: ease;

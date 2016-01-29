@@ -1,0 +1,30 @@
+//=============================================================================
+// Mixins
+//=============================================================================
+
+@mixin clearfix {
+  &::after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+}
+
+.clearfix {
+  @include clearfix;
+}
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-ellipsis {
+  @include text-ellipsis;
+}
+
+@mixin antialiasing {
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
