@@ -12,7 +12,7 @@ npm install
 
 ### Serving locally
 ```
-webpack-dev-server --content-base app/
+npm start
 ```
 
 ### Contributing
