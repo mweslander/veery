@@ -12,20 +12,19 @@ var plugins = [
   new webpack.DefinePlugin({
     'process.env': { 'NODE_ENV': JSON.stringify(environment) }
   }),
-  new ExtractTextPlugin('assets/styles.css'),
+  new ExtractTextPlugin('styles.css'),
   new HtmlWebpackPlugin({
     filename: 'index.html',
     hash: environment !== 'development',
     inject: 'body',
     template: 'src/index.html',
     title: 'Veery | Perform Tonight'
-  }),
-  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+  })
 ];
 
 module.exports = {
   entry: {
-    'assets/bundle.js': './src/index.js'
+    'bundle.js': './src/index.js'
   },
   output: {
     filename: '[name]',
@@ -42,12 +41,12 @@ module.exports = {
         }
       },
       {
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader'),
-        test: /\.s(c|a)ss$/
+        test: /\.s(c|a)ss$/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!resolve-url!sass-loader')
       },
       {
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader'),
-        test: /\.css$/
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader')
       },
       {
         test: /.*\.(gif|png|jpe?g|svg)$/i,
@@ -56,7 +55,7 @@ module.exports = {
           'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
         ]
       }
-    ],
+    ]
   },
   sassLoader: {
     outputStyle: 'expanded'

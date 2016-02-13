@@ -4,6 +4,11 @@
 
 * {
   box-sizing: border-box;
+  font-family: 'Muli', sans-serif;
+  font-weight: 300;
+  letter-spacing: 3px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   &:before, &:after {
     box-sizing: inherit;
@@ -17,13 +22,13 @@
 html, body, .main {
   position: relative;
   display: block;
-  min-height: 100vh;
+  min-height: 100%;
+  text-align: center;
 }
 
 body {
   background: $deep-blue;
   background-attachment: fixed;
-  // background-image: url("/img/map.png");
   background-size: 100%;
   background-position: center top;
   background-repeat: no-repeat;

@@ -1,0 +1,32 @@
+//=============================================================================
+// Header .header .header__img .header__type
+//=============================================================================
+
+@import "../../css/2_utilities/variables";
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $small-spacing;
+  background: $overlay-medium-blue;
+  z-index: 1;
+
+  &__img {
+    height: 24px;
+  }
+
+  &__type {
+    height: 20px;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: $light-blue;
+    position: relative;
+    margin-bottom: 2px;
+    font-weight: lighter;
+  }
+}

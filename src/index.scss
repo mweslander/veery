@@ -2,6 +2,8 @@
 // Styles
 //=============================================================================
 
+@import url(https://fonts.googleapis.com/css?family=Muli:400,300);
+
 // Vendor
 @import "css/1_vendor/normalize";
 
@@ -12,3 +14,4 @@
 
 // Base
 @import "css/3_base/base";
+@import "css/3_base/typography";

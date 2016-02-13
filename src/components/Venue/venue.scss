@@ -1,0 +1,47 @@
+//=============================================================================
+// Venue .venue
+//=============================================================================
+
+@import "../../css/2_utilities/variables";
+
+.venue {
+  width: 100%;
+  background-color: $overlay-gold-highlight;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.venue-details {
+  text-align: left;
+  color: $white;
+  padding: $small-spacing 0;
+
+  &__performance-type {
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 15px;
+  }
+
+  &__name {
+    margin: 0;
+    color: $gold;
+    font-size: 15px;
+    padding: 3px 0;
+  }
+
+  &__address {
+    font-style: normal;
+    font-size: 10px;
+  }
+}
+
+.event-time {
+  padding-right: $small-spacing;
+  text-align: right;
+  color: $white;
+
+  h4 {
+    margin: 0;
+  }
+}
