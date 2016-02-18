@@ -1,0 +1,27 @@
+//=============================================================================
+// App .app
+//=============================================================================
+
+@import "../../css/variables";
+
+.app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+
+  &::after {
+    position: fixed;
+    content: "";
+    background-image: url('map.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.2;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+  }
+}

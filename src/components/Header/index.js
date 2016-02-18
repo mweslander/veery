@@ -2,7 +2,7 @@
 import React from 'react';
 
 // CSS
-import './header.scss';
+import './index.scss';
 
 // Images
 import logoImg from './logo-img.svg';

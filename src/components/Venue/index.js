@@ -5,7 +5,7 @@ import React from 'react';
 import Favorite from '../Favorite';
 
 // CSS
-import './venue.scss';
+import './index.scss';
 
 /*
   VenueList

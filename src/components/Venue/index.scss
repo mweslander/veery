@@ -2,7 +2,7 @@
 // Venue .venue
 //=============================================================================
 
-@import "../../css/2_utilities/variables";
+@import "../../css/variables";
 
 .venue {
   width: 100%;
@@ -10,6 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1px;
 }
 
 .venue-details {

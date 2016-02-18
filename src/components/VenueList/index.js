@@ -5,7 +5,7 @@ import React from 'react';
 import Venue from '../Venue';
 
 // CSS
-import './venue-list.scss';
+import './index.scss';
 
 /*
   VenueList
@@ -17,6 +17,10 @@ const VenueList = () => (
     <button className="list-toggle">All</button>
     <ul className="list">
       <li className="list__item">
+        <Venue />
+        <Venue />
+        <Venue />
+        <Venue />
         <Venue />
       </li>
     </ul>

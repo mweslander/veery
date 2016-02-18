@@ -2,7 +2,7 @@
 import React from 'react';
 
 // CSS
-import './favorite.scss';
+import './index.scss';
 
 /*
   Favorite

@@ -6,6 +6,12 @@ import Header from '../Header';
 import Map from '../Map';
 import VenueList from '../VenueList';
 
+// Images
+import mapImg from './map.png';
+
+// CSS
+import './index.scss';
+
 /*
   App
   <App/>

@@ -2,13 +2,11 @@
 // Header .header .header__img .header__type
 //=============================================================================
 
-@import "../../css/2_utilities/variables";
+@import "../../css/variables";
 
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  flex-shrink: 0;
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;

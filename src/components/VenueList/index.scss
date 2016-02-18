@@ -2,11 +2,10 @@
 // Venue List .venue-list .list-toggle .list
 //=============================================================================
 
-@import "../../css/2_utilities/variables";
+@import "../../css/variables";
 
 .venue-list {
-  position: fixed;
-  top: 60vh;
+  position: relative;
   width: 100%;
   background-color: $overlay-medium-blue;
 }
@@ -24,6 +23,8 @@
   list-style: none;
   padding: 0;
   margin: 0 1px;
+  max-height: 32vh;
+  overflow-y: scroll;
 
   &__item {
     margin: 0;
