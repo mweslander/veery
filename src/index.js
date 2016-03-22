@@ -1,33 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Router, Route, hashHistory } from 'react-router';
+import { render } from 'react-dom';
 
-/*
-  Import Styles
-*/
-
+// Styles
 import './index.scss';
 
-/*
-  Import Components
-*/
-
+// Components
 import App from './components/App';
-import NotFound from './components/NotFound';
 
-/*
-  Routes
-*/
+// Initial State
+import { venues } from './data/venues';
 
-const routes = (
-  <Router history={hashHistory}>
-    <Route path="/" component={App} />
-    <Route path="*" component={NotFound} />
-  </Router>
-);
-
-/*
-  Render
-*/
-
-ReactDOM.render(routes, document.querySelector('#main'));
+// Render
+render(<App venues={venues} />, document.querySelector('#main'));

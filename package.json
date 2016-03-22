@@ -8,7 +8,7 @@
     "build-production": "NODE_ENV=production webpack -p",
     "build-staging": "NODE_ENV=staging webpack -d",
     "build-preproduction": "NODE_ENV=preproduction webpack -d",
-    "start": "webpack-dev-server -d --hot --port 7665",
+    "start": "webpack-dev-server -d --hot --port 8080",
     "test": "eslint ./src && karma start"
   },
   "repository": {
@@ -25,7 +25,6 @@
     "node": ">=4.2.0"
   },
   "dependencies": {
-    "google-map-react": "^0.10.5",
     "normalize.css": "^3.0.3",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",

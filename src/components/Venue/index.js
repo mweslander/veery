@@ -1,5 +1,5 @@
 // Imports
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 // Components
 import Favorite from '../Favorite';
@@ -7,27 +7,35 @@ import Favorite from '../Favorite';
 // CSS
 import './index.scss';
 
+// PropTypes
+const propTypes = {
+  venue: PropTypes.object
+};
+
 /*
-  VenueList
-  <VenueList/>
+  Venue
+  <Venue/>
 */
 
-const VenueList = () => (
+const Venue = ({ venue }) => (
   <div className="venue">
     <Favorite />
     <div className="venue-details">
-      <h2 className="venue-details__performance-type">Open Jam</h2>
-      <h3 className="venue-details__name">The Social Gameroom</h3>
+      <h2 className="venue-details__performance-type">{venue.eventTitle}</h2>
+      <h3 className="venue-details__name">{venue.name}</h3>
       <address className="venue-details__address">
-        1007 W Main St.<br/>
-        Durham, NC 27705
+        <span>{venue.address}</span>
+        <br/>
+        <span>{`${venue.city}, ${venue.state} ${venue.zipCode}`}</span>
       </address>
     </div>
     <div className="event-time">
-      <h4 className="event-time__start">10</h4>
-      <h4 className="event-time__end">2</h4>
+      <h4 className="event-time__start">{venue.eventStart}</h4>
+      <h4 className="event-time__end">{venue.eventEnd}</h4>
     </div>
   </div>
 );
 
-export default VenueList;
+Venue.propTypes = propTypes;
+
+export default Venue;
