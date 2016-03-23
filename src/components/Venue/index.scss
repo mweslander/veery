@@ -14,9 +14,10 @@
 }
 
 .venue-details {
+  flex-grow: 1;
   text-align: left;
   color: $white;
-  padding: $small-spacing 0;
+  padding: $small-spacing 0 $small-spacing $base-spacing;
 
   &__performance-type {
     margin: 0;
