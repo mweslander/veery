@@ -22,3 +22,6 @@ We're doing this as a project to learn a little more Node & React. We'll be foll
 
 ### Contributing
 I'm going to try to remember to follow [these git rules](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#).
+
+### Map Styling
+Made easy with [snazzy maps](https://snazzymaps.com/editor)
