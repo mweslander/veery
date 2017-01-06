@@ -9,7 +9,6 @@ const isEnvironment = utils.isEnvironment;
 const config = require('../config');
 
 const database = {
-  // TODO get drop commands up
   drop() {
     return new Promise((resolve, reject) => {
       if (isEnvironment(['production', 'preproduction'])) {
