@@ -17,14 +17,14 @@ var plugins = [
     filename: 'index.html',
     hash: environment !== 'development',
     inject: 'body',
-    template: 'src/index.html',
+    template: 'src/client/index.html',
     title: 'Veery | Perform Tonight'
   })
 ];
 
 module.exports = {
   entry: {
-    'bundle.js': './src/index.js'
+    'bundle.js': './src/client/index.js'
   },
   output: {
     filename: '[name]',
