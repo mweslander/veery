@@ -8,8 +8,13 @@
     "build-production": "NODE_ENV=production webpack -p",
     "build-staging": "NODE_ENV=staging webpack -d",
     "build-preproduction": "NODE_ENV=preproduction webpack -d",
-    "start": "webpack-dev-server -d --hot --port 8080",
-    "test": "eslint ./src && karma start"
+    "drop-db": "node src/api/database/drop.js",
+    "lint": "eslint ./src",
+    "start-client": "webpack-dev-server -d --hot --port 8080",
+    "start-server": "nodemon --watch src/api src/api/server.js",
+    "test": "npm run test-api && npm run test-client",
+    "test-api": "karma start karma.api.conf.js",
+    "test-client": "karma start karma.client.conf.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +30,10 @@
     "node": ">=4.2.0"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.7.6",
+    "nodemon": "^1.11.0",
     "normalize.css": "^3.0.3",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
@@ -58,7 +67,9 @@
     "karma-webpack": "^1.7.0",
     "lost": "^6.7.1",
     "mocha": "^2.4.5",
+    "morgan": "^1.7.0",
     "node-sass": "^3.4.2",
+    "pathfinder-ui": "^1.0.3",
     "postcss-loader": "^0.8.0",
     "react-addons-test-utils": "^0.14.7",
     "react-hot-loader": "^1.3.0",
