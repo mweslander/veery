@@ -1,6 +1,11 @@
-[
+'use strict';
+
+const faker = require('faker');
+const moment = require('moment');
+const Venue = require(`../../app/models/venue.js`);
+
+const venues = [
   {
-    "_id": 1,
     "name": "58Fifty Bistro",
     "address": "5850 Fayetteville Road",
     "city": "Durham",
@@ -10,14 +15,11 @@
     "longitude": -78.930155,
     "frequency": "recurring",
     "type": "open",
-    "eventTitle": "Open Mic",
-    "eventDay": "Wednesday",
-    "eventStart": 8,
-    "eventEnd": 11,
-    "favorite": false
+    "event": {
+      "title": "Open Mic"
+    }
   },
   {
-    "_id": 2,
     "name": "Blue Note Grill",
     "address": "709 Washington Street",
     "city": "Durham",
@@ -27,14 +29,11 @@
     "longitude": -78.902946,
     "frequency": "recurring",
     "type": "open",
-    "eventTitle": "Open Mic",
-    "eventDay": "Thursday",
-    "eventStart": 10,
-    "eventEnd": 2,
-    "favorite": false
+    "event": {
+      "title": "Open Mic",
+    }
   },
   {
-    "_id": 3,
     "name": "Blue Note Grill",
     "address": "709 Washington Street",
     "city": "Durham",
@@ -44,14 +43,11 @@
     "longitude": -78.902946,
     "frequency": "recurring",
     "type": "open",
-    "eventTitle": "Blues Jam",
-    "eventDay": "Tuesday",
-    "eventStart": 7,
-    "eventEnd": 11,
-    "favorite": false
+    "event": {
+      "title": "Blues Jam",
+    }
   },
   {
-    "_id": 4,
     "name": "James Joyce",
     "address": "912 W Main St",
     "city": "Durham",
@@ -61,14 +57,11 @@
     "longitude": -78.909868,
     "frequency": "recurring",
     "type": "open",
-    "eventTitle": "Open Mic",
-    "eventDay": "Sunday",
-    "eventStart": 9,
-    "eventEnd": 2,
-    "favorite": true
+    "event": {
+      "title": "Open Mic",
+    }
   },
   {
-    "_id": 5,
     "name": "The Pinhook",
     "address": "117 W Main St",
     "city": "Durham",
@@ -78,14 +71,11 @@
     "longitude": -78.901501,
     "frequency": "recurring",
     "type": "open",
-    "eventTitle": "Open Mic",
-    "eventDay": "Monday",
-    "eventStart": 8,
-    "eventEnd": 2,
-    "favorite": false
+    "event": {
+      "title": "Open Mic",
+    }
   },
   {
-    "_id": 6,
     "name": "The Social Gameroom",
     "address": "1007 W Main St",
     "city": "Durham",
@@ -95,10 +85,27 @@
     "longitude": -78.910782,
     "frequency": "recurring",
     "type": "open",
-    "eventTitle": "Open Mic",
-    "eventDay": "Tuesday",
-    "eventStart": 10,
-    "eventEnd": 2,
-    "favorite": true
+    "event": {
+      "title": "Open Mic",
+    }
   }
 ]
+
+function seedVenues() {
+  return new Promise((resolve, reject) => {
+    return venues.map((venue, i) => {
+      const date = faker.date.future();
+
+      venue.event.start = date;
+      venue.event.end = moment(date).add(3, 'hour');
+
+      console.log(venue);
+      new Venue(venue).save((err) => {
+        if (err) reject(err);
+        if (i === venues.length - 1) resolve();
+      })
+    });
+  });
+}
+
+module.exports = seedVenues;

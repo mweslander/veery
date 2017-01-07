@@ -23,6 +23,15 @@ var plugins = [
 ];
 
 module.exports = {
+  devServer: {
+    hot: true,
+    inline: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000'
+      }
+    }
+  },
   entry: {
     'bundle.js': './src/client/index.js'
   },

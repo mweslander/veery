@@ -29,6 +29,10 @@ const database = {
       })
       .then(() => {
         return database.closeConnection();
+      })
+      .catch((err) => {
+        console.warn('Error:', err.message);
+        return database.closeConnection();
       });
   },
 

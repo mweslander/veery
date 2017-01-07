@@ -1,13 +1,21 @@
 'use strict';
 
-const utils = require('../utils');
-const Populator = require('./populator.js');
-const faker = require('faker');
+const database = require('./index.js');
+const seedVenues = require('./seeds/venues');
+const utils = require('../lib/utils');
 
 const seeder = {
   run() {
-    return utils.log('DATABASE SEEDED');
-  },
+    return Promise
+      .all([
+        seedVenues()
+      ])
+      .then(() => utils.log('DATABASE SEEDED'))
+      .catch((err) => {
+        console.log('here');
+        throw new Error(err.message);
+      });
+  }
 };
 
-module.exports = seeder;
+database.runSingleAction(seeder.run);
