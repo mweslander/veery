@@ -9,6 +9,9 @@ import VenueList from '../VenueList';
 // CSS
 import './index.scss';
 
+// Services
+import venueService from '../../services/venues';
+
 // PropTypes
 const propTypes = {
   venues: PropTypes.array
@@ -24,8 +27,13 @@ class App extends Component {
     super(props);
 
     this.state = {
-      filteredVenues: this.eventsToday(props.venues)
+      venues: []
     };
+  }
+
+  componentWillMount() {
+    return venueService.getAll()
+      .then((venues) => this.setState({ venues }));
   }
 
   eventsToday(venues) {
@@ -42,8 +50,8 @@ class App extends Component {
     return (
       <div className="app">
         <Header />
-        <VenueMap venues={this.state.filteredVenues} />
-        <VenueList venues={this.state.filteredVenues} />
+        <VenueMap venues={this.state.venues} />
+        <VenueList venues={this.state.venues} />
       </div>
     );
   }

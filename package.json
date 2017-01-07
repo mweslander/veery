@@ -11,6 +11,7 @@
     "drop-db": "node src/api/database/drop.js",
     "drop-db-test": "NODE_ENV=test npm run drop-db",
     "lint": "eslint ./src",
+    "seed": "node src/api/database/seed.js",
     "start-client": "webpack-dev-server -d --hot --port 8080",
     "start-server": "nodemon --watch src/api src/api/server.js",
     "test": "npm run test-api && npm run test-client",
@@ -31,8 +32,10 @@
     "node": ">=4.2.0"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "moment": "^2.17.1",
     "mongoose": "^4.7.6",
     "nodemon": "^1.11.0",
     "normalize.css": "^3.0.3",
