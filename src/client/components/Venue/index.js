@@ -25,7 +25,7 @@ const Venue = ({ venue }) => (
       <h3 className="venue-details__name">{venue.name}</h3>
       <address className="venue-details__address">
         <span>{venue.address}</span>
-        <br/>
+        <br />
         <span>{`${venue.city}, ${venue.state} ${venue.zipCode}`}</span>
       </address>
     </div>
