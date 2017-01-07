@@ -31,7 +31,7 @@ const database = {
         return database.closeConnection();
       })
       .catch((err) => {
-        console.warn('Error:', err.message);
+        console.warn('\x1b[31m%s\x1b[0m', `Error: ${err.message}`); // eslint-disable-line
         return database.closeConnection();
       });
   },

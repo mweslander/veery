@@ -1,6 +1,6 @@
 // Imports
 import React, { PropTypes } from 'react';
-import Moment from 'moment';
+import moment from 'moment';
 
 // Components
 import Favorite from '../Favorite';
@@ -19,7 +19,7 @@ const propTypes = {
 */
 
 function getTime(time) {
-  return Moment(time).format('MMM Do h:m a');
+  return moment(time).format('MMM Do h:m a');
 }
 
 const Venue = ({ venue }) => (

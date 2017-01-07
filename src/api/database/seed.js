@@ -12,7 +12,6 @@ const seeder = {
       ])
       .then(() => utils.log('DATABASE SEEDED'))
       .catch((err) => {
-        console.log('here');
         throw new Error(err.message);
       });
   }

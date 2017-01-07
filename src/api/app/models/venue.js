@@ -5,7 +5,10 @@ const Schema = mongoose.Schema;
 
 const venueSchema = new Schema({
   address: String,
-  city: String,
+  city: {
+    type: String,
+    unique: true
+  },
   event: {
     end: Date,
     start: Date,

@@ -99,7 +99,6 @@ function seedVenues() {
       venue.event.start = date;
       venue.event.end = moment(date).add(3, 'hour');
 
-      console.log(venue);
       new Venue(venue).save((err) => {
         if (err) reject(err);
         if (i === venues.length - 1) resolve();
