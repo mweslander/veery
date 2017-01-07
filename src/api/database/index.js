@@ -12,7 +12,7 @@ const database = {
   drop() {
     return new Promise((resolve, reject) => {
       if (isEnvironment(['production', 'preproduction'])) {
-        resolve(log('ERROR: production and preproduction databases cannot be dropped'));
+        reject(log('ERROR: production and preproduction databases cannot be dropped'));
       }
 
       mongoose.connection.dropDatabase(() => {
@@ -24,7 +24,7 @@ const database = {
   runSingleAction(action) {
     return database.connect()
       .then(() => {
-        log('CONNECTION OPENED')
+        log('CONNECTION OPENED');
         return action();
       })
       .then(() => {
@@ -35,7 +35,9 @@ const database = {
   connect() {
     return new Promise((resolve, reject) => {
       mongoose.connect(config.database.host, config.database.name);
-      mongoose.connection.on('open', () => resolve());
+      mongoose.connection
+        .on('open', () => resolve())
+        .on('error', (err) => reject(err.message));
     });
   },
 

@@ -17,16 +17,16 @@ class VenueMap extends Component {
   constructor(props) {
     super(props);
 
-    const mapCenter = new google.maps.LatLng(35.992729, -78.903970);
+    const mapCenter = new google.maps.LatLng(35.992729, -78.903970); // eslint-disable-line no-undef
 
     this.state = {
       mapProps: {
         center: mapCenter,
         zoom: 11,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.ROADMAP // eslint-disable-line no-undef
       },
       map: null
-    }
+    };
   }
 
   componentDidMount() {
@@ -34,29 +34,17 @@ class VenueMap extends Component {
   }
 
   setMap() {
-    const map = new google.maps.Map(document.getElementById("googleMap"), this.state.mapProps);
+    const map = new google.maps.Map(document.getElementById('googleMap'), this.state.mapProps); // eslint-disable-line no-undef
     map.set('styles', firstAttempt);
-    const fifteenMile = this.createCircle(15000, "#0066CC");
+    const fifteenMile = this.createCircle(15000, '#0066CC');
     fifteenMile.setMap(map);
-    const tenMile = this.createCircle(10000, "#CDE1F7");
+    const tenMile = this.createCircle(10000, '#CDE1F7');
     tenMile.setMap(map);
-    const fiveMile = this.createCircle(5000, "#FF9900");
+    const fiveMile = this.createCircle(5000, '#FF9900');
     fiveMile.setMap(map);
-    const marker = new google.maps.Marker({position: this.state.mapProps.center, icon: you});
+    const marker = new google.maps.Marker({ position: this.state.mapProps.center, icon: you }); // eslint-disable-line no-undef
     marker.setMap(map);
-    this.setState({map: map});
-  }
-
-  createCircle(radius, color) {
-    return new google.maps.Circle({
-      center: this.state.mapProps.center,
-      radius: radius,
-      strokeColor: color,
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: color,
-      fillOpacity: 0.1
-    });
+    this.setState({ map });
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -73,13 +61,25 @@ class VenueMap extends Component {
     // });
   }
 
+  createCircle(radius, color) {
+    return new google.maps.Circle({ // eslint-disable-line no-undef
+      center: this.state.mapProps.center,
+      radius,
+      strokeColor: color,
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: color,
+      fillOpacity: 0.1
+    });
+  }
+
   render() {
-    return <div className="map" id="googleMap"></div>;
+    return <div className="map" id="googleMap" />;
   }
 }
 
 VenueMap.propTypes = {
   venues: React.PropTypes.array
-}
+};
 
 export default VenueMap;
