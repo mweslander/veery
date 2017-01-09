@@ -19,7 +19,7 @@ const propTypes = {
 */
 
 function getTime(time) {
-  return moment(time).format('MMM Do h:m a');
+  return moment(time).format('MMM Do');
 }
 
 const Venue = ({ venue }) => (
@@ -35,8 +35,8 @@ const Venue = ({ venue }) => (
       </address>
     </div>
     <div className="event-time">
-      <h4 className="event-time__start">{getTime(venue.event.start)}</h4>
-      <h4 className="event-time__end">{getTime(venue.event.end)}</h4>
+      <h4 className="event-time__date">{getTime(venue.event.startDate)}</h4>
+      <h4 className="event-time__time">{venue.event.startTime}</h4>
     </div>
   </div>
 );

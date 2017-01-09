@@ -2,7 +2,7 @@
 
 const faker = require('faker');
 const moment = require('moment');
-const Venue = require(`../../app/models/venue.js`);
+const Venue = require('../../app/models/venue.js');
 
 const venues = [
   {
@@ -30,7 +30,7 @@ const venues = [
     "frequency": "recurring",
     "type": "open",
     "event": {
-      "title": "Open Mic",
+      "title": "Open Mic"
     }
   },
   {
@@ -44,7 +44,7 @@ const venues = [
     "frequency": "recurring",
     "type": "open",
     "event": {
-      "title": "Blues Jam",
+      "title": "Blues Jam"
     }
   },
   {
@@ -58,7 +58,7 @@ const venues = [
     "frequency": "recurring",
     "type": "open",
     "event": {
-      "title": "Open Mic",
+      "title": "Open Mic"
     }
   },
   {
@@ -72,7 +72,7 @@ const venues = [
     "frequency": "recurring",
     "type": "open",
     "event": {
-      "title": "Open Mic",
+      "title": "Open Mic"
     }
   },
   {
@@ -86,7 +86,7 @@ const venues = [
     "frequency": "recurring",
     "type": "open",
     "event": {
-      "title": "Open Mic",
+      "title": "Open Mic"
     }
   }
 ]
@@ -96,8 +96,8 @@ function seedVenues() {
     return venues.map((venue, i) => {
       const date = faker.date.future();
 
-      venue.event.start = date;
-      venue.event.end = moment(date).add(3, 'hour');
+      venue.event.startDate = new Date(date);
+      venue.event.startTime = `${Math.ceil(Math.random() * 12)}:00 p.m.`;
 
       new Venue(venue).save((err) => {
         if (err) reject(err);
