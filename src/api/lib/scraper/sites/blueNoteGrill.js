@@ -14,8 +14,7 @@ function blueNoteGrill() {
 
         const blueJams = $('.event').filter((i, event) => {
           const title = $(event)
-            .children('.text')
-            .children('h2')
+            .find('h2')
             .children('a')
             .text();
 
