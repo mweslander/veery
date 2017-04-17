@@ -3,15 +3,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// TODO come back and figure out if we need creator
 const eventSchema = new Schema({
-  _creator : {
-    type: Number,
+  venue : {
+    type: Schema.Types.ObjectId,
     ref: 'Venue'
   },
   startDate: Date,
   startTime: String,
-  title: String
+  title: String,
+  type: String
 });
 
 module.exports = mongoose.model('Event', eventSchema);

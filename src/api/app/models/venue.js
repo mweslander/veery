@@ -6,17 +6,17 @@ const Schema = mongoose.Schema;
 const venueSchema = new Schema({
   address: String,
   city: String,
-  event: {
-    startDate: Date,
-    startTime: String,
-    title: String
-  },
+  events: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Event'
+    }
+  ],
   frequency: String,
   latitude: Number,
   longitude: Number,
   name: String,
   state: String,
-  type: String,
   zipCode: Number
 });
 
