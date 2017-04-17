@@ -2,15 +2,16 @@
 import React, { Component, PropTypes } from 'react';
 
 // Components
+import EventList from '../EventList';
 import Header from '../Header';
 import VenueMap from '../VenueMap';
-import VenueList from '../VenueList';
 
 // CSS
 import './index.scss';
 
 // Services
-import venueService from '../../services/venues';
+import eventsService from '../../services/events';
+import venuesService from '../../services/venues';
 
 // PropTypes
 const propTypes = {
@@ -27,13 +28,22 @@ class App extends Component {
     super(props);
 
     this.state = {
+      events: [],
       venues: []
     };
   }
 
   componentWillMount() {
-    return venueService.getAll()
-      .then((venues) => this.setState({ venues }));
+    const promises = [
+      eventsService.getAll(),
+      venuesService.getAll()
+    ];
+
+    return Promise.all(promises)
+      .then(([events, venues]) => {
+        this.setState({ events });
+        this.setState({ venues });
+      });
   }
 
   eventsToday(venues) {
@@ -51,7 +61,7 @@ class App extends Component {
       <div className="app">
         <Header />
         <VenueMap venues={this.state.venues} />
-        <VenueList venues={this.state.venues} />
+        <EventList events={this.state.events} />
       </div>
     );
   }

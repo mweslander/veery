@@ -1,7 +1,9 @@
 'use strict';
 
 const cheerio = require('cheerio');
+const mongoose = require('mongoose');
 const request = require('request');
+const Event = require('../../../app/models/event.js');
 const Venue = require('../../../app/models/venue.js');
 
 const url = 'http://www.thebluenotegrill.com/events/';
@@ -46,29 +48,35 @@ function blueNoteGrill() {
             .text();
 
           return {
-            name: 'Blue Note Grill',
-            address: '709 Washington Street',
-            city: 'Durham',
-            state: 'NC',
-            zipCode: 27704,
-            latitude: 36.004379,
-            longitude: -78.902946,
-            type: 'open',
-            event: {
-              startDate,
-              startTime,
-              title
-            }
+            startDate,
+            startTime,
+            title,
+            type: 'open'
           };
         });
 
-        return attributes
-          .toArray()
-          .forEach((venue, i) => {
-            new Venue(venue).save((err) => {
-              if (err) { reject(err.message); }
-              if (i === attributes.length - 1) { resolve(); }
-            });
+        const venue = {
+          name: 'Blue Note Grill',
+          address: '709 Washington Street',
+          city: 'Durham',
+          state: 'NC',
+          zipCode: 27704,
+          latitude: 36.004379,
+          longitude: -78.902946
+        };
+
+        new Venue(venue)
+          .save((err, savedVenue) => {
+            return attributes
+              .toArray()
+              .forEach((event, i) => {
+                event.venue = mongoose.Types.ObjectId(savedVenue._id);
+                new Event(event)
+                  .save((err) => {
+                    if (err) { reject(err.message); }
+                    if (i === attributes.length - 1) { resolve(); }
+                  });
+              });
           });
       }
     });

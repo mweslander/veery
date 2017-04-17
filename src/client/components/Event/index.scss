@@ -1,10 +1,10 @@
 //=============================================================================
-// Venue .venue
+// Event .event
 //=============================================================================
 
 @import "../../css/variables";
 
-.venue {
+.event {
   width: 100%;
   background-color: $overlay-gold-highlight;
   display: flex;
@@ -13,7 +13,7 @@
   margin-bottom: 1px;
 }
 
-.venue-details {
+.event-details {
   flex-grow: 1;
   text-align: left;
   color: $white;
