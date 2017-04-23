@@ -30,7 +30,7 @@ function EventList({ events }) {
       </ul>
     </div>
   );
-};
+}
 
 EventList.propTypes = propTypes;
 
