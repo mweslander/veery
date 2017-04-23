@@ -1,5 +1,4 @@
 {
-  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "es6": true,
@@ -30,7 +29,11 @@
     "templateStrings": true,
     "jsx": true
   },
+  "parser": "babel-eslint",
   "plugins": [
     "react"
-  ]
+  ],
+  "rules": {
+    "no-useless-computed-key": 0           // http://eslint.org/docs/rules/no-useless-computed-key
+  }
 }

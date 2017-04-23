@@ -7,7 +7,7 @@ function index(req, res) {
     .find({})
     .populate('venue')
     .sort('startDate')
-    .then((events) => res.json({ events }) );
+    .then((events) => res.json({ events }));
 }
 
 module.exports = {
