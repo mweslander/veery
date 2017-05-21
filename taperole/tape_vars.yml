@@ -1,0 +1,11 @@
+app_name: veery
+
+letsencrypt:
+  enabled: false
+  hostname:          # REQUIRED should be example.com or subdomain.example.com (do not include the www)
+  email:             # REQUIRED
+
+# App Configs
+fe_app_repo: git@github.com:mweslander/veery.git
+fe_build_command: npm run build:production
+nodejs_version: "6.x"
