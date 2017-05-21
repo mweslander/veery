@@ -1,12 +1,12 @@
 ---
 - hosts: omnibox
-  user: root
+  remote_user: root
 
   vars_files:
     - "{{tape_dir}}/vars/defaults.yml"
     - tape_vars.yml
 
   roles:
-    - mongodb
+    # - mongodb
     - frontend_deploy
     - node_api_configure

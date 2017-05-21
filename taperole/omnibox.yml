@@ -22,7 +22,6 @@
   roles:
     - general
     - ufw
-    - deployer_user
     - frontend_install_essentials
     - monit_install
     - mongodb

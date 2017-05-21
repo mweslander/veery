@@ -1,2 +1,0 @@
-- name: Restart server
-  command: bash -lc "pm2 restart process.json --env production"
