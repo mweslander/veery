@@ -1,0 +1,7 @@
+- name: Install pm2
+  npm: name=pm2 state=present global=yes
+
+- name: Enable server
+  command: bash -lc "pm2 start process.json --env production"
+  args:
+    chdir: "{{fe_app_path}}"
