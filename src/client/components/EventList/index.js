@@ -1,5 +1,6 @@
 // Imports
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // Components
 import Event from '../Event';
@@ -9,7 +10,8 @@ import './index.scss';
 
 // PropTypes
 const propTypes = {
-  events: PropTypes.array
+  events: PropTypes.array,
+  focusedVenueId: PropTypes.string
 };
 
 /*
@@ -17,14 +19,20 @@ const propTypes = {
   <EventList/>
 */
 
-function EventList({ events }) {
+function EventList({ events, focusedVenueId }) {
   return (
     <div className="event-list">
       <button className="list-toggle">All</button>
-      <ul className="list">
+      <ul className="list element" id="containerElement">
         <li className="list__item">
           {events.map((event) => {
-            return <Event key={event._id} event={event} />;
+            return (
+              <Event
+                event={event}
+                focusedVenueId={focusedVenueId}
+                key={event._id}
+              />
+            );
           })}
         </li>
       </ul>
