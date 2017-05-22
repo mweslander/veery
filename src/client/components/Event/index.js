@@ -1,6 +1,9 @@
 // Imports
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import moment from 'moment';
+import Scroll from 'react-scroll';
 
 // Components
 import Favorite from '../Favorite';
@@ -10,7 +13,9 @@ import './index.scss';
 
 // PropTypes
 const propTypes = {
-  event: PropTypes.object
+  event: PropTypes.object,
+  focusedVenueId: PropTypes.string,
+  updateFocusedVenueId: PropTypes.func
 };
 
 /*
@@ -18,15 +23,23 @@ const propTypes = {
   <Event/>
 */
 
+const Element = Scroll.Element;
+
 function getTime(time) {
   return moment(time).format('MMM Do');
 }
 
-function Event({ event }) {
+function Event({ event, focusedVenueId, updateFocusedVenueId }) {
+  const isFocusedVenue = event.venue._id === focusedVenueId;
+  const eventClass = classNames('event', { 'event--focused': isFocusedVenue });
+
   return (
-    <div className="event">
+    <Element name={event._id} className={eventClass}>
       <Favorite />
-      <div className="event-details">
+      <div
+        onClick={() => { updateFocusedVenueId(event.venue._id); }}
+        className="event-details"
+      >
         <h2 className="event-details__performance-type">{event.title}</h2>
         <h3 className="event-details__name">{event.venue.name}</h3>
         <address className="event-details__address">
@@ -39,7 +52,7 @@ function Event({ event }) {
         <h4 className="event-time__date">{getTime(event.startDate)}</h4>
         <h4 className="event-time__time">{event.startTime}</h4>
       </div>
-    </div>
+    </Element>
   );
 }
 
