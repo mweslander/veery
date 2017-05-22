@@ -11,7 +11,8 @@ import './index.scss';
 // PropTypes
 const propTypes = {
   events: PropTypes.array,
-  focusedVenueId: PropTypes.string
+  focusedVenueId: PropTypes.string,
+  updateFocusedVenueId: PropTypes.func
 };
 
 /*
@@ -19,7 +20,7 @@ const propTypes = {
   <EventList/>
 */
 
-function EventList({ events, focusedVenueId }) {
+function EventList({ events, focusedVenueId, updateFocusedVenueId }) {
   return (
     <div className="event-list">
       <button className="list-toggle">All</button>
@@ -31,6 +32,7 @@ function EventList({ events, focusedVenueId }) {
                 event={event}
                 focusedVenueId={focusedVenueId}
                 key={event._id}
+                updateFocusedVenueId={updateFocusedVenueId}
               />
             );
           })}

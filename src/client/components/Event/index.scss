@@ -23,6 +23,10 @@
   color: $white;
   padding: $small-spacing 0 $small-spacing $base-spacing;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   &__performance-type {
     margin: 0;
     text-transform: uppercase;

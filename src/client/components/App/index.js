@@ -90,6 +90,7 @@ class App extends Component {
         <EventList
           events={this.state.events}
           focusedVenueId={this.state.focusedVenueId}
+          updateFocusedVenueId={this.updateFocusedVenueId}
         />
       </div>
     );
