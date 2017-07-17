@@ -1,14 +1,16 @@
 'use strict';
 
 const database = require('./index.js');
-const seedEvents = require('./seeds/events');
-const seedVenues = require('./seeds/venues');
+const seedEvents = require('./seeds/events'); // eslint-disable-line no-unused-vars
+const seedUsers = require('./seeds/users');
+const seedVenues = require('./seeds/venues'); // eslint-disable-line no-unused-vars
 const utils = require('../lib/utils');
 
 const seeder = {
   run() {
-    return seedVenues()
-      .then(() => seedEvents())
+    return seedUsers()
+      // .then(() => seedVenues())
+      // .then(() => seedEvents())
       .then(() => utils.log('DATABASE SEEDED'))
       .catch((err) => {
         throw new Error(err.message);

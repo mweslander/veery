@@ -1,11 +1,9 @@
 import React from 'react';
+import Routes from './Routes';
 import { render } from 'react-dom';
 
 // Styles
 import './index.scss';
 
-// Components
-import App from './components/App';
-
 // Render
-render(<App />, document.querySelector('#main'));
+render(<Routes />, document.querySelector('#main'));
