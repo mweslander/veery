@@ -4,7 +4,7 @@ const User = require('../../app/models/user.js');
 
 const user = {
   email: 'admin@example.com',
-  password: 'delete this nephew'
+  password: 'password'
 };
 
 function seedUsers() {

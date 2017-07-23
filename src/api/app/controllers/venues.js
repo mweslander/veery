@@ -2,10 +2,11 @@
 
 const Venue = require('../models/venue');
 const destroyDocument = require('../../lib/utils/destroyDocument');
-const saveDocument = require('../../lib/utils/saveDocument');
+const saveDocuments = require('../../lib/utils/saveDocuments');
 
 function create(req, res, next) {
-  return saveDocument(Venue, req.body, res, next);
+  const promises = [new Venue(req.body).save()];
+  return saveDocuments(promises, res, next);
 }
 
 function destroy(req, res, next) {
