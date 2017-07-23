@@ -41,12 +41,18 @@ class NewEvent extends Component {
   }
 
   render() {
+    const frequencies = ['one time', 'weekly', 'first of the month'];
+
     return (
       <form
         className="new-event o-fieldset o-container o-container--small"
         ref={(form) => { this.newEventForm = form; }}
         onSubmit={this.handleSubmit}
       >
+        <label className="c-label" htmlFor="title">
+          Title
+          <input className="c-field" name="title" type="text" placeholder="event title" />
+        </label>
         <label className="c-label" htmlFor="venue">
           Venue
           <select name="venue">
@@ -68,13 +74,18 @@ class NewEvent extends Component {
           Start Time
           <input className="c-field" name="startTime" type="text" placeholder="10:00" />
         </label>
-        <label className="c-label" htmlFor="title">
-          Title
-          <input className="c-field" name="title" type="text" placeholder="event title" />
-        </label>
-        <label className="c-label" htmlFor="type">
-          Type
-          <input className="c-field" name="type" type="text" placeholder="open" />
+        <label className="c-label" htmlFor="frequency">
+          Frequency
+          <select name="frequency">
+            {frequencies.map((frequency) => {
+              return (
+                <option
+                  key={frequency}
+                  value={frequency}
+                >{frequency}</option>
+              );
+            })}
+          </select>
         </label>
         <input className="c-button" type="submit" value="Create Event" />
       </form>

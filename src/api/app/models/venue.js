@@ -12,7 +12,6 @@ const venueSchema = new Schema({
       ref: 'Event'
     }
   ],
-  frequency: String,
   latitude: Number,
   longitude: Number,
   name: String,

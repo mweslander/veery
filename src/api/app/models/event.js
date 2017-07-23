@@ -8,6 +8,14 @@ const eventSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Venue'
   },
+  frequency: {
+    type: String,
+    enum: [
+      'first of the month',
+      'one time',
+      'weekly'
+    ]
+  },
   startDate: Date,
   startTime: String,
   title: String,
