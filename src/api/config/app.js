@@ -2,6 +2,8 @@
 
 const express = require('express');
 const logger = require('morgan');
+const passport = require('passport');
+const session = require('express-session');
 const app = express();
 const apiRouter = require('../app/routes');
 const pathfinderUI = require('pathfinder-ui');
@@ -18,6 +20,13 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
+app.use(session({
+  secret: 'change in prod',
+  resave: false,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/api', apiRouter);
 
 if (process.env.NODE_ENV !== 'production') {

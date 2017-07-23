@@ -38,7 +38,11 @@ const database = {
 
   connect() {
     return new Promise((resolve, reject) => {
-      mongoose.connect(config.database.host, config.database.name);
+      const databaseName = `mongodb://${config.database.host}/${config.database.name}`;
+
+      mongoose.connect(databaseName, {
+        useMongoClient: true
+      });
       mongoose.connection
         .on('open', () => resolve())
         .on('error', (err) => reject(err.message));

@@ -11,6 +11,12 @@ We're doing this as a project to learn a little more Node & React. We'll be foll
 * Clone & `cd veery`
 * `npm install`
 
+### Admin user
+
+To add an admin user, you'll need to go into `/src/api/database/seeds/users` and change the password field to your password. Then run `npm run db:seed`. Do not commit the password change to Git.
+
+We have to use the seed feature because I have not been able to hash passwords from the Mongo console tool.
+
 ### Serving locally
 
 * `npm start`

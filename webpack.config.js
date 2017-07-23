@@ -3,6 +3,7 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var lost = require('lost');
+var path = require('path');
 var webpack = require('webpack');
 
 var environment = process.env.NODE_ENV || 'development';
@@ -24,20 +25,26 @@ var plugins = [
 
 module.exports = {
   devServer: {
-    hot: true,
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/$/, to: 'index.html' }
+      ]
+    },
     inline: true,
     proxy: {
       '/api': {
+        changeOrigin: true,
         target: 'http://localhost:3000'
       }
     }
   },
+  devtool: 'inline-source-map',
   entry: {
-    'bundle.js': './src/client/index.js'
+    bundle: './src/client/index.js'
   },
   output: {
-    filename: '[name]',
-    path: './dist'
+    filename: '[name].js',
+    path: path.join(__dirname, 'dist')
   },
   module: {
     loaders: [
@@ -51,26 +58,20 @@ module.exports = {
       },
       {
         test: /\.s(c|a)ss$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!resolve-url!sass-loader')
+        loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!postcss-loader!sass-loader' })
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader')
+        loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!postcss-loader' })
       },
       {
         test: /.*\.(gif|png|jpe?g|svg)$/i,
         loaders: [
-          'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
+          'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+          'image-webpack-loader?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
         ]
       }
     ]
-  },
-  sassLoader: {
-    outputStyle: 'expanded'
-  },
-  postcss: function() {
-    return [lost, autoprefixer];
   },
   plugins: plugins
 }
