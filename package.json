@@ -4,19 +4,19 @@
   "description": "Perform tonight.",
   "main": "index.js",
   "scripts": {
+    "api:test": "npm run drop-db-test && NODE_ENV=test mocha --opts 'support/mocha.opts' 'src/api/**/*.spec.js'",
     "build": "webpack -d",
     "build:production": "NODE_ENV=production webpack -p",
+    "client:start": "webpack-dev-server -d --hot --port 8080",
+    "client:test": "karma start",
     "development": "npm run start:server & npm run start:client",
     "db:drop": "node src/api/database/drop.js",
     "db:drop:test": "NODE_ENV=test npm run drop-db",
-    "db:seed": "node src/api/database/seed.js",
+    "db:furnish": "node src/api/database/furnish",
+    "db:seed:admins": "node src/api/database/seedAdmins",
     "lint": "eslint ./src",
-    "scrape": "node src/api/lib/scraper",
-    "start:client": "webpack-dev-server -d --hot --port 8080",
-    "start:server": "nodemon --watch src/api src/api/server.js",
-    "test": "npm run test-api && npm run test-client",
-    "test:api": "npm run drop-db-test && NODE_ENV=test mocha --opts 'support/mocha.opts' 'src/api/**/*.spec.js'",
-    "test:client": "karma start"
+    "server:start": "nodemon --watch src/api src/api/server.js",
+    "test": "npm run test-api && npm run test-client"
   },
   "repository": {
     "type": "git",

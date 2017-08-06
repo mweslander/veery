@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const bcrypt = require('../../lib/utils/bcrypt');
+const bcrypt = require('../../utils/bcrypt');
 
 const userSchema = new Schema({
   email: {

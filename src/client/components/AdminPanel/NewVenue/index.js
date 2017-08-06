@@ -68,7 +68,7 @@ class NewVenue extends Component {
         </label>
         <label className="c-label" htmlFor="state">
           State
-          <input className="c-field" name="state" type="text" placeholder="WWE" />
+          <input className="c-field" name="state" type="text" placeholder="solid" />
         </label>
         <label className="c-label" htmlFor="zipCode">
           Zip Code

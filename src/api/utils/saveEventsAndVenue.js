@@ -1,8 +1,9 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const Event = require('../../app/models/event');
-const Venue = require('../../app/models/venue');
+
+const buildEventPromises = require('./buildEventPromises');
+const Venue = require('../app/models/venue');
 
 function saveEventsAndVenue(events, venue) {
   return new Promise((resolve, reject) => {
@@ -10,11 +11,14 @@ function saveEventsAndVenue(events, venue) {
 
     const eventSaveCallback = (event, i) => {
       event.venue = mongoose.Types.ObjectId(venueWithId._id); // eslint-disable-line new-cap
-      new Event(event)
-        .save((err) => {
-          if (err) { reject(err.message); }
+      const promises = buildEventPromises(event);
+
+      return Promise
+        .all(promises)
+        .then(() => {
           if (i === events.length - 1) { resolve(); }
-        });
+        })
+        .catch((err) => reject(err.message));
     };
 
     new Venue(venue)

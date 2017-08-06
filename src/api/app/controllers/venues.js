@@ -1,8 +1,8 @@
 'use strict';
 
 const Venue = require('../models/venue');
-const destroyDocument = require('../../lib/utils/destroyDocument');
-const saveDocuments = require('../../lib/utils/saveDocuments');
+const destroyDocument = require('../../utils/destroyDocument');
+const saveDocuments = require('../../utils/saveDocuments');
 
 function create(req, res, next) {
   const promises = [new Venue(req.body).save()];
