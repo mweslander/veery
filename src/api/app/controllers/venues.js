@@ -1,5 +1,6 @@
 'use strict';
 
+const Event = require('../models/event');
 const Venue = require('../models/venue');
 const destroyDocument = require('../../utils/destroyDocument');
 const saveDocuments = require('../../utils/saveDocuments');
@@ -10,7 +11,10 @@ function create(req, res, next) {
 }
 
 function destroy(req, res, next) {
-  return destroyDocument(Venue, req.params.id, res, next);
+  return Event.remove({ venue: req.params.id })
+    .then(() => {
+      return destroyDocument(Venue, req.params.id, res, next);
+    });
 }
 
 function index(req, res) {
