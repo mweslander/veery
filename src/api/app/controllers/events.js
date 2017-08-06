@@ -1,37 +1,16 @@
 'use strict';
 
-const moment = require('moment');
 const mongoose = require('mongoose');
+
 const Event = require('../models/event');
-const destroyDocument = require('../../lib/utils/destroyDocument');
-const saveDocuments = require('../../lib/utils/saveDocuments');
-
-function buildWeeklyEvents(params) {
-  const promises = [];
-  promises.push(new Event(params).save());
-
-  // 13 total weeks
-  for (let i = 1; i <= 12; i++) {
-    const lastDate = moment(new Date(params.startDate));
-    params.startDate = lastDate.add(1, 'week');
-    promises.push(new Event(params).save());
-  }
-
-  return promises;
-}
+const buildEventPromises = require('../../utils/buildEventPromises');
+const destroyDocument = require('../../utils/destroyDocument');
+const saveDocuments = require('../../utils/saveDocuments');
 
 function create(req, res, next) {
-  let promises;
   const params = req.body;
   params.venue = mongoose.Types.ObjectId(req.body.venue); // eslint-disable-line new-cap
-
-  switch (params.frequency) {
-  case 'weekly':
-    promises = buildWeeklyEvents(params);
-    break;
-  default:
-    promises = [new Event(params).save()];
-  }
+  const promises = buildEventPromises(params);
 
   return saveDocuments(promises, res, next);
 }

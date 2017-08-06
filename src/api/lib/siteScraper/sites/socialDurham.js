@@ -1,6 +1,6 @@
 'use strict';
 
-const createWeeklyDates = require('../../utils/createWeeklyDates');
+const createWeeklyDates = require('../../../utils/createWeeklyDates');
 const url = 'http://socialdurham.com/events/';
 
 function getMicNight($) {
@@ -29,13 +29,13 @@ function socialDurham($) {
     return {
       startDate,
       startTime,
-      title: 'Open Mic Night',
+      title: 'Song writers open mic',
       type: 'open'
     };
   });
 
   const venue = {
-    name: 'The Social Gameroom',
+    name: 'Social Durham',
     address: '1007 W Main St',
     city: 'Durham',
     state: 'NC',

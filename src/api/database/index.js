@@ -3,10 +3,9 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const utils = require('../lib/utils');
-const log = utils.log;
-const isEnvironment = utils.isEnvironment;
 const config = require('../config');
+const isEnvironment = require('../utils/isEnvironment');
+const log = require('../utils/log');
 
 const database = {
   drop() {
