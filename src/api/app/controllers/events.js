@@ -21,7 +21,9 @@ function destroy(req, res, next) {
 
 function index(req, res) {
   Event
-    .find({})
+    .find({
+      startDate: { $gt: Date.now() - 86400000 }
+    })
     .populate('venue')
     .sort('startDate')
     .then((events) => res.json({ events }));
