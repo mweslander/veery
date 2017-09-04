@@ -29,10 +29,10 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.updateFocusedVenueId = this.updateFocusedVenueId.bind(this);
+    this.updateFocusedVenue = this.updateFocusedVenue.bind(this);
     this.state = {
       events: [],
-      focusedVenueId: null,
+      focusedVenue: null,
       venues: []
     };
   }
@@ -47,20 +47,20 @@ class App extends Component {
       .then(([events, venues]) => {
         this.setState({
           events,
-          focusedVenueId: events[0].venue._id,
+          focusedVenue: events[0].venue,
           venues
         });
       });
   }
 
-  updateFocusedVenueId(focusedVenueId) {
-    this.setState({ focusedVenueId }, () => {
+  updateFocusedVenue(focusedVenue, focusedEvent={}) {
+    this.setState({ focusedVenue }, () => {
       const scroller = Scroll.scroller;
       const nextEvent = this.state.events.find((event) => {
-        return event.venue._id === focusedVenueId;
+        return event.venue._id === focusedVenue._id;
       });
 
-      scroller.scrollTo(nextEvent._id, {
+      scroller.scrollTo(focusedEvent._id || nextEvent._id, {
         duration: 500,
         smooth: true,
         containerId: 'containerElement'
@@ -83,14 +83,14 @@ class App extends Component {
       <div className="app">
         <Header />
         <VenueMap
-          focusedVenueId={this.state.focusedVenueId}
-          updateFocusedVenueId={this.updateFocusedVenueId}
+          focusedVenue={this.state.focusedVenue}
+          updateFocusedVenue={this.updateFocusedVenue}
           venues={this.state.venues}
         />
         <EventList
           events={this.state.events}
-          focusedVenueId={this.state.focusedVenueId}
-          updateFocusedVenueId={this.updateFocusedVenueId}
+          focusedVenue={this.state.focusedVenue}
+          updateFocusedVenue={this.updateFocusedVenue}
         />
       </div>
     );
