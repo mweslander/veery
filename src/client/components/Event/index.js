@@ -14,8 +14,8 @@ import './index.scss';
 // PropTypes
 const propTypes = {
   event: PropTypes.object,
-  focusedVenueId: PropTypes.string,
-  updateFocusedVenueId: PropTypes.func
+  focusedVenue: PropTypes.object,
+  updateFocusedVenue: PropTypes.func
 };
 
 /*
@@ -29,15 +29,15 @@ function getTime(time) {
   return moment(time).format('MMM Do');
 }
 
-function Event({ event, focusedVenueId, updateFocusedVenueId }) {
-  const isFocusedVenue = event.venue._id === focusedVenueId;
+function Event({ event, focusedVenue, updateFocusedVenue }) {
+  const isFocusedVenue = event.venue._id === focusedVenue._id;
   const eventClass = classNames('event', { 'event--focused': isFocusedVenue });
 
   return (
     <Element name={event._id} className={eventClass}>
       <Favorite />
       <div
-        onClick={() => { updateFocusedVenueId(event.venue._id); }}
+        onClick={() => { updateFocusedVenue(event.venue, event); }}
         className="event-details"
       >
         <h2 className="event-details__performance-type">{event.title}</h2>
