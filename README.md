@@ -1,5 +1,4 @@
-# Veery | *Perform tonight*
-![Veery Logo](/design/branding-attempt-2-with-text.svg)
+![Veery Logo](/design/branding-attempt-2.png)
 
 ## Find open mics, open jams and karaoke nights when you're feeling impulsive.
 [Check out the wiki for the long-winded description of the project.](https://github.com/mweslander/veery/wiki)
