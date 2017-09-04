@@ -50,22 +50,15 @@ class VenueMap extends Component {
   }
 
   setMarkers(map) {
-    const geocoder = new google.maps.Geocoder(); // eslint-disable-line no-undef
+    return this.state
+      .venues
+      .forEach((venue) => {
+        const venueId = venue._id;
+        const icon = this.buildMarkerIcon(venueId);
+        const marker = this.buildMarker(icon, map, venue);
 
-    const promises = this.state.venues.map((venue) => {
-      return this.geocodeAddress(geocoder, venue);
-    });
-
-    return Promise.all(promises)
-      .then((positions) => {
-        positions.forEach((position, iteration) => {
-          const venueId = this.state.venues[iteration]._id;
-          const icon = this.buildMarkerIcon(venueId);
-          const marker = this.buildMarker(icon, map, position);
-
-          marker.addListener('click', () => {
-            this.props.updateFocusedVenueId(venueId);
-          });
+        marker.addListener('click', () => {
+          this.props.updateFocusedVenueId(venueId);
         });
 
         return this.setState({ map });
@@ -86,20 +79,6 @@ class VenueMap extends Component {
     marker.setMap(map);
 
     return this.setMarkers(map);
-  }
-
-  geocodeAddress(geocoder, venue) {
-    const address = `${venue.address}, ${venue.city}, ${venue.zipCode}`;
-
-    return new Promise((resolve, reject) => {
-      return geocoder.geocode({ address }, (results, status) => {
-        if (status === 'OK') {
-          resolve(results[0].geometry.location, venue._id);
-        } else {
-          reject(status);
-        }
-      });
-    });
   }
 
   buildMarkerIcon(venueId) {
@@ -126,7 +105,12 @@ class VenueMap extends Component {
     };
   }
 
-  buildMarker(icon, map, position) {
+  buildMarker(icon, map, venue) {
+    const position = {
+      lat: venue.latitude,
+      lng: venue.longitude
+    };
+
     return new google.maps.Marker({ // eslint-disable-line no-undef
       icon,
       map,
