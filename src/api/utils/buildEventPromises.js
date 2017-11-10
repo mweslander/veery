@@ -8,8 +8,8 @@ function buildWeeklyEvents(params) {
   const events = [];
   events.push(new Event(params).save());
 
-  // 13 total weeks
-  for (let i = 1; i <= 12; i++) {
+  // 52 total weeks
+  for (let i = 1; i <= 51; i++) {
     const lastDate = moment(new Date(params.startDate));
     params.startDate = lastDate.add(1, 'week');
     events.push(new Event(params).save());
