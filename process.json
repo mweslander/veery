@@ -13,7 +13,7 @@
       }
     },
     {
-      "cron_restart": "01 01 * * * *",
+      "cron_restart": "*/1 * * * *",
       "log_date_format" : "YYYY-MM-DD HH:mm Z",
       "name": "test",
       "script": "./src/api/foo.js",
