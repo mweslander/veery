@@ -1,8 +1,10 @@
 'use strict';
 
+const secrets = require('../../../../secrets.json');
+
 const admins = [{
   email: 'admin@example.com',
-  password: 'password'
+  password: secrets.password
 }];
 
 module.exports = admins;
