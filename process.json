@@ -1,9 +1,22 @@
 {
   "apps": [
-      {
+    {
       "log_date_format" : "YYYY-MM-DD HH:mm Z",
       "name": "api-server",
       "script": "./src/api/server.js",
+      "watch": true,
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "env_production": {
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "cron_restart": "01 01 * * * *",
+      "log_date_format" : "YYYY-MM-DD HH:mm Z",
+      "name": "test",
+      "script": "./src/api/foo.js",
       "watch": true,
       "env": {
         "NODE_ENV": "development"
