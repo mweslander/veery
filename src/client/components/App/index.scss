@@ -12,6 +12,14 @@
   justify-content: space-between;
   min-height: 100%;
   height: 100%;
+}
+
+.interactive-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 
   &::after {
     position: fixed;
@@ -25,5 +33,11 @@
     left: 0;
     right: 0;
     z-index: -1;
+  }
+
+  @media screen and (min-width: $screen-width-min-desktop) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 }

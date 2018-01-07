@@ -1,0 +1,24 @@
+'use strict';
+
+const config = require('./index');
+const mailgun = require('mailgun-js')({
+  apiKey: config.mailgun.apiKey,
+  domain: config.mailgun.domain
+});
+
+function sendEmail(email, subject, message) {
+  const data = {
+    from: `<noreply@${config.domain}>`,
+    to: email,
+    subject,
+    text: message
+  };
+  mailgun.messages().send(data, function(error, body) {
+    // Log out response from mailgun
+    console.log(body); // eslint-disable-line
+  });
+}
+
+module.exports = {
+  sendEmail
+};

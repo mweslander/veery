@@ -53,7 +53,7 @@ class App extends Component {
       });
   }
 
-  updateFocusedVenue(focusedVenue, focusedEvent={}) {
+  updateFocusedVenue(focusedVenue, focusedEvent = {}) {
     this.setState({ focusedVenue }, () => {
       const scroller = Scroll.scroller;
       const nextEvent = this.state.events.find((event) => {
@@ -82,16 +82,18 @@ class App extends Component {
     return (
       <div className="app">
         <Header />
-        <VenueMap
-          focusedVenue={this.state.focusedVenue}
-          updateFocusedVenue={this.updateFocusedVenue}
-          venues={this.state.venues}
-        />
-        <EventList
-          events={this.state.events}
-          focusedVenue={this.state.focusedVenue}
-          updateFocusedVenue={this.updateFocusedVenue}
-        />
+        <div className="interactive-container">
+          <VenueMap
+            focusedVenue={this.state.focusedVenue}
+            updateFocusedVenue={this.updateFocusedVenue}
+            venues={this.state.venues}
+          />
+          <EventList
+            events={this.state.events}
+            focusedVenue={this.state.focusedVenue}
+            updateFocusedVenue={this.updateFocusedVenue}
+          />
+        </div>
       </div>
     );
   }

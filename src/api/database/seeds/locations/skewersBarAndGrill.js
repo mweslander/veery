@@ -1,9 +1,11 @@
 'use strict';
 
+const moment = require('moment');
+
 const events = [
   {
     frequency: 'weekly',
-    startDate: '08-02-17',
+    startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
     startTime: '9:00pm',
     title: 'Open Mic Night',
     type: 'open'

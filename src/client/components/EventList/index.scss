@@ -8,6 +8,10 @@
   position: relative;
   width: 100%;
   background-color: $overlay-medium-blue;
+
+  @media screen and (min-width: $screen-width-min-desktop) {
+    width: 76%;
+  }
 }
 
 .list-toggle {
@@ -29,5 +33,9 @@
 
   &__item {
     margin: 0;
+  }
+
+  @media screen and (min-width: $screen-width-min-desktop) {
+    max-height: 100%;
   }
 }
