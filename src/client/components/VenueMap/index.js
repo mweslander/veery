@@ -52,22 +52,6 @@ class VenueMap extends Component {
     });
   }
 
-  updateMapPropsWithNewVenue(venue, callback) {
-    const mapCenter = new google.maps.LatLng(venue.latitude, venue.longitude); // eslint-disable-line no-undef
-    const mapProps = this.state.mapProps;
-    mapProps.center = mapCenter;
-
-    return this.setState({ mapProps }, callback);
-  }
-
-  addMarkerListener(marker, venue) {
-    return marker.addListener('click', () => {
-      return this.updateMapPropsWithNewVenue(venue, () => {
-        return this.props.updateFocusedVenue(venue);
-      });
-    });
-  }
-
   setMarkers(map) {
     return this.state
       .venues
@@ -79,10 +63,26 @@ class VenueMap extends Component {
         };
         const marker = this.buildMarker(icon, map, position);
 
-        this.addMarkerListener(marker, venue)
+        this.addMarkerListener(marker, venue);
 
         return this.setState({ map });
       });
+  }
+
+  addMarkerListener(marker, venue) {
+    return marker.addListener('click', () => {
+      return this.updateMapPropsWithNewVenue(venue, () => {
+        return this.props.updateFocusedVenue(venue);
+      });
+    });
+  }
+
+  updateMapPropsWithNewVenue(venue, callback) {
+    const mapCenter = new google.maps.LatLng(venue.latitude, venue.longitude); // eslint-disable-line no-undef
+    const mapProps = this.state.mapProps;
+    mapProps.center = mapCenter;
+
+    return this.setState({ mapProps }, callback);
   }
 
   generateMap() {

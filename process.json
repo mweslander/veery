@@ -15,7 +15,7 @@
     {
       "cron_restart": "*/1 */1 */1 * *",
       "log_date_format" : "YYYY-MM-DD HH:mm Z",
-      "name": "test",
+      "name": "nightly-script",
       "script": "./src/api/database/furnish.js",
       "watch": true,
       "env": {

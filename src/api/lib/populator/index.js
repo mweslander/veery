@@ -10,7 +10,8 @@ const populator = {
       .then((eventsAndVenues) => populator.saveMicNights(eventsAndVenues))
       .then(() => log(message))
       .catch((err) => {
-        throw new Error(err.message);
+        // no longer throwing here because on fail, I don't need to the whole operation to stop
+        log(err.message);
       });
   },
 
