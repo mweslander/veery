@@ -16,7 +16,9 @@ const populator = {
   },
 
   saveMicNights(eventsAndVenues) {
-    const promises = eventsAndVenues.map(({ events, venue }) => {
+    const filteredArray = eventsAndVenues.filter(foo => foo);
+
+    const promises = filteredArray.map(({ events, venue }) => {
       return saveEventsAndVenue(events, venue);
     });
 
