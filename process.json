@@ -13,7 +13,7 @@
       }
     },
     {
-      "cron_restart": "*/1 */1 */1 * *",
+      "cron_restart": "*/1 */24 * * *",
       "log_date_format" : "YYYY-MM-DD HH:mm Z",
       "name": "nightly-script",
       "script": "./src/api/database/furnish.js",
