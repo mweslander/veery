@@ -1,6 +1,6 @@
 'use strict';
 
-const createWeeklyDates = require('../../../utils/createWeeklyDates');
+const createWeeklyDates = require('../../../../utils/createWeeklyDates');
 const url = 'http://socialdurham.com/events/';
 
 function getMicNight($) {

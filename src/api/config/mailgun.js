@@ -13,10 +13,12 @@ function sendEmail(email, subject, message) {
     subject,
     text: message
   };
-  mailgun.messages().send(data, function(error, body) {
-    // Log out response from mailgun
-    console.log(body); // eslint-disable-line
-  });
+
+  return mailgun.messages()
+    .send(data, (error, body) => {
+      // Log out response from mailgun
+      console.log(body); // eslint-disable-line
+    });
 }
 
 module.exports = {
