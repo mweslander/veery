@@ -14,7 +14,7 @@ function abbeyRoad($) {
     frequency: 'weekly',
     startDate: moment().isoWeekday(2).format('MM-DD-YYYY'),
     startTime: '8pm - 11pm',
-    title: 'OPEN MIC - CARY',
+    title: 'OPEN MIC - APEX',
     type: 'open'
   }];
 
