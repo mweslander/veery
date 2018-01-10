@@ -5,9 +5,13 @@ const emailJordanAboutHisBadScraper = require('../../utils/emailJordanAboutHisBa
 const request = require('request');
 
 const sites = [
+  require('./sites/apex/abbeyRoad'),
+  require('./sites/cary/abbeyRoad'),
   require('./sites/durham/blueNoteGrill'),
   require('./sites/durham/socialDurham'),
-  require('./sites/raleigh/deepSouth')
+  require('./sites/raleigh/deepSouth'),
+  require('./sites/raleigh/fallsRiverMusic'),
+  require('./sites/raleigh/gizmoBrewWorks')
 ];
 
 function findEventsAndVenue(site, resolve, $) {
