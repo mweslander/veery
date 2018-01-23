@@ -3,10 +3,12 @@
 const express = require('express');
 const logger = require('morgan');
 const passport = require('passport');
+const pathfinderUI = require('pathfinder-ui');
 const session = require('express-session');
+
 const app = express();
 const apiRouter = require('../app/routes');
-const pathfinderUI = require('pathfinder-ui');
+const config = require('./index.js');
 
 require('../config/initializers/database');
 
@@ -21,13 +23,23 @@ app.use((req, res, next) => {
   next();
 });
 app.use(session({
-  secret: 'change in prod',
+  secret: config.sessionSecret,
   resave: false,
   saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/api', apiRouter);
+app.use((err, req, res, next) => {
+  // This is for specific instances like a variable was not defined
+  // and was not getting a good error message, just the generic
+  // "Internal Server Error".
+  if (err.stack && res.statusCode === 200) {
+    console.error(err.stack); // eslint-disable-line no-console
+  }
+
+  next(res);
+});
 
 if (process.env.NODE_ENV !== 'production') {
   app.use('/pathfinder', (req, res, next) => {

@@ -1,3 +1,5 @@
+'use strict';
+
 function isSignedIn(req, res) {
   res.status(200).send();
 }

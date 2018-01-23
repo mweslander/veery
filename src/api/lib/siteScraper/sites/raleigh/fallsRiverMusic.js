@@ -5,7 +5,7 @@ const searchForOpenMicNights = require('../../../../utils/searchForOpenMicNights
 const url = 'http://www.fallsrivermusic.com/';
 
 function fallsRiverMusic($) {
-  const micNights = searchForOpenMicNights('Every WEDNESDAY Night 8pm – 10pm', $, 'p');
+  searchForOpenMicNights('Every WEDNESDAY Night 8pm – 10pm', $, 'p');
 
   const events = [{
     frequency: 'weekly',

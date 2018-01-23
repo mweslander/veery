@@ -8,7 +8,7 @@ function abbeyRoad($) {
   const micNights = searchForOpenMicNights('OPEN MIC - APEX', $, 'p');
   const noMoreTuesdays = $(micNights[0]).text().indexOf('Tuesday') < 0;
 
-  if (noMoreTuesdays) { throw new Error('Abbey Road - Apex no longer has open mic nights on Tuesdays') }
+  if (noMoreTuesdays) { throw new Error('Abbey Road - Apex no longer has open mic nights on Tuesdays'); }
 
   const events = [{
     frequency: 'weekly',

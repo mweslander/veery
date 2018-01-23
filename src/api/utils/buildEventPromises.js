@@ -1,7 +1,6 @@
 'use strict';
 
 const moment = require('moment');
-
 const Event = require('../app/models/event');
 
 function buildWeeklyEvents(params) {
@@ -19,6 +18,8 @@ function buildWeeklyEvents(params) {
 }
 
 function buildEventPromises(params) {
+  // TODO: your declaring variables but may not need to
+  // TODO: you're*
   let promises;
 
   switch (params.frequency) {

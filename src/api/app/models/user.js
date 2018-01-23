@@ -14,7 +14,18 @@ const userSchema = new Schema({
   password: {
     required: true,
     type: String
-  }
+  },
+  role: {
+    type: String,
+    default: 'venueAdmin',
+    enum: ['admin', 'venueAdmin']
+  },
+  venues: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Venue'
+    }
+  ]
 });
 
 // normal function here because arrow function is messing with `this`

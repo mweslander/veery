@@ -8,7 +8,7 @@ function gizmoBrewWorks($) {
   const micNights = searchForOpenMicNights('Open Mic 7-10pm', $, 'p');
 
   // So I'll be emailed if there are now mic nights
-  if (micNights > 6) { throw new Error('Gizmo is now doing mic nights but they are not showing') }
+  if (micNights > 6) { throw new Error('Gizmo is now doing mic nights but they are not showing'); }
 
   const events = micNights.map((i, night) => {
     const dayAndTime = new Date($(night).children('strong').text());
