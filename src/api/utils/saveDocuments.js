@@ -7,7 +7,7 @@ function saveDocuments(promises, res, next) {
       next();
     })
     .catch((err) => {
-      res.status(404).json({ error: err.message });
+      res.status(res.statusCode || 404).json({ error: err.message });
       next();
     });
 }

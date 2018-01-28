@@ -5,6 +5,11 @@ function isSignedIn() {
     .get('/is-signed-in');
 }
 
+function register(params) {
+  return api
+    .post('/register', params);
+}
+
 function signIn(params) {
   return api
     .post('/sign-in', params);
@@ -17,6 +22,7 @@ function signOut() {
 
 export default {
   isSignedIn,
+  register,
   signIn,
   signOut
 };

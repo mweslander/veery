@@ -1,31 +1,14 @@
 'use strict';
 
-const Event = require('../models/event');
 const Venue = require('../models/venue');
-const destroyDocument = require('../../utils/destroyDocument');
-const saveDocuments = require('../../utils/saveDocuments');
 
-function create(req, res, next) {
-  const promises = [new Venue(req.body).save()];
-  return saveDocuments(promises, res, next);
-}
-
-function destroy(req, res, next) {
-  return Event.remove({ venue: req.params.id })
-    .then(() => {
-      return destroyDocument(Venue, req.params.id, res, next);
-    });
-}
-
-function index(req, res) {
-  Venue
+function showAll(req, res) {
+  return Venue
     .find({})
     .sort('event.start')
     .then((venues) => res.json({ venues }));
 }
 
 module.exports = {
-  create,
-  destroy,
-  index
+  showAll
 };

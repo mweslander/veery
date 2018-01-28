@@ -1,7 +1,7 @@
 'use strict';
 
-function destroyDocument(model, _id, res, next) {
-  return model.remove({ _id })
+function destroyDocument(resource, res, next) {
+  return resource.remove()
     .then(() => {
       res.status(200).json({ message: 'Successfully deleted' });
       next();

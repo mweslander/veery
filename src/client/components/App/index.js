@@ -39,8 +39,8 @@ class App extends Component {
 
   componentWillMount() {
     const promises = [
-      eventsService.getAll(),
-      venuesService.getAll()
+      eventsService.showAll(),
+      venuesService.showAll()
     ];
 
     return Promise.all(promises)
