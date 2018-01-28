@@ -32,7 +32,7 @@ app.use(passport.session());
 app.use('/api', apiRouter);
 app.use((err, req, res, next) => {
   // This is for specific instances like a variable was not defined
-  // and was not getting a good error message, just the generic
+  // and I was not receiving a helpful error message; just the generic
   // "Internal Server Error".
   if (err.stack && res.statusCode === 200) {
     console.error(err.stack); // eslint-disable-line no-console

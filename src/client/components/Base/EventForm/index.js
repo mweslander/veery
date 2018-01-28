@@ -8,6 +8,7 @@ import LabelGroup from '../LabelGroup';
 // PropTypes
 const propTypes = {
   event: PropTypes.object,
+  handleChange: PropTypes.func,
   router: PropTypes.shape({
     push: PropTypes.func.isRequired
   }),
@@ -28,8 +29,8 @@ function EventForm({ handleChange, event, venues }) {
         name="title"
         options={{
           onChange: handleChange,
-          placeholder: "Event Title",
-          type: "text",
+          placeholder: 'Event Title',
+          type: 'text',
           value: event.title
         }}
       />
@@ -52,8 +53,8 @@ function EventForm({ handleChange, event, venues }) {
         name="startDate"
         options={{
           onChange: handleChange,
-          placeholder: "MM-DD-YY",
-          type: "text",
+          placeholder: 'MM-DD-YY',
+          type: 'text',
           value: event.startDate
         }}
       />
@@ -62,8 +63,8 @@ function EventForm({ handleChange, event, venues }) {
         name="startTime"
         options={{
           onChange: handleChange,
-          placeholder: "10:00",
-          type: "text",
+          placeholder: '10:00',
+          type: 'text',
           value: event.startDate
         }}
       />

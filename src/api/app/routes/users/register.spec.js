@@ -20,14 +20,14 @@ function establishSpecResources(invitationDetails, venueOptions = {}) {
     .then((invitation) => invitation);
 }
 
-function aValidUserCreation(promise, email, invitation) {
+function aValidUserCreation(promise, email) {
   return promise
     .then(() => {
       return User.findOne({ email });
     })
     .then((user) => {
       expect(user).to.exist;
-      expect(user.role).to.eq(invitation.role);
+      expect(user.role).to.eq('venueAdmin');
     });
 }
 
@@ -126,7 +126,7 @@ describe('user requests', function() {
 
           shared.itBehavesLike('a valid request', { statusCode: 201 });
 
-          it('will create a user and set the user\'s role to that in the invitation', function() {
+          it('will create a user', function() {
             return aValidUserCreation(this.promise, email, invitation);
           });
 
@@ -158,7 +158,7 @@ describe('user requests', function() {
               });
           });
 
-          it('will create a user and set the user\'s role to that in the invitation', function() {
+          it('will create a user', function() {
             return aValidUserCreation(this.promise, email, invitation);
           });
 

@@ -7,11 +7,8 @@ const Invitation = require('../app/models/invitation');
 const User = require('../app/models/user');
 
 function sendEmail(invitation) {
-  // TODO: may not need to separate the quotes like this. Also, get rid of idk once you have
-  // a redirect setup.
-  //
   // For local testing, you'll need to add ':8080' after {config.domain}.
-  const link = `http://${config.domain}:8080/api/invitations/${encodeURIComponent(invitation._id)}`;
+  const link = `http://${config.domain}/api/invitations/${encodeURIComponent(invitation._id)}`;
   const body = `Please visit the following link to create your Veery account: \n ${link}`;
 
   return mailgun.sendEmail(

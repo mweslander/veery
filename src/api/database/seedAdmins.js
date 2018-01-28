@@ -12,9 +12,7 @@ function seedAdmins() {
   });
 
   return Promise.all(promises)
-    // .then(() => {
-    //   return new User(admins[0]).save()
-    // })
+    .then(() => new User(admins[0]).save())
     .then(() => log('ADMINS SUCCESSFULLY ADDED'))
     .catch((err) => {
       throw new Error(err.message);

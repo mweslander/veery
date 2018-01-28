@@ -8,11 +8,11 @@ function show(req, res) {
     .findById(req.params.id)
     .then((invitation) => {
       // For local testing, you'll need to add ':8080' after {config.domain}.
-      res.redirect(`http://${config.domain}:8080/#/register?invitationId=${encodeURIComponent(invitation._id)}&email=${encodeURIComponent(invitation.email)}`);
+      res.redirect(`http://${config.domain}/#/register?invitationId=${encodeURIComponent(invitation._id)}&email=${encodeURIComponent(invitation.email)}`);
     })
     .catch(() => {
       // For local testing, you'll need to add ':8080' after {config.domain}.
-      res.redirect(`http://${config.domain}:8080/#/register`);
+      res.redirect(`http://${config.domain}/#/register`);
     });
 }
 

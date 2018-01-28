@@ -1,5 +1,6 @@
 'use strict';
 
+const flatten = require('lodash').flatten;
 const Event = require('../../../models/event');
 const User = require('../../../models/user');
 const Venue = require('../../../models/venue');
@@ -12,7 +13,7 @@ const {
   signInAndCreateUser
 } = require('../../../../spec/specHelper');
 
-function establishSpecResources(agent, role, extraVenues = () => {}) {
+function establishSpecResources(agent, role, extraVenues = () => []) {
   let admin;
 
   return signInAndCreateUser(agent, role)
@@ -24,9 +25,7 @@ function establishSpecResources(agent, role, extraVenues = () => {}) {
         promises.push(createVenue());
       }
 
-      extraVenues(promises, admin);
-
-      return Promise.all(promises);
+      return Promise.all(flatten([promises, extraVenues(admin)]));
     })
     .then((venues) => {
       const eventPromises = [];
@@ -109,10 +108,14 @@ describe('admin event requests', function() {
         let venueAdmin;
 
         beforeEach(function() {
-          const extraVenues = (promises, admin) => {
+          const extraVenues = (admin) => {
+            const promises = [];
+
             for (let i = 3; i > 0; i--) {
               promises.push(createVenue({ venueAdmins: [admin._id] }));
             }
+
+            return promises;
           };
 
           return establishSpecResources(agent, 'venueAdmin', extraVenues)
@@ -144,10 +147,14 @@ describe('admin event requests', function() {
         beforeEach(function() {
           return createUser('venueAdmin')
             .then((anotherVenueAdmin) => {
-              const extraVenues = (promises, admin) => {
+              const extraVenues = (admin) => {
+                const promises = [];
+
                 for (let i = 3; i > 0; i--) {
                   promises.push(createVenue({ venueAdmins: [admin._id, anotherVenueAdmin._id] }));
                 }
+
+                return promises;
               };
 
               return establishSpecResources(agent, 'venueAdmin', extraVenues);

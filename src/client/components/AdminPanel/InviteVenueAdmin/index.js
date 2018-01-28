@@ -10,7 +10,6 @@ import './index.scss';
 
 // Services
 import adminInvitationsService from '../../../services/admin/invitations';
-import venuesService from '../../../services/venues';
 
 // Utils
 import mapFormValues from '../../../utils/mapFormValues';
@@ -49,7 +48,7 @@ class InviteVenueAdmin extends Component {
       currentVenues.splice(currentVenues.indexOf(target.value), 1);
     }
 
-    return this.setState({ venueIdsForSubmission: currentVenues })
+    return this.setState({ venueIdsForSubmission: currentVenues });
   }
 
   handleSubmit(event) {
@@ -62,7 +61,6 @@ class InviteVenueAdmin extends Component {
       .then(() => this.props.router.push('/admin'));
   }
 
-  // TODO: add buttons as a component to other buttons
   render() {
     return (
       <form
@@ -75,7 +73,12 @@ class InviteVenueAdmin extends Component {
             Invite a new venue admin by email:
           </label>
 
-          <input className="c-field o-grid__cell" name="email" type="text" placeholder="joe@thebar.com" />
+          <input
+            className="c-field o-grid__cell"
+            name="email"
+            type="text"
+            placeholder="joe@thebar.com"
+          />
         </div>
 
         <div className="c-invite-venue-admin__venues-container o-container--small o-grid" htmlFor="venue">
@@ -84,7 +87,11 @@ class InviteVenueAdmin extends Component {
           <div className="c-invite-venue-admin__venues o-grid__cell" name="venue">
             {this.props.venues.map((venue) => {
               return (
-                <label className="c-invite-venue-admin__label c-label o-grid__cell" htmlFor={venue._id} key={venue._id}>
+                <label
+                  className="c-invite-venue-admin__label c-label o-grid__cell"
+                  htmlFor={venue._id}
+                  key={venue._id}
+                >
                   <input
                     id={venue._id}
                     onChange={this.handleCheckboxChange}

@@ -26,7 +26,7 @@ function aValidVenueCreation(promise, attribute, key = 'name') {
     });
 }
 
-function aValidVenueAdminAttachment(promise, creator, attribute, key = 'name') {
+function aValidSelfAttachemnt(promise, creator, attribute, key = 'name') {
   return promise
     .then(() => Venue.findOne({ [key]: attribute }))
     .then((newVenue) => {
@@ -128,7 +128,9 @@ describe('admin venue requests', function() {
                   existingVenueAdmins[2]._id.toString()
                 );
 
-                return User.find({ venues: { $in: [newVenue._id] } })
+                return User
+                  .find({ venues: { $in: [newVenue._id] } })
+                  .lean();
               })
               .then((users) => {
                 expect(users.length).to.eq(3);
@@ -164,7 +166,6 @@ describe('admin venue requests', function() {
                   expect(sendEmail.calledOnce).to.be.true;
                   const [invitationEmail] = sendEmail.firstCall.args;
                   expect(invitationEmail).to.equal(email);
-                  // TODO: expectation regarding the invitationDetails needing a venueId or something
                 });
             });
 
@@ -178,6 +179,8 @@ describe('admin venue requests', function() {
                 .then((invitation) => {
                   expect(invitation).to.exist;
                   expect(invitation.email).to.equal(email);
+                  // TODO: once we implement the adding of venueAdmins in create/update for venues,
+                  // we'll need an expectation here regarding the invitation having the venue
                 });
             });
           });
@@ -332,7 +335,7 @@ describe('admin venue requests', function() {
         });
 
         it('attaches itself as a venueAdmin to the newly created venue', function() {
-          return aValidVenueAdminAttachment(this.promise, creator, name);
+          return aValidSelfAttachemnt(this.promise, creator, name);
         });
       });
 
@@ -363,7 +366,7 @@ describe('admin venue requests', function() {
         });
 
         it('attaches itself as a venueAdmin to the newly created venue', function() {
-          return aValidVenueAdminAttachment(this.promise, creator, name)
+          return aValidSelfAttachemnt(this.promise, creator, name)
             .then((newVenue) => {
               expect(newVenue.venueAdmins.length).to.eq(2);
             });

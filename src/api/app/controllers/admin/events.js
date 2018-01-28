@@ -37,7 +37,7 @@ function showAll(req, res, next) {
     // make my query. However, I am consciously making the decision to not
     // completely explore this at the moment. While my hunch may be correct,
     // I don't want to spend multiple metal sessions implementing it just for
-    // a very small performance improve by not running `User.findById`.
+    // a very small performance improvement by not running `User.findById`.
     return User
       .findById(req.user._id)
       .then((user) => {

@@ -110,7 +110,7 @@ describe('admin invitation requests', function() {
         });
       });
 
-      context('when a user with email already exists', function() {
+      context('when a user with that email already exists', function() {
         let email;
 
         beforeEach(function() {
@@ -156,6 +156,8 @@ describe('admin invitation requests', function() {
       });
 
       context('when a user with email has already been invited', function() {
+        // not the current setup but will be in the future
+        it('combines resends the invitation');
       });
     });
   });

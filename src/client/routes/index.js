@@ -2,7 +2,6 @@
 import React from 'react';
 import {
   hashHistory as history,
-  IndexRedirect,
   IndexRoute,
   Route,
   Router

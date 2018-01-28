@@ -69,6 +69,7 @@ describe('invitations requests', function() {
           .get(endpoint);
       });
 
+      // TODO: I probably shouldn't just redirect but thrown an error
       it('redirects to the front end url without queries', function(done) {
         return this.promise
           .redirects(0)

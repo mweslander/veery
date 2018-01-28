@@ -6,7 +6,7 @@ import { capitalize } from 'lodash';
 // PropTypes
 const propTypes = {
   classes: PropTypes.string,
-  name: PropTypes.name,
+  name: PropTypes.string,
   options: PropTypes.object
 };
 

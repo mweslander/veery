@@ -65,7 +65,7 @@ class Events extends Component {
             {this.state.events.map((event) => {
               return (
                 <tr
-                 key={event._id}
+                  key={event._id}
                   className="c-table__row"
                 >
                   <td className="c-table__cell">{event.title}</td>

@@ -18,6 +18,9 @@ import mapFormValues from '../../../../utils/mapFormValues';
 // PropTypes
 const propTypes = {
   router: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string
+    }),
     push: PropTypes.func.isRequired
   }),
   venues: PropTypes.array
@@ -38,8 +41,8 @@ class Edit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const venue = nextProps.venues.find((venue) => {
-      return venue._id === this.props.router.params.id;
+    const venue = nextProps.venues.find((nextVenue) => {
+      return nextVenue._id === this.props.router.params.id;
     });
 
     return this.setState({ venue });
@@ -63,21 +66,20 @@ class Edit extends Component {
   }
 
   render() {
-    const frequencies = ['one time', 'weekly', 'first of the month'];
     const { venue } = this.state;
 
-    // TODO: decide if there is a scenario where this.state.venue._id wouldn't pop up (besides changing the url)
     return (
       <form
         className="new-event o-fieldset o-container o-container--small"
         ref={(form) => { this.editForm = form; }}
         onSubmit={this.handleSubmit}
       >
-        {this.state.venue._id &&
+        {venue._id ?
           <VenueForm
             handleChange={this.handleChange}
             venue={venue}
-          />
+          /> :
+          <div>(alert message belongs here) that venue cannot be found at the moment</div>
         }
 
         <Button value="Update Venue" />

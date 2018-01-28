@@ -1,11 +1,11 @@
 import api from './api';
 
-function getAll() {
+function showAll() {
   return api
     .get('/events')
     .then(({ data }) => data.events);
 }
 
 export default {
-  getAll
+  showAll
 };

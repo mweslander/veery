@@ -23,7 +23,7 @@ function register(req, res) {
       const params =  {
         email: invitation.email,
         password,
-        role: invitation.role,
+        role: 'venueAdmin',
         venues: invitation.venues
       };
 
@@ -38,7 +38,7 @@ function register(req, res) {
       let errorMessage = err.message;
       const statusCode = err.statusCode || 404;
 
-      if (err.statusCode === 404) {
+      if (statusCode === 404) {
         errorMessage = 'This invitation no longer exists.';
       }
 

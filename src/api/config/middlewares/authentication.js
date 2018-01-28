@@ -32,13 +32,14 @@ passport.deserializeUser(function(user, done) {
 });
 
 // This is because idk the best way of testing a user being signed in. Not real code, really.
+// It'll be gone soon.
 function temporaryLogginChecks(req) {
   try {
     const user = req.user;
     const passportTest = req.session.passport;
-    // console.log('$$$$$$$$$$$$$$$$$'); // eslint-disable-line no-console
-    // console.log(user); // eslint-disable-line no-console
-    // console.log(passportTest); // eslint-disable-line no-console
+    console.log('$$$$$$$$$$$$$$$$$'); // eslint-disable-line no-console
+    console.log(user); // eslint-disable-line no-console
+    console.log(passportTest); // eslint-disable-line no-console
 
     if (user || (passportTest && passportTest.user)) {
       const emailOne = user.email;

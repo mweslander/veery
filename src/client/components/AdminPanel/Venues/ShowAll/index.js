@@ -5,9 +5,6 @@ import {
   Link
 } from 'react-router';
 
-// Components
-import Button from '../../../Base/Button';
-
 // Services
 import adminVenuesService from '../../../../services/admin/venues';
 
@@ -36,7 +33,6 @@ class Venues extends Component {
 
     return adminVenuesService
       .destroyVenue(id)
-      // TODO: probably don't need to pass this as a callback
       .then(() => window.location.reload());
   }
 

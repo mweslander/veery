@@ -31,10 +31,8 @@ venueSchema.pre('save', function(next) {
   if (venue.venueAdmins) {
     const options = { $push: { venues: venue._id } };
     const User = require('./user');
-    const promises = [];
-
-    venue.venueAdmins.forEach((admin) => {
-      promises.push(User.findByIdAndUpdate(admin, options));
+    const promises = venue.venueAdmins.map((admin) => {
+      return User.findByIdAndUpdate(admin, options);
     });
 
     return Promise.all(promises)

@@ -1,11 +1,8 @@
 // Imports
 import React from 'react';
 import {
-  hashHistory as history,
   IndexRedirect,
-  IndexRoute,
-  Route,
-  Router
+  Route
 } from 'react-router';
 
 // Components
@@ -51,7 +48,7 @@ function AdminRoutes() {
         <IndexRedirect to="all" />
         <Route path="all" component={AdminPanelEventsShowAll} />
         <Route path="new" component={AdminPanelEventsNew} />
-        <Route path=":id/edit" component={AdminPanelEventsNew} />
+        <Route path=":id/edit" component={AdminPanelEventsEdit} />
       </Route>
 
       <Route path="invite-venue-admin" component={AdminPanelInviteVenueAdmin} />
