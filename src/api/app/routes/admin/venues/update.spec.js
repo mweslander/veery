@@ -89,7 +89,7 @@ describe('admin venue requests', function() {
                 return createVenue({ name, venueAdmins: [anotherVenueAdmin._id] });
               };
 
-              return establishSpecResources(agent, 'admin', callback)
+              return establishSpecResources(agent, 'admin', callback);
             })
             .then((newVenue) => {
               venue = newVenue;

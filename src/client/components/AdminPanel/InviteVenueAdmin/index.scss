@@ -1,0 +1,34 @@
+@import "../../../css/mixins";
+@import "../../../css/variables";
+
+.c-invite-venue-admin {
+  @include centered;
+  margin-top: $base-spacing;
+
+  &__label {
+    padding: .5em 0;
+    text-align: left;
+
+    span {
+      margin-top: .1em;
+    }
+  }
+
+  &__title {
+    margin-top: $small-spacing;
+  }
+
+  &__venue-name {
+    margin-left: .5em;
+  }
+
+  &__venues {
+    min-width: 300px;
+  }
+
+  &__venues-container {
+    @include centered;
+    margin-top: $base-spacing;
+    margin-bottom: $base-spacing;
+  }
+}

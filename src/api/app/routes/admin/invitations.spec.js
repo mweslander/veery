@@ -3,16 +3,26 @@
 const mailgun = require('../../../config/mailgun');
 const Invitation = require('../../models/invitation');
 const User = require('../../models/user');
+const Venue = require('../../models/venue');
 const {
   app,
   createUser,
+  createVenue,
   shared,
   signInAndCreateUser
 } = require('../../../spec/specHelper');
 
-function establishSpecResources(agent, role, callback = () => {}) {
+function establishSpecResources(agent, role) {
   return signInAndCreateUser(agent, role)
-    .then(callback);
+    .then(() => {
+      const promises = [];
+
+      for (let i = 10; i > 0; i--) {
+        promises.push(createVenue());
+      }
+
+      return Promise.all(promises);
+    });
 }
 
 describe('admin invitation requests', function() {
@@ -38,16 +48,19 @@ describe('admin invitation requests', function() {
 
     context('when the inviter is an admin', function() {
       context('when the params are valid', function() {
+        let attachedVenue;
         let invitationDetails;
 
         beforeEach(function() {
-          invitationDetails = {
-            email: faker.internet.email().toLowerCase(),
-            role: 'venueAdmin'
-          };
-
           return establishSpecResources(agent, 'admin')
-            .then(() => {
+            .then((venues) => {
+              attachedVenue = venues[0];
+              invitationDetails = {
+                email: faker.internet.email().toLowerCase(),
+                role: 'venueAdmin',
+                venues: [attachedVenue._id]
+              };
+
               this.promise = agent
                 .post(endpoint)
                 .send(invitationDetails);
@@ -57,18 +70,22 @@ describe('admin invitation requests', function() {
         afterEach(function() {
           return Promise.all([
             Invitation.remove(),
-            User.remove()
+            User.remove(),
+            Venue.remove()
           ]);
         });
 
         shared.itBehavesLike('a protected POST endpoint');
+        shared.itBehavesLike('a valid request', { statusCode: 201 });
 
         it('creates an invitation', function() {
           return this.promise
             .then(() => Invitation.findOne({ email: invitationDetails.email }))
             .then((invitation) => {
+              const venues = invitation.venues.map((venue) => venue.toString());
               expect(invitation).to.be.an.object;
               expect(invitation.role).to.equal('venueAdmin');
+              expect(venues).to.include(attachedVenue._id.toString());
             });
         });
 

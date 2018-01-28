@@ -1,16 +1,6 @@
 import api from './api';
 
-function createVenue(params) {
-  return api
-    .post('/venues', params)
-    .then(({ data }) => data.venue);
-}
-
-function destroyVenue(id) {
-  return api
-    .delete(`/venues/${id}`);
-}
-
+// TODO: should be showall
 function getAll() {
   return api
     .get('/venues')
@@ -18,7 +8,5 @@ function getAll() {
 }
 
 export default {
-  createVenue,
-  destroyVenue,
   getAll
 };

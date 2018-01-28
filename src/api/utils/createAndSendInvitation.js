@@ -11,7 +11,7 @@ function sendEmail(invitation) {
   // a redirect setup.
   //
   // For local testing, you'll need to add ':8080' after {config.domain}.
-  const link = `http://${config.domain}/idk/${encodeURIComponent(invitation._id)}`;
+  const link = `http://${config.domain}:8080/api/invitations/${encodeURIComponent(invitation._id)}`;
   const body = `Please visit the following link to create your Veery account: \n ${link}`;
 
   return mailgun.sendEmail(

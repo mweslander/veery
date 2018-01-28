@@ -19,11 +19,11 @@ function destroy(req, res, next) {
 }
 
 function respondWithEvents(res, next, options = {}) {
-  // TODO: manually test the sorting
   return Event
     .find(options)
     .populate('venue')
-    .sort('venue.name')
+    .sort('venue')
+    .sort('startDate')
     .then((events) => res.json({ events }))
     .catch((err) => {
       console.log('Error:', err && err.message); // eslint-disable-line no-console

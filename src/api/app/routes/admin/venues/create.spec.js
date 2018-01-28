@@ -17,22 +17,22 @@ function establishSpecResources(agent, role, callback = () => {}) {
     .then(callback);
 }
 
-function aValidVenueCreation(promise, attribute, key = 'name', expectationCallback = () => {}) {
+function aValidVenueCreation(promise, attribute, key = 'name') {
   return promise
     .then(() => Venue.findOne({ [key]: attribute }))
     .then((newVenue) => {
       expect(newVenue).to.exist;
-      expectationCallback(newVenue);
+      return newVenue;
     });
 }
 
-function aValidVenueAdminAttachment(promise, creator, attribute, key = 'name', expectationCallback = () => {}) {
+function aValidVenueAdminAttachment(promise, creator, attribute, key = 'name') {
   return promise
     .then(() => Venue.findOne({ [key]: attribute }))
     .then((newVenue) => {
       const venueAdmins = newVenue.venueAdmins.map((admin) => admin.toString());
       expect(venueAdmins).to.include(creator._id.toString());
-      expectationCallback(newVenue);
+      return newVenue;
     });
 }
 
@@ -87,19 +87,26 @@ describe('admin venue requests', function() {
       });
 
       context('when attaching venueAdmins to the params', function() {
-        context('when the venueAdmin already exists', function() {
-          let existingVenueAdmin;
+        context('when the venueAdmins already exist', function() {
+          let existingVenueAdmins;
 
           beforeEach(function() {
-            return createUser('venueAdmin')
-              .then((newAdmin) => {
-                existingVenueAdmin = newAdmin;
-                return establishSpecResources(agent, 'admin')
+            const promises = [];
+
+            for (let i = 3; i > 0; i--) {
+              promises.push(createUser('venueAdmin'));
+            }
+
+            return Promise.all(promises)
+              .then((newAdmins) => {
+                existingVenueAdmins = newAdmins;
+                return establishSpecResources(agent, 'admin');
               })
               .then(() => {
+                const ids = existingVenueAdmins.map((admin) => admin._id);
                 this.promise = agent
                   .post(endpoint)
-                  .send({ name, venueAdmins: [existingVenueAdmin._id] });
+                  .send({ name, venueAdmins: ids });
               });
           });
 
@@ -111,12 +118,21 @@ describe('admin venue requests', function() {
           });
 
           it('attaches that venueAdmin to the venue', function() {
-            const expectationCallback = (newVenue) => {
-              expect(newVenue.venueAdmins.length).to.eq(1);
-              expect(newVenue.venueAdmins[0].toString()).to.eq(existingVenueAdmin._id.toString());
-            };
+            return aValidVenueCreation(this.promise, name)
+              .then((newVenue) => {
+                const venueAdmins = newVenue.venueAdmins.map((admin) => admin.toString());
+                expect(venueAdmins.length).to.eq(3);
+                expect(venueAdmins).to.include(
+                  existingVenueAdmins[0]._id.toString(),
+                  existingVenueAdmins[1]._id.toString(),
+                  existingVenueAdmins[2]._id.toString()
+                );
 
-            return aValidVenueCreation(this.promise, name, 'name', expectationCallback);
+                return User.find({ venues: { $in: [newVenue._id] } })
+              })
+              .then((users) => {
+                expect(users.length).to.eq(3);
+              });
           });
         });
 
@@ -244,7 +260,7 @@ describe('admin venue requests', function() {
             return createUser('venueAdmin')
               .then((newAdmin) => {
                 existingVenueAdmin = newAdmin;
-                return establishSpecResources(agent, 'admin')
+                return establishSpecResources(agent, 'admin');
               })
               .then(() => {
                 this.promise = agent
@@ -261,12 +277,11 @@ describe('admin venue requests', function() {
           });
 
           it('attaches that venueAdmin to the venue', function() {
-            const expectationCallback = (newVenue) => {
-              expect(newVenue.venueAdmins.length).to.eq(1);
-              expect(newVenue.venueAdmins[0].toString()).to.eq(existingVenueAdmin._id.toString());
-            };
-
-            return aValidVenueCreation(this.promise, name, 'name', expectationCallback);
+            return aValidVenueCreation(this.promise, name)
+              .then((newVenue) => {
+                expect(newVenue.venueAdmins.length).to.eq(1);
+                expect(newVenue.venueAdmins[0].toString()).to.eq(existingVenueAdmin._id.toString());
+              });
           });
 
           it('invites that person via email', function() {
@@ -329,7 +344,7 @@ describe('admin venue requests', function() {
           return createUser('venueAdmin')
             .then((newAdmin) => {
               anotherVenueAdmin = newAdmin;
-              return establishSpecResources(agent, 'venueAdmin', (newAdmin) => newAdmin)
+              return establishSpecResources(agent, 'venueAdmin', (admin) => admin);
             })
             .then((newAdmin) => {
               creator = newAdmin;
@@ -348,11 +363,10 @@ describe('admin venue requests', function() {
         });
 
         it('attaches itself as a venueAdmin to the newly created venue', function() {
-          const expectationCallback = (newVenue) => {
-            expect(newVenue.venueAdmins.length).to.eq(2);
-          };
-
-          return aValidVenueAdminAttachment(this.promise, creator, name, 'name', expectationCallback);
+          return aValidVenueAdminAttachment(this.promise, creator, name)
+            .then((newVenue) => {
+              expect(newVenue.venueAdmins.length).to.eq(2);
+            });
         });
       });
     });

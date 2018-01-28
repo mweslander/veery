@@ -1,7 +1,6 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const Venue = require('./venue');
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
@@ -28,6 +27,8 @@ eventSchema.pre('save', function(next) {
 
   if (event.venue) {
     const options = { $push: { events: event._id } };
+    const Venue = require('./venue');
+
     return Venue.findByIdAndUpdate(event.venue, options, next);
   }
 

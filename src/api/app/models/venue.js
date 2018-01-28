@@ -2,7 +2,6 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('./user');
 
 const venueSchema = new Schema({
   address: String,
@@ -31,7 +30,19 @@ venueSchema.pre('save', function(next) {
 
   if (venue.venueAdmins) {
     const options = { $push: { venues: venue._id } };
-    return User.findByIdAndUpdate(venue.venueAdmins[0], options, next);
+    const User = require('./user');
+    const promises = [];
+
+    venue.venueAdmins.forEach((admin) => {
+      promises.push(User.findByIdAndUpdate(admin, options));
+    });
+
+    return Promise.all(promises)
+      .then(next)
+      .catch((err) => {
+        console.log('Error:', err && err.message); // eslint-disable-line no-console
+        next(err);
+      });
   }
 
   next();

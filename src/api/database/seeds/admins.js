@@ -4,7 +4,8 @@ const config = require('../../config');
 
 const admins = [{
   email: 'admin@example.com',
-  password: config.admin.password
+  password: config.admin.password,
+  role: 'admin'
 }];
 
 module.exports = admins;

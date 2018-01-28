@@ -3,11 +3,14 @@
 const adminEvents = require('./admin/events');
 const adminInvitations = require('./admin/invitations');
 const adminVenues = require('./admin/venues');
-const bodyParser = require('body-parser');
+
 const events = require('./events');
-const express = require('express');
+const invitations = require('./invitations');
 const users = require('./users');
 const venues = require('./venues');
+
+const bodyParser = require('body-parser');
+const express = require('express');
 
 const apiRouter = express.Router(); // eslint-disable-line new-cap
 
@@ -21,6 +24,7 @@ adminVenues(apiRouter);
 
 // /api/{route}
 events(apiRouter);
+invitations(apiRouter);
 users(apiRouter);
 venues(apiRouter);
 

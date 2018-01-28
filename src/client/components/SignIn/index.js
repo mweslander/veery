@@ -4,6 +4,9 @@ import React, {
   PropTypes
 } from 'react';
 
+// Components
+import Button from '../Base/Button';
+
 // CSS
 import './index.scss';
 
@@ -55,21 +58,23 @@ class SignIn extends Component {
 
   render() {
     return (
-      <form
-        className="sign-in o-fieldset o-container o-container--small"
-        ref={(form) => { this.signInForm = form; }}
-        onSubmit={this.handleSubmit}
-      >
-        <label className="c-label" htmlFor="email">
-          Email
-          <input className="c-field" name="email" type="text" />
-        </label>
-        <label className="c-label" htmlFor="password">
-          Password
-          <input className="c-field" name="password" type="password" />
-        </label>
-        <input className="c-button" type="submit" value="Sign In" />
-      </form>
+      <div className="c-sign-in o-container o-container--small">
+        <form
+          className="o-fieldset o-container o-container--small"
+          ref={(form) => { this.signInForm = form; }}
+          onSubmit={this.handleSubmit}
+        >
+          <label className="c-label" htmlFor="email">
+            Email
+            <input className="c-field" name="email" type="text" />
+          </label>
+          <label className="c-label" htmlFor="password">
+            Password
+            <input className="c-field" name="password" type="password" />
+          </label>
+          <Button value="Sign In" />
+        </form>
+      </div>
     );
   }
 }
