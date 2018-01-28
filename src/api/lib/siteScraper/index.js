@@ -2,6 +2,7 @@
 
 const cheerio = require('cheerio');
 const emailJordanAboutHisBadScraper = require('../../utils/emailJordanAboutHisBadScraper');
+const htmlparser = require('htmlparser2');
 const request = require('request');
 
 const sites = [
@@ -19,7 +20,8 @@ function findEventsAndVenue(site, resolve, $) {
     const { events, venue } = site.run($);
 
     if (events.length < 1) {
-      emailJordanAboutHisBadScraper(site, { stack: 'No events were found.' });
+      console.log('here');
+      // emailJordanAboutHisBadScraper(site, { stack: 'No events were found.' });
       // resolving because I just want this to return null so other sites
       // that are being scraped can get their events displayed
       resolve();
@@ -27,24 +29,38 @@ function findEventsAndVenue(site, resolve, $) {
       resolve({ events, venue });
     }
   } catch (e) {
-    emailJordanAboutHisBadScraper(site, e);
+    console.log(e.stack);
+    // emailJordanAboutHisBadScraper(site, e);
     resolve();
   }
+}
+
+function scrape(site, error, html, resolve, reject) {
+  if (error) {
+    return reject(emailJordanAboutHisBadScraper(site, error));
+  }
+
+  // htmlparser2 is what's used in the cheerio library
+  if (!htmlparser.parseDOM(html)[0]) {
+    console.log(html);
+    console.error(`${site.url} did not return any html`);
+    return resolve();
+  }
+
+  const $ = cheerio.load(html);
+
+  return findEventsAndVenue(site, resolve, $);
 }
 
 const siteScraper = {
   run() {
     return sites.map((site) => {
       return new Promise((resolve, reject) => {
-        return request(site.url, (error, _, html) => {
-          if (error) {
-            reject(emailJordanAboutHisBadScraper(site, error));
-          }
+        const requestCallback = (error, _, html) => {
+          return scrape(site, error, html, resolve, reject);
+        };
 
-          const $ = cheerio.load(html);
-
-          return findEventsAndVenue(site, resolve, $);
-        });
+        return request(site.url, requestCallback);
       });
     });
   }
