@@ -10,9 +10,12 @@ import adminVenuesService from '../../../../services/admin/venues';
 
 // PropTypes
 const propTypes = {
+  removeAlert: PropTypes.func,
   router: PropTypes.shape({
     push: PropTypes.func.isRequired
   }),
+  setAlertMessage: PropTypes.func,
+  updateVenues: PropTypes.func,
   venues: PropTypes.array
 };
 
@@ -28,12 +31,23 @@ class Venues extends Component {
     this.handleDestroy = this.handleDestroy.bind(this);
   }
 
+  componentWillMount() {
+    return this.props.updateVenues();
+  }
+
+  componentWillUnmount() {
+    return this.props.removeAlert();
+  }
+
   handleDestroy(id) {
     event.preventDefault();
 
     return adminVenuesService
       .destroyVenue(id)
-      .then(() => window.location.reload());
+      .then(() => this.props.updateVenues())
+      .then(() => {
+        return this.props.setAlertMessage({ successMessage: 'Venue successfully deleted.' });
+      });
   }
 
   render() {

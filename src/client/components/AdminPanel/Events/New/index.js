@@ -20,6 +20,7 @@ const propTypes = {
   router: PropTypes.shape({
     push: PropTypes.func.isRequired
   }),
+  setAlertMessage: PropTypes.func,
   venues: PropTypes.array
 };
 
@@ -41,7 +42,10 @@ class NewEvent extends Component {
 
     return adminEventsService
       .createEvent(values)
-      .then(() => this.props.router.push('/admin/events'));
+      .then(() => {
+        this.props.setAlertMessage({ successMessage: 'Event successfully created.' });
+        return this.props.router.push('/admin/events');
+      });
   }
 
   render() {
@@ -53,7 +57,7 @@ class NewEvent extends Component {
       >
         <EventForm
           event={{}}
-          venue={this.props.venues}
+          venues={this.props.venues}
         />
 
         <Button value="Create Event" />

@@ -17,9 +17,14 @@ import mapFormValues from '../../../../utils/mapFormValues';
 
 // PropTypes
 const propTypes = {
+  removeAlert: PropTypes.func,
   router: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string
+    }),
     push: PropTypes.func.isRequired
-  })
+  }),
+  setAlertMessage: PropTypes.func
 };
 
 /*
@@ -40,7 +45,10 @@ class NewVenue extends Component {
 
     return adminVenuesService
       .createVenue(values)
-      .then(() => this.props.router.push('/admin'));
+      .then(() => {
+        this.props.setAlertMessage({ successMessage: 'Venue successfully created.' });
+        return this.props.router.push('/admin');
+      });
   }
 
   render() {

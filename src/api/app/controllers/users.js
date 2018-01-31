@@ -4,7 +4,7 @@ const Invitation = require('../models/invitation');
 const User = require('../models/user');
 
 function isSignedIn(req, res) {
-  res.status(200).send();
+  res.status(200).json({ user: req.user });
 }
 
 function register(req, res) {

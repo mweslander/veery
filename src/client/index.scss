@@ -73,6 +73,10 @@ h1 {
 // Component overrides
 //=============================================================================
 
+.c-alert {
+  border-radius: 0;
+}
+
 .c-button {
   background-color: $darkest-gray;
 }
@@ -82,7 +86,6 @@ h1 {
 }
 
 .c-label {
-  cursor: initial;
   text-align: left;
 }
 

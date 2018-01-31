@@ -7,13 +7,15 @@ import {
 
 // Components
 import AdminPanel from '../components/AdminPanel';
-import AdminPanelEventsEdit from '../components/AdminPanel/Events/Edit';
-import AdminPanelEventsNew from '../components/AdminPanel/Events/New';
-import AdminPanelEventsShowAll from '../components/AdminPanel/Events/ShowAll';
-import AdminPanelInviteVenueAdmin from '../components/AdminPanel/InviteVenueAdmin';
-import AdminPanelVenuesEdit from '../components/AdminPanel/Venues/Edit';
-import AdminPanelVenuesNew from '../components/AdminPanel/Venues/New';
-import AdminPanelVenuesShowAll from '../components/AdminPanel/Venues/ShowAll';
+import EventsEdit from '../components/AdminPanel/Events/Edit';
+import EventsNew from '../components/AdminPanel/Events/New';
+import EventsShowAll from '../components/AdminPanel/Events/ShowAll';
+import InviteVenueAdmin from '../components/AdminPanel/InviteVenueAdmin';
+import Register from '../components/AdminPanel/Register';
+import SignIn from '../components/AdminPanel/SignIn';
+import VenuesEdit from '../components/AdminPanel/Venues/Edit';
+import VenuesNew from '../components/AdminPanel/Venues/New';
+import VenuesShowAll from '../components/AdminPanel/Venues/ShowAll';
 
 // Services
 import usersService from '../services/users';
@@ -32,7 +34,7 @@ function requireSignIn(nextState, replace, callback) {
 
       replace({
         query,
-        pathname: '/sign-in'
+        pathname: '/admin/sign-in'
       });
 
       callback();
@@ -41,25 +43,31 @@ function requireSignIn(nextState, replace, callback) {
 
 function AdminRoutes() {
   return (
-    <Route path="/admin" component={AdminPanel} onEnter={requireSignIn}>
+    <Route path="/admin" component={AdminPanel}>
       <IndexRedirect to="venues" />
 
-      <Route path="events">
+      <Route path="sign-in" component={SignIn} />
+      <Route path="register" component={Register} />
+
+      <Route path="events" onEnter={requireSignIn}>
         <IndexRedirect to="all" />
-        <Route path="all" component={AdminPanelEventsShowAll} />
-        <Route path="new" component={AdminPanelEventsNew} />
-        <Route path=":id/edit" component={AdminPanelEventsEdit} />
+        <Route path="all" component={EventsShowAll} />
+        <Route path="new" component={EventsNew} />
+        <Route path=":id/edit" component={EventsEdit} />
       </Route>
 
-      <Route path="invite-venue-admin" component={AdminPanelInviteVenueAdmin} />
+      <Route
+        path="invite-venue-admin"
+        component={InviteVenueAdmin}
+        onEnter={requireSignIn}
+      />
 
-      <Route path="venues">
+      <Route path="venues" onEnter={requireSignIn}>
         <IndexRedirect to="all" />
-        <Route path="all" component={AdminPanelVenuesShowAll} />
-        <Route path="new" component={AdminPanelVenuesNew} />
-        <Route path=":id/edit" component={AdminPanelVenuesEdit} />
+        <Route path="all" component={VenuesShowAll} />
+        <Route path="new" component={VenuesNew} />
+        <Route path=":id/edit" component={VenuesEdit} />
       </Route>
-
     </Route>
   );
 }
