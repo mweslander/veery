@@ -5,16 +5,16 @@ import React, {
 } from 'react';
 
 // Components
-import Button from '../Base/Button';
+import Button from '../../Base/Button';
 
 // CSS
 import './index.scss';
 
 // Services
-import usersService from '../../services/users';
+import usersService from '../../../services/users';
 
 // Utils
-import mapFormValues from '../../utils/mapFormValues';
+import mapFormValues from '../../../utils/mapFormValues';
 
 const propTypes = {
   location: PropTypes.shape({
@@ -26,7 +26,8 @@ const propTypes = {
   }).isRequired,
   router: PropTypes.shape({
     replace: PropTypes.func.isRequired
-  })
+  }),
+  setAlertMessage: PropTypes.func
 };
 
 class Register extends Component {
@@ -42,7 +43,13 @@ class Register extends Component {
 
     return usersService
       .register(values)
-      .then(() => this.transitionToNextPage());
+      .then(() => {
+        this.props.setAlertMessage({ successMessage: 'Registration successful.' });
+        return this.transitionToNextPage();
+      })
+      .catch(() => {
+        return this.props.setAlertMessage({ errorMessage: 'You must enter a password.' });
+      });
   }
 
   transitionToNextPage() {
@@ -54,7 +61,7 @@ class Register extends Component {
 
     this.props.router.replace({
       query,
-      pathname: '/admin'
+      pathname: '/admin/venues'
     });
   }
 

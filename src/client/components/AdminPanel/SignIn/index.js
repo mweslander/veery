@@ -5,16 +5,16 @@ import React, {
 } from 'react';
 
 // Components
-import Button from '../Base/Button';
+import Button from '../../Base/Button';
 
 // CSS
 import './index.scss';
 
 // Services
-import usersService from '../../services/users';
+import usersService from '../../../services/users';
 
 // Utils
-import mapFormValues from '../../utils/mapFormValues';
+import mapFormValues from '../../../utils/mapFormValues';
 
 const propTypes = {
   baseClassName: PropTypes.string,
@@ -25,7 +25,8 @@ const propTypes = {
   }).isRequired,
   router: PropTypes.shape({
     replace: PropTypes.func.isRequired
-  })
+  }),
+  setAlertMessage: PropTypes.func
 };
 
 class SignIn extends Component {
@@ -40,7 +41,13 @@ class SignIn extends Component {
 
     return usersService
       .signIn(values)
-      .then(() => this.transitionToNextPage());
+      .then(() => {
+        this.props.setAlertMessage({ successMessage: 'Sign in successful.' });
+        return this.transitionToNextPage();
+      })
+      .catch(() => {
+        return this.props.setAlertMessage({ errorMessage: 'Your password and email do not match.' });
+      });
   }
 
   transitionToNextPage() {
@@ -52,7 +59,7 @@ class SignIn extends Component {
 
     this.props.router.replace({
       query,
-      pathname: '/admin'
+      pathname: '/admin/venues'
     });
   }
 

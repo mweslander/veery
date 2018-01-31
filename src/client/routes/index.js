@@ -9,8 +9,6 @@ import {
 
 // Components
 import App from '../components/App';
-import Register from '../components/Register';
-import SignIn from '../components/SignIn';
 
 // Routes
 import adminRoutes from './admin';
@@ -23,9 +21,6 @@ function Routes() {
       </Route>
 
       {adminRoutes()}
-
-      <Route path="sign-in" component={SignIn} />
-      <Route path="register" component={Register} />
     </Router>
   );
 }
