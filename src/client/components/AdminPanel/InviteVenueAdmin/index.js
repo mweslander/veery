@@ -19,6 +19,7 @@ const propTypes = {
   router: PropTypes.shape({
     push: PropTypes.func.isRequired
   }),
+  setAlertMessage: PropTypes.func,
   venues: PropTypes.array
 };
 
@@ -58,7 +59,13 @@ class InviteVenueAdmin extends Component {
 
     return adminInvitationsService
       .inviteVenueAdmin(values)
-      .then(() => this.props.router.push('/admin'));
+      .then(() => {
+        this.props.setAlertMessage({ successMessage: 'Invitation successfully sent.' });
+        return this.props.router.push('/admin');
+      })
+      .catch(() => {
+        return this.props.setAlertMessage({ errorMessage: 'You must provide an email address.' });
+      });
   }
 
   render() {

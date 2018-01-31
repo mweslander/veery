@@ -17,12 +17,14 @@ import mapFormValues from '../../../../utils/mapFormValues';
 
 // PropTypes
 const propTypes = {
+  removeAlert: PropTypes.func,
   router: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string
     }),
     push: PropTypes.func.isRequired
   }),
+  setAlertMessage: PropTypes.func,
   venues: PropTypes.array
 };
 
@@ -48,6 +50,10 @@ class Edit extends Component {
     return this.setState({ venue });
   }
 
+  componentWillUnmount() {
+    return this.props.removeAlert();
+  }
+
   handleChange({ target }) {
     const venue = this.state.venue;
     venue[target.name] = target.value;
@@ -62,7 +68,10 @@ class Edit extends Component {
 
     return adminVenuesService
       .updateVenue(values, route)
-      .then(() => this.props.router.push(`${route}/edit`));
+      .then(() => {
+        this.props.setAlertMessage({ successMessage: 'Venue successfully updated.' });
+        return this.props.router.push(`${route}/edit`);
+      });
   }
 
   render() {
@@ -74,13 +83,11 @@ class Edit extends Component {
         ref={(form) => { this.editForm = form; }}
         onSubmit={this.handleSubmit}
       >
-        {venue._id ?
+        {venue._id &&
           <VenueForm
             handleChange={this.handleChange}
             venue={venue}
-          /> :
-          <div>(alert message belongs here) that venue cannot be found at the moment</div>
-        }
+          />}
 
         <Button value="Update Venue" />
       </form>

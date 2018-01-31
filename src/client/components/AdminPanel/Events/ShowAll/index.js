@@ -10,10 +10,13 @@ import adminEventsService from '../../../../services/admin/events';
 
 // PropTypes
 const propTypes = {
+  events: PropTypes.array,
+  removeAlert: PropTypes.func,
   router: PropTypes.shape({
     push: PropTypes.func.isRequired
   }),
-  events: PropTypes.array
+  setAlertMessage: PropTypes.func,
+  updateVenues: PropTypes.func
 };
 
 /*
@@ -32,6 +35,14 @@ class Events extends Component {
   }
 
   componentWillMount() {
+    return this.updateEvents();
+  }
+
+  componentWillUnmount() {
+    return this.props.removeAlert();
+  }
+
+  updateEvents() {
     return adminEventsService.showAll()
       .then((events) => {
         this.setState({ events });
@@ -43,7 +54,10 @@ class Events extends Component {
 
     return adminEventsService
       .destroyEvent(id)
-      .then(() => window.location.reload());
+      .then(() => this.updateEvents())
+      .then(() => {
+        return this.props.setAlertMessage({ successMessage: 'Event successfully deleted.' });
+      });
   }
 
   render() {

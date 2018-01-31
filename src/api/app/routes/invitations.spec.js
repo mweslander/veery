@@ -56,7 +56,7 @@ describe('invitations requests', function() {
           .redirects(0)
           .then(expect.fail)
           .catch(({ response }) => {
-            expect(response.header.location).to.include(`/#/register?invitationId=${encodeURIComponent(invitation._id)}&email=${encodeURIComponent(invitation.email)}`);
+            expect(response.header.location).to.include(`/#/admin/register?invitationId=${encodeURIComponent(invitation._id)}&email=${encodeURIComponent(invitation.email)}`);
           });
       });
     });
@@ -70,14 +70,13 @@ describe('invitations requests', function() {
       });
 
       // TODO: I probably shouldn't just redirect but thrown an error
-      it('redirects to the front end url without queries', function(done) {
+      it('redirects to the front end url without queries', function() {
         return this.promise
           .redirects(0)
           .then(expect.fail)
           .catch(({ response }) => {
-            expect(response.header.location).to.include('/#/register');
+            expect(response.header.location).to.include('/#/admin/register');
             expect(response.header.location).to.not.include('?invitationId=');
-            done();
           });
       });
     });
