@@ -179,8 +179,6 @@ describe('admin venue requests', function() {
                 .then((invitation) => {
                   expect(invitation).to.exist;
                   expect(invitation.email).to.equal(email);
-                  // TODO: once we implement the adding of venueAdmins in create/update for venues,
-                  // we'll need an expectation here regarding the invitation having the venue
                 });
             });
           });

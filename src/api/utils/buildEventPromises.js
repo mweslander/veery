@@ -18,19 +18,12 @@ function buildWeeklyEvents(params) {
 }
 
 function buildEventPromises(params) {
-  // TODO: your declaring variables but may not need to
-  // TODO: you're*
-  let promises;
-
   switch (params.frequency) {
   case 'weekly':
-    promises = buildWeeklyEvents(params);
-    break;
+    return buildWeeklyEvents(params);
   default:
-    promises = [new Event(params).save()];
+    return [new Event(params).save()];
   }
-
-  return promises;
 }
 
 module.exports = buildEventPromises;

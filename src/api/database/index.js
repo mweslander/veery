@@ -4,14 +4,13 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const config = require('../config');
-// TODO: this will make a comeback in the future.
+// This will make a comeback in the future.
 // const isEnvironment = require('../utils/isEnvironment');
 const log = require('../utils/log');
 
 const database = {
   drop() {
     return new Promise((resolve) => {
-      // TODO: this will make a comeback in the future.
       // if (isEnvironment(['production', 'preproduction'])) {
       //   reject(log('ERROR: production and preproduction databases cannot be dropped'));
       // }
