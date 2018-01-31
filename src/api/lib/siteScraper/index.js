@@ -2,6 +2,7 @@
 
 const cheerio = require('cheerio');
 const emailJordanAboutHisBadScraper = require('../../utils/emailJordanAboutHisBadScraper');
+const htmlparser = require('htmlparser2');
 const request = require('request');
 
 const sites = [
@@ -32,19 +33,34 @@ function findEventsAndVenue(site, resolve, $) {
   }
 }
 
+function scrape(site, error, html, resolve, reject) {
+  if (error) {
+    return reject(emailJordanAboutHisBadScraper(site, error));
+  }
+
+  // htmlparser2 is what's used in the cheerio library
+  if (!htmlparser.parseDOM(html)[0]) {
+    const message = `${site.url} did not return any html`;
+    console.log('html of bad site:', html);
+    console.error(message);
+    emailJordanAboutHisBadScraper(site, { stack: message });
+    return resolve();
+  }
+
+  const $ = cheerio.load(html);
+
+  return findEventsAndVenue(site, resolve, $);
+}
+
 const siteScraper = {
   run() {
     return sites.map((site) => {
       return new Promise((resolve, reject) => {
-        return request(site.url, (error, _, html) => {
-          if (error) {
-            reject(emailJordanAboutHisBadScraper(site, error));
-          }
+        const requestCallback = (error, _, html) => {
+          return scrape(site, error, html, resolve, reject);
+        };
 
-          const $ = cheerio.load(html);
-
-          return findEventsAndVenue(site, resolve, $);
-        });
+        return request(site.url, requestCallback);
       });
     });
   }
