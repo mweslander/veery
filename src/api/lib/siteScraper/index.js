@@ -20,8 +20,7 @@ function findEventsAndVenue(site, resolve, $) {
     const { events, venue } = site.run($);
 
     if (events.length < 1) {
-      console.log('here');
-      // emailJordanAboutHisBadScraper(site, { stack: 'No events were found.' });
+      emailJordanAboutHisBadScraper(site, { stack: 'No events were found.' });
       // resolving because I just want this to return null so other sites
       // that are being scraped can get their events displayed
       resolve();
@@ -29,8 +28,7 @@ function findEventsAndVenue(site, resolve, $) {
       resolve({ events, venue });
     }
   } catch (e) {
-    console.log(e.stack);
-    // emailJordanAboutHisBadScraper(site, e);
+    emailJordanAboutHisBadScraper(site, e);
     resolve();
   }
 }
@@ -42,8 +40,10 @@ function scrape(site, error, html, resolve, reject) {
 
   // htmlparser2 is what's used in the cheerio library
   if (!htmlparser.parseDOM(html)[0]) {
-    console.log(html);
-    console.error(`${site.url} did not return any html`);
+    const message = `${site.url} did not return any html`;
+    console.log('html of bad site:', html);
+    console.error(message);
+    emailJordanAboutHisBadScraper(site, { stack: message });
     return resolve();
   }
 
