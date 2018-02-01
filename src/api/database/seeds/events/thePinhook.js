@@ -1,7 +1,5 @@
 'use strict';
 
-const moment = require('moment');
-
 // startDate isn't going to appear bc Pinhook is not currently doing open mic nights
 const events = [
   {
@@ -13,17 +11,5 @@ const events = [
   }
 ];
 
-const venue = {
-  address: '115 W Main St',
-  city: 'Durham',
-  latitude: 35.995280,
-  longitude: -78.901512,
-  name: 'The Pinhook',
-  state: 'NC',
-  zipCode: 27701
-};
+module.exports = events;
 
-module.exports = {
-  events,
-  venue
-}

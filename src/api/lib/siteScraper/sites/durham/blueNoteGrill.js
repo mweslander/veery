@@ -1,6 +1,7 @@
 'use strict';
 
 const url = 'http://www.thebluenotegrill.com/events/';
+const Venue = require('../../../../app/models/venue');
 
 function getMicNights($) {
   const blueJams = $('.event').filter((i, event) => {
@@ -27,43 +28,35 @@ function getMicNights($) {
 function blueNoteGrill($) {
   const micNights = getMicNights($);
 
-  const events = micNights.map((i, micNight) => {
-    const bluesJam = $(micNight);
+  const events = (venue) => {
+    return micNights.map((i, micNight) => {
+      const bluesJam = $(micNight);
 
-    const title = bluesJam
-      .find('h2')
-      .children('a')
-      .text();
-    const dateTime = bluesJam.find('.date-time');
-    const startDate = dateTime
-      .children('.event-date')
-      .text();
-    const startTime = dateTime
-      .children('.event-time')
-      .text();
+      const title = bluesJam
+        .find('h2')
+        .children('a')
+        .text();
+      const dateTime = bluesJam.find('.date-time');
+      const startDate = dateTime
+        .children('.event-date')
+        .text();
+      const startTime = dateTime
+        .children('.event-time')
+        .text();
 
-    return {
-      startDate,
-      startTime,
-      title,
-      type: 'open'
-    };
-  }).toArray();
-
-  const venue = {
-    name: 'Blue Note Grill',
-    address: '709 Washington Street',
-    city: 'Durham',
-    state: 'NC',
-    zipCode: 27704,
-    latitude: 36.004379,
-    longitude: -78.902946
+      return {
+        startDate,
+        startTime,
+        title,
+        type: 'open',
+        venue: venue._id
+      };
+    }).toArray();
   };
 
-  return {
-    events,
-    venue
-  };
+  return Venue
+    .findOne({ name: 'Blue Note Grill' })
+    .then((venue) => events(venue));
 }
 
 module.exports = {

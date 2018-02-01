@@ -2,16 +2,25 @@
 
 const admins = require('./seeds/admins');
 const database = require('./index.js');
-const locations = require('./seeds/locations');
 const log = require('../utils/log');
 const populator = require('../lib/populator');
 const siteScraper = require('../lib/siteScraper');
 const User = require('../app/models/user.js');
+const Venue = require('../app/models/venue.js');
+const venues = require('./seeds/venues');
 
 function furnish() {
-  return database.drop()
+  return database
+    .drop()
     .then(() => {
-      return populator.addMicNights(locations, 'MANUAL LOCATIONS SUCCESSFULLY ADDED');
+      const promises = venues.map((venue) => {
+        return new Venue(venue).save();
+      });
+
+      return Promise.all(promises);
+    })
+    .then(() => {
+      return populator.addMicNights(require('./seeds/events'), 'HARD CODED EVENTS SUCCESSFULLY ADDED');
     })
     .then(() => {
       return populator.addMicNights(siteScraper.run(), 'SCRAPE SUCCESSFULLY FINISHED');

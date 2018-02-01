@@ -1,8 +1,9 @@
 'use strict';
 
 const url = 'https://www.deepsouththebar.com/calendar/';
+const Venue = require('../../../../app/models/venue');
 
-function getEventDetails(dayOfWeek, $) {
+function getEventDetails(dayOfWeek, $, venueId) {
   return $(dayOfWeek).map((i, day) => {
     const wrappedDay = $(day);
 
@@ -22,31 +23,21 @@ function getEventDetails(dayOfWeek, $) {
     return {
       startDate,
       startTime,
-      title
+      title,
+      venue: venueId
     };
   });
 }
 
 function deepSouth($) {
-  const tuesdays = getEventDetails('.Tuesday', $).toArray();
-  const wednesdays = getEventDetails('.Wednesday', $).toArray();
+  return Venue
+    .findOne({ name: 'Deep South The Bar' })
+    .then((venue) => {
+      const tuesdays = getEventDetails('.Tuesday', $, venue._id).toArray();
+      const wednesdays = getEventDetails('.Wednesday', $, venue._id).toArray();
 
-  const events = [].concat.apply(tuesdays, wednesdays);
-
-  const venue = {
-    name: 'Deep South The Bar',
-    address: '430 S Dawson St',
-    city: 'Raleigh',
-    state: 'NC',
-    zipCode: 27601,
-    latitude: 35.774731,
-    longitude: -78.643929
-  };
-
-  return {
-    events,
-    venue
-  };
+      return [].concat.apply(tuesdays, wednesdays);
+    });
 }
 
 module.exports = {
