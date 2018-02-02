@@ -15,7 +15,15 @@ function create(req, res, next) {
 }
 
 function destroy(req, res, next) {
-  return destroyDocument(res.locals.event, res, next);
+  const event = res.locals.event;
+  let options = {};
+
+  if ([true, 'true'].indexOf(req.query.destroyAll) > -1) {
+    options = { frequency: event.frequency, venue: event.venue };
+    return destroyDocument(Event, res, next, options);
+  }
+
+  return destroyDocument(event, res, next, options);
 }
 
 function respondWithEvents(res, next, options = {}) {

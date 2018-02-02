@@ -1,5 +1,7 @@
 'use strict';
 
+const flatten = require('lodash').flatten;
+
 const Event = require('../../../models/event');
 const User = require('../../../models/user');
 const Venue = require('../../../models/venue');
@@ -11,7 +13,7 @@ const {
   signInAndCreateUser
 } = require('../../../../spec/specHelper');
 
-function establishSpecResources(agent, role, venuesCallback = () => {}) {
+function establishSpecResources(agent, role, venuesCallback = () => {}, extraEvents = () => []) {
   return signInAndCreateUser(agent, role)
     .then((admin) => venuesCallback(admin))
     .then((venues = []) => {
@@ -26,7 +28,7 @@ function establishSpecResources(agent, role, venuesCallback = () => {}) {
         promises.push(createEvent({ venue: venues[venues.length - 1]._id }));
       }
 
-      return Promise.all(promises);
+      return Promise.all(flatten([promises, extraEvents(venues)]));
     });
 }
 
@@ -65,34 +67,77 @@ describe('admin event requests', function() {
     });
 
     context('when the user is an admin', function() {
-      let eventForDeletion;
+      context('when just destroying one event', function() {
+        let eventForDeletion;
 
-      beforeEach(function() {
-        const venuesCallback = () => {
-          const promises = [];
+        beforeEach(function() {
+          const venuesCallback = () => {
+            const promises = [];
 
-          for (let i = 10; i > 0; i--) {
-            promises.push(createVenue());
-          }
+            for (let i = 10; i > 0; i--) {
+              promises.push(createVenue());
+            }
 
-          return Promise.all(promises);
-        };
+            return Promise.all(promises);
+          };
 
-        return establishSpecResources(agent, 'admin', venuesCallback)
-          .then((events) => {
-            eventForDeletion = events[0];
-            const endpoint = `/api/admin/events/${eventForDeletion._id}`;
+          return establishSpecResources(agent, 'admin', venuesCallback)
+            .then((events) => {
+              eventForDeletion = events[0];
+              const endpoint = `/api/admin/events/${eventForDeletion._id}`;
 
-            this.promise = agent
-              .delete(endpoint);
-          });
+              this.promise = agent
+                .delete(endpoint);
+            });
+        });
+
+        shared.itBehavesLike('a protected DELETE endpoint');
+        shared.itBehavesLike('a valid request', { statusCode: 200 });
+
+        it('deletes the event', function() {
+          return aValidEventDeletion(this.promise, eventForDeletion, 21);
+        });
       });
 
-      shared.itBehavesLike('a protected DELETE endpoint');
-      shared.itBehavesLike('a valid request', { statusCode: 200 });
+      context('when the user has specified a delete all request on an event with a weekly frequency', function() {
+        let eventForDeletion;
 
-      it('deletes the event', function() {
-        return aValidEventDeletion(this.promise, eventForDeletion, 21);
+        beforeEach(function() {
+          const venuesCallback = () => {
+            const promises = [];
+
+            for (let i = 10; i > 0; i--) {
+              promises.push(createVenue());
+            }
+
+            return Promise.all(promises);
+          };
+          const extraEvents = (venues) => {
+            const promises = [];
+
+            for (let i = 20; i > 0; i--) {
+              promises.push(createEvent({ frequency: 'weekly', venue: venues[0]._id }));
+            }
+
+            return promises;
+          };
+
+          return establishSpecResources(agent, 'admin', venuesCallback, extraEvents)
+            .then((events) => {
+              eventForDeletion = events[events.length - 1];
+              const endpoint = `/api/admin/events/${eventForDeletion._id}`;
+
+              this.promise = agent
+                .delete(`${endpoint}?destroyAll=true`);
+            });
+        });
+
+        shared.itBehavesLike('a protected DELETE endpoint');
+        shared.itBehavesLike('a valid request', { statusCode: 200 });
+
+        it('deletes the event and all the other weekly events of that venue', function() {
+          return aValidEventDeletion(this.promise, eventForDeletion, 22);
+        });
       });
     });
 
