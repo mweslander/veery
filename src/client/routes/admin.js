@@ -7,6 +7,7 @@ import {
 
 // Components
 import AdminPanel from '../components/AdminPanel';
+import EventsDeletionModal from '../components/AdminPanel/Events/DeletionModal';
 import EventsEdit from '../components/AdminPanel/Events/Edit';
 import EventsNew from '../components/AdminPanel/Events/New';
 import EventsShowAll from '../components/AdminPanel/Events/ShowAll';
@@ -51,7 +52,9 @@ function AdminRoutes() {
 
       <Route path="events" onEnter={requireSignIn}>
         <IndexRedirect to="all" />
-        <Route path="all" component={EventsShowAll} />
+        <Route path="all" component={EventsShowAll}>
+          <Route path=":id/delete" component={EventsDeletionModal} />
+        </Route>
         <Route path="new" component={EventsNew} />
         <Route path=":id/edit" component={EventsEdit} />
       </Route>

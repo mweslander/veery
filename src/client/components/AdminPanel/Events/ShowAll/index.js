@@ -1,5 +1,8 @@
 // Imports
-import React, { Component } from 'react';
+import React, {
+  cloneElement,
+  Component
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   Link
@@ -10,6 +13,7 @@ import adminEventsService from '../../../../services/admin/events';
 
 // PropTypes
 const propTypes = {
+  children: PropTypes.node,
   events: PropTypes.array,
   removeAlert: PropTypes.func,
   router: PropTypes.shape({
@@ -28,7 +32,7 @@ class Events extends Component {
   constructor() {
     super();
 
-    this.handleDestroy = this.handleDestroy.bind(this);
+    this.updateEvents = this.updateEvents.bind(this);
     this.state = {
       events: []
     };
@@ -46,17 +50,6 @@ class Events extends Component {
     return adminEventsService.showAll()
       .then((events) => {
         this.setState({ events });
-      });
-  }
-
-  handleDestroy(id) {
-    event.preventDefault();
-
-    return adminEventsService
-      .destroyEvent(id)
-      .then(() => this.updateEvents())
-      .then(() => {
-        return this.props.setAlertMessage({ successMessage: 'Event successfully deleted.' });
       });
   }
 
@@ -90,16 +83,20 @@ class Events extends Component {
                   </td>
                   <td className="c-table__cell o-grid">
                     <Link className="c-link o-grid__cell" to={`/admin/events/${event._id}/edit`}>Edit</Link>
-                    <a
-                      className="c-link o-grid__cell"
-                      onClick={() => this.handleDestroy(event._id)}
-                    >destroy</a>
+                    <Link className="c-link o-grid__cell" to={`/admin/events/all/${event._id}/delete`}>destroy</Link>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+
+        {this.props.children &&
+          cloneElement(this.props.children, {
+            events: this.state.events,
+            setAlertMessage: this.props.setAlertMessage,
+            updateEvents: this.updateEvents
+          })}
       </div>
     );
   }

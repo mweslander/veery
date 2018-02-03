@@ -1,0 +1,13 @@
+.c-deletion-modal {
+  &__radio-container {
+    &:first-child {
+      label {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  &__radio-explanation {
+    margin-left: .5em;
+  }
+}

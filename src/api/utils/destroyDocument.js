@@ -1,7 +1,8 @@
 'use strict';
 
-function destroyDocument(resource, res, next) {
-  return resource.remove()
+function destroyDocument(resource, res, next, options = {}) {
+  return resource
+    .remove(options)
     .then(() => {
       res.status(200).json({ message: 'Successfully deleted' });
       next();
