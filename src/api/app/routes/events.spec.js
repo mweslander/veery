@@ -71,20 +71,18 @@ describe('event requests', function() {
       ]);
     });
 
-    context('when no events have a special frequency', function() {
-      beforeEach(function() {
-        return establishSpecResources(agent)
-          .then(() => {
-            this.promise = agent
-              .get(endpoint);
-          });
-      });
+    beforeEach(function() {
+      return establishSpecResources(agent)
+        .then(() => {
+          this.promise = agent
+            .get(endpoint);
+        });
+    });
 
-      shared.itBehavesLike('a valid request', { statusCode: 200 });
+    shared.itBehavesLike('a valid request', { statusCode: 200 });
 
-      it('returns all the events', function() {
-        return aValidEventShowAll(this.promise);
-      });
+    it('returns all the events', function() {
+      return aValidEventShowAll(this.promise);
     });
   });
 });

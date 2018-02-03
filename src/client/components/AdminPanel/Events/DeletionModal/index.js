@@ -117,7 +117,7 @@ class DeletionModal extends Component {
                       id="destroyAllTrue"
                       onClick={() => this.handleClick(true)}
                     />
-                    <span className="c-deletion-modal__radio-explanation">This and all recurring {event.frequency} events for {event.title}</span>
+                    <span className="c-deletion-modal__radio-explanation">This and all recurring {event.title} {event.frequency} events</span>
                   </label>
                 </div>
               </div>
