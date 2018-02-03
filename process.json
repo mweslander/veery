@@ -16,7 +16,7 @@
       "cron_restart": "*/60 */24 * * *",
       "log_date_format" : "YYYY-MM-DD HH:mm Z",
       "name": "nightly-script",
-      "script": "./src/api/database/furnish.js",
+      "script": "./src/api/database/nightlyScript.js",
       "watch": true,
       "env": {
         "NODE_ENV": "development"
