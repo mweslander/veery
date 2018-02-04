@@ -2,11 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// CSS
-import './index.scss';
-
 // Components
-import Button from '../../../Base/Button';
+import Modal from '../../../Base/Modal';
 
 // Services
 import adminEventsService from '../../../../services/admin/events';
@@ -80,55 +77,41 @@ class DeletionModal extends Component {
 
   render() {
     const event = this.state.event;
+    const oneTime = event.frequency === 'one time';
 
     return (
-      <div>
-        <div className="c-overlay c-overlay--visible" />
-        <div className="o-modal">
-          <form
-            className="new-event o-fieldset o-container o-container--small"
-            ref={(form) => { this.deleteEventsForm = form; }}
-            onSubmit={this.handleSubmit}
-          >
-            <div className="c-card">
-              <header className="c-card__header">
-                <button className="c-button--close" onClick={this.closeModal}>&times;</button>
-                <h2 className="c-heading">Delete Recurring Event</h2>
-              </header>
+      <Modal
+        closeModal={this.closeModal}
+        handleSubmit={this.handleSubmit}
+        heading={oneTime ? 'Delete?' : 'Delete Recurring Events'}
+      >
+        <div className="c-card__body">
+          <div className="c-modal__radio-container">
+            <label className="c-label" htmlFor="destroyAllFalseButton">
+              <input
+                type="radio"
+                id="destroyAllFalseButton"
+                onClick={() => this.handleClick(false)}
+              />
 
-              <div className="c-card__body">
-                <div className="c-deletion-modal__radio-container">
-                  <label className="c-label" htmlFor="destroyAllFalse">
-                    <input
-                      type="radio"
-                      name="destroyAll"
-                      id="destroyAllFalse"
-                      onClick={() => this.handleClick(false)}
-                    />
-                    <span className="c-deletion-modal__radio-explanation">This event</span>
-                  </label>
-                </div>
+              <span className="c-modal__radio-explanation">This event</span>
+            </label>
+          </div>
 
-                <div className="c-deletion-modal__radio-container">
-                  <label className="c-label" htmlFor="destroyAllTrue">
-                    <input
-                      type="radio"
-                      name="destroyAll"
-                      id="destroyAllTrue"
-                      onClick={() => this.handleClick(true)}
-                    />
-                    <span className="c-deletion-modal__radio-explanation">This and all recurring {event.title} {event.frequency} events</span>
-                  </label>
-                </div>
-              </div>
+          {!oneTime &&
+            <div className="c-modal__radio-container">
+              <label className="c-label" htmlFor="destroyAllTrueButton">
+                <input
+                  type="radio"
+                  id="destroyAllTrueButton"
+                  onClick={() => this.handleClick(true)}
+                />
 
-              <footer className="c-card__footer">
-                <Button value="Submit" />
-              </footer>
-            </div>
-          </form>
+                <span className="c-modal__radio-explanation">This and all recurring {event.title} {event.frequency} events</span>
+              </label>
+            </div>}
         </div>
-      </div>
+      </Modal>
     );
   }
 }

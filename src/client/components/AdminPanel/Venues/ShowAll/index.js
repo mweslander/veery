@@ -1,5 +1,8 @@
 // Imports
-import React, { Component } from 'react';
+import React, {
+  cloneElement,
+  Component
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   Link
@@ -10,6 +13,7 @@ import adminVenuesService from '../../../../services/admin/venues';
 
 // PropTypes
 const propTypes = {
+  children: PropTypes.node,
   removeAlert: PropTypes.func,
   router: PropTypes.shape({
     push: PropTypes.func.isRequired
@@ -74,16 +78,16 @@ class Venues extends Component {
                   <td className="c-table__cell" />
                   <td className="c-table__cell o-grid">
                     <Link className="c-link o-grid__cell" to={`/admin/venues/${venue._id}/edit`}>Edit</Link>
-                    <a
-                      className="c-link o-grid__cell"
-                      onClick={() => this.handleDestroy(venue._id)}
-                    >destroy</a>
+                    <Link className="c-link o-grid__cell" to={`/admin/venues/all/${venue._id}/delete`}>destroy</Link>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+
+        {this.props.children &&
+          cloneElement(this.props.children, { ...this.props })}
       </div>
     );
   }
