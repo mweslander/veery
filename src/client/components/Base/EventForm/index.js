@@ -1,9 +1,11 @@
 // Imports
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 // Components
 import LabelGroup from '../LabelGroup';
+import DatePicker from '../../DatePicker';
 
 // PropTypes
 const propTypes = {
@@ -49,25 +51,25 @@ function EventForm({ handleChange, event, venues }) {
         </select>
       </label>
 
-      <LabelGroup
-        name="startDate"
-        options={{
-          onChange: handleChange,
-          placeholder: 'MM-DD-YY',
-          type: 'text',
-          value: event.startDate
-        }}
-      />
+      <div className="o-grid">
+        <label className="c-label o-grid__cell" htmlFor="startDate">
+          Start Date
+          <DatePicker
+            defaultDate={event.startDate || moment().add(1, 'day')}
+          />
+        </label>
 
-      <LabelGroup
-        name="startTime"
-        options={{
-          onChange: handleChange,
-          placeholder: '10:00',
-          type: 'text',
-          value: event.startDate
-        }}
-      />
+        <LabelGroup
+          classes="o-grid__cell c-event-form__start-time"
+          name="startTime"
+          options={{
+            onChange: handleChange,
+            placeholder: '10:00',
+            type: 'text',
+            value: event.startDate
+          }}
+        />
+      </div>
 
       <label className="c-label" htmlFor="frequency">
         Frequency

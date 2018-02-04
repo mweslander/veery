@@ -107,7 +107,7 @@ class DeletionModal extends Component {
                   onClick={() => this.handleClick(true)}
                 />
 
-                <span className="c-modal__radio-explanation">This and all recurring {event.title} {event.frequency} events</span>
+                <span className="c-modal__radio-explanation">This and following {event.title} events</span>
               </label>
             </div>}
         </div>

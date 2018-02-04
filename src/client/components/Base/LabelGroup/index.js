@@ -1,7 +1,7 @@
 // Imports
 import React from 'react';
 import PropTypes from 'prop-types';
-import { capitalize } from 'lodash';
+import { startCase } from 'lodash';
 
 // PropTypes
 const propTypes = {
@@ -18,7 +18,7 @@ const propTypes = {
 function LabelGroup({ classes, name, options = {} }) {
   return (
     <label className={`c-label ${classes}`} htmlFor={name}>
-      {capitalize(name)}
+      {startCase(name)}
       <input className="c-field" name={name} {...options} />
     </label>
   );

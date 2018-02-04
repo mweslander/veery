@@ -1,7 +1,9 @@
 'use strict';
 
-const destroyDocument = require('../../../utils/destroyDocument');
 const mongoose = require('mongoose');
+
+const buildEventPromises = require('../../../utils/buildEventPromises');
+const destroyDocument = require('../../../utils/destroyDocument');
 const saveDocuments = require('../../../utils/saveDocuments');
 
 const Event = require('../../models/event');
@@ -10,21 +12,36 @@ const User = require('../../models/user');
 function create(req, res, next) {
   const params = req.body;
   params.venue = mongoose.Types.ObjectId(req.body.venue); // eslint-disable-line new-cap
+  const promises = buildEventPromises(params);
 
-  return saveDocuments([new Event(params).save()], res, next);
+  return saveDocuments(promises, res, next);
+}
+
+// Using a callback bc this filter will become a conditional
+// once we have more frequencies
+function eventsFilterCallback(event) {
+  return function(filterEvent) {
+    return new Date(filterEvent.startDate).getDay() === new Date(event.startDate).getDay();
+  };
+}
+
+function removeRecurringEvents(event, res, next) {
+  return Event
+    .find({ frequency: event.frequency, venue: event.venue })
+    .then((events) => events.filter(eventsFilterCallback(event)))
+    .then((events) => {
+      return destroyDocument(Event, res, next, { _id: events.map(e => e._id) });
+    });
 }
 
 function destroy(req, res, next) {
   const event = res.locals.event;
-  let resource = event;
-  let options = {};
 
   if ([true, 'true'].indexOf(req.query.destroyAll) > -1) {
-    options = { frequency: event.frequency, venue: event.venue };
-    resource = Event;
+    return removeRecurringEvents(event, res, next);
   }
 
-  return destroyDocument(resource, res, next, options);
+  return destroyDocument(event, res, next);
 }
 
 function respondWithEvents(res, next, options = {}) {

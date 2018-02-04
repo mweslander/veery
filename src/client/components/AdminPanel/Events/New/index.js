@@ -1,6 +1,9 @@
 // Imports
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 // Components
 import EventForm from '../../../Base/EventForm';
@@ -34,11 +37,16 @@ class NewEvent extends Component {
     super();
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      date: moment().add(1, 'day')
+    };
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const values = mapFormValues(this.newEventForm.elements);
+    values.startDate = values.date;
+    delete values.date;
 
     return adminEventsService
       .createEvent(values)

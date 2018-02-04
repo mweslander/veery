@@ -1,5 +1,7 @@
 'use strict';
 
+const moment = require('moment');
+
 const Event = require('../../../models/event');
 const User = require('../../../models/user');
 const Venue = require('../../../models/venue');
@@ -74,6 +76,46 @@ describe('admin event requests', function() {
 
         it('creates the event', function() {
           return aValidEventCreation(this.promise, venue, title);
+        });
+      });
+
+      context('when the event params has a weekly frequency', function() {
+        let venue;
+
+        beforeEach(function() {
+          return establishSpecResources(agent, 'admin', createVenue)
+            .then((newVenue) => {
+              venue = newVenue;
+              const options = {
+                frequency: 'weekly',
+                startDate: moment().add(2, 'days').format('MM-DD-YY'),
+                title,
+                venue: venue._id
+              };
+
+              this.promise = agent
+                .post(endpoint)
+                .send(options);
+            });
+        });
+
+        shared.itBehavesLike('a protected POST endpoint');
+        shared.itBehavesLike('a valid request', { statusCode: 201 });
+
+        it('creates the event', function() {
+          return aValidEventCreation(this.promise, venue, title);
+        });
+
+        it('creates 25 other events, all with different start dates', function() {
+          return this.promise
+            .then(() => Event.find({}))
+            .then((events) => {
+              const startDates = events.map(e => e.startDate);
+              const testedStartDate = startDates[0];
+              startDates.splice(startDates.indexOf(testedStartDate), 1);
+              expect(events.length).to.eq(26);
+              expect(startDates).not.to.include(testedStartDate);
+            });
         });
       });
     });

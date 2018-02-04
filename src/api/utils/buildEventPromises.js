@@ -7,8 +7,8 @@ function buildWeeklyEvents(params) {
   const events = [];
   events.push(new Event(params).save());
 
-  // 26 total weeks
-  for (let i = 1; i <= 26; i++) {
+  // 26 total weeks (25 + original)
+  for (let i = 1; i <= 25; i++) {
     const lastDate = moment(new Date(params.startDate));
     params.startDate = lastDate.add(1, 'week');
     events.push(new Event(params).save());
