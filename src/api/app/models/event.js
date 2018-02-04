@@ -5,12 +5,13 @@ const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
   frequency: {
-    type: String,
+    default: 'one time',
     enum: [
       'first of the month',
       'one time',
       'weekly'
-    ]
+    ],
+    type: String
   },
   startDate: Date,
   startTime: String,

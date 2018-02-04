@@ -7,13 +7,17 @@ import {
 
 // Components
 import AdminPanel from '../components/AdminPanel';
+
 import EventsDeletionModal from '../components/AdminPanel/Events/DeletionModal';
 import EventsEdit from '../components/AdminPanel/Events/Edit';
 import EventsNew from '../components/AdminPanel/Events/New';
 import EventsShowAll from '../components/AdminPanel/Events/ShowAll';
+
 import InviteVenueAdmin from '../components/AdminPanel/InviteVenueAdmin';
 import Register from '../components/AdminPanel/Register';
 import SignIn from '../components/AdminPanel/SignIn';
+
+import VenuesDeletionModal from '../components/AdminPanel/Venues/DeletionModal';
 import VenuesEdit from '../components/AdminPanel/Venues/Edit';
 import VenuesNew from '../components/AdminPanel/Venues/New';
 import VenuesShowAll from '../components/AdminPanel/Venues/ShowAll';
@@ -67,7 +71,9 @@ function AdminRoutes() {
 
       <Route path="venues" onEnter={requireSignIn}>
         <IndexRedirect to="all" />
-        <Route path="all" component={VenuesShowAll} />
+        <Route path="all" component={VenuesShowAll}>
+          <Route path=":id/delete" component={VenuesDeletionModal} />
+        </Route>
         <Route path="new" component={VenuesNew} />
         <Route path=":id/edit" component={VenuesEdit} />
       </Route>
