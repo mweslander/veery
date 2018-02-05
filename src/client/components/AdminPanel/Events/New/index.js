@@ -37,16 +37,20 @@ class NewEvent extends Component {
     super();
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.state = {
-      date: moment().add(1, 'day')
+      startDate: moment().add(1, 'day')
     };
+  }
+
+  handleStartDateChange(startDate) {
+    return this.setState({ startDate });
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const values = mapFormValues(this.newEventForm.elements);
-    values.startDate = values.date;
-    delete values.date;
+    values.startDate = moment(this.state.startDate).format('MM-DD-YY');
 
     return adminEventsService
       .createEvent(values)
@@ -65,6 +69,7 @@ class NewEvent extends Component {
       >
         <EventForm
           event={{}}
+          handleStartDateChange={this.handleStartDateChange}
           venues={this.props.venues}
         />
 

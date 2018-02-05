@@ -1,11 +1,9 @@
-import 'react-dates/initialize';
 import React, {
   Component
 } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { SingleDatePicker } from 'react-dates';
-import 'react-dates/lib/css/_datepicker.css';
+import { DatePicker as AntdDatePicker } from 'antd';
 
 // CSS
 import './index.scss';
@@ -15,7 +13,8 @@ import './index.scss';
 if (!Array.from) { Array.from = require('array-from'); }
 
 const propTypes = {
-  defaultDate: PropTypes.string
+  defaultDate: PropTypes.string,
+  handleStartDateChange: PropTypes.func
 };
 
 class DatePicker extends Component {
@@ -23,8 +22,7 @@ class DatePicker extends Component {
     super(props);
 
     this.state = {
-      date: moment(props.defaultDate),
-      focused: null
+      date: moment(props.defaultDate).add(1, 'day')
     };
   }
 
@@ -37,14 +35,11 @@ class DatePicker extends Component {
   render() {
     return (
       <div>
-        <SingleDatePicker
-          enableOutsideDays={true} // eslint-disable-line
-          date={this.state.date}
-          focused={this.state.focused}
-          isOutsideRange={() => false}
-          onDateChange={date => this.setState({ date })}
-          onFocusChange={({ focused }) => this.setState({ focused })}
-          orientation="vertical"
+        <AntdDatePicker
+          name="startDate"
+          onChange={this.props.handleStartDateChange}
+          format="MM-DD-YY"
+          defaultValue={moment(this.state.date)}
         />
       </div>
     );

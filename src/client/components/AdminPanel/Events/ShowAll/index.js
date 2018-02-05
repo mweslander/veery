@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import {
   Link
 } from 'react-router';
+import moment from 'moment';
 
 // Services
 import adminEventsService from '../../../../services/admin/events';
@@ -76,7 +77,7 @@ class Events extends Component {
                   className="c-table__row"
                 >
                   <td className="c-table__cell">{event.title}</td>
-                  <td className="c-table__cell">{event.startDate}</td>
+                  <td className="c-table__cell">{moment(event.startDate).format('MM-YY-DD')}</td>
                   <td className="c-table__cell">{event.startTime}</td>
                   <td className="c-table__cell">
                     <Link className="c-link" to={`/admin/venues/${event.venue._id}/edit`}>{event.venue.name}</Link>
