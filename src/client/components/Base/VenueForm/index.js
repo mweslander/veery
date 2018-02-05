@@ -8,9 +8,6 @@ import LabelGroup from '../LabelGroup';
 // PropTypes
 const propTypes = {
   handleChange: PropTypes.func,
-  router: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }),
   venue: PropTypes.object
 };
 

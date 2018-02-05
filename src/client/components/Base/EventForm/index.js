@@ -1,28 +1,28 @@
 // Imports
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 // Components
-import LabelGroup from '../LabelGroup';
 import DatePicker from '../../DatePicker';
+import LabelGroup from '../LabelGroup';
+import TimePicker from '../../TimePicker';
 
 // PropTypes
 const propTypes = {
   event: PropTypes.object,
-  handleChange: PropTypes.func,
-  router: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }),
+  handleStartDateChange: PropTypes.func,
   venues: PropTypes.array
 };
+
+// CSS
+import './index.scss';
 
 /*
   EventForm
   <EventForm/>
 */
 
-function EventForm({ handleChange, event, venues }) {
+function EventForm({ handleStartDateChange, event, venues }) {
   const frequencies = ['one time', 'weekly', 'first of the month'];
 
   return (
@@ -30,7 +30,6 @@ function EventForm({ handleChange, event, venues }) {
       <LabelGroup
         name="title"
         options={{
-          onChange: handleChange,
           placeholder: 'Event Title',
           type: 'text',
           value: event.title
@@ -38,7 +37,7 @@ function EventForm({ handleChange, event, venues }) {
       />
 
       <label className="c-label" htmlFor="venue">
-        Venue
+        <span className="c-event-form__field-description">Venue:</span>
         <select name="venue">
           {venues.map((venue) => {
             return (
@@ -55,24 +54,21 @@ function EventForm({ handleChange, event, venues }) {
         <label className="c-label o-grid__cell" htmlFor="startDate">
           Start Date
           <DatePicker
-            defaultDate={event.startDate || moment().add(1, 'day')}
+            defaultDate={event.startDate}
+            handleStartDateChange={handleStartDateChange}
           />
         </label>
 
-        <LabelGroup
-          classes="o-grid__cell c-event-form__start-time"
-          name="startTime"
-          options={{
-            onChange: handleChange,
-            placeholder: '10:00',
-            type: 'text',
-            value: event.startDate
-          }}
-        />
+        <label className="c-label o-grid__cell o-grid__cell--offset-20" htmlFor="startDate">
+          Start Time
+          <TimePicker
+            defaultTime={event.startTime}
+          />
+        </label>
       </div>
 
       <label className="c-label" htmlFor="frequency">
-        Frequency
+        <span className="c-event-form__field-description">Frequency:</span>
         <select name="frequency">
           {frequencies.map((frequency) => {
             return (
