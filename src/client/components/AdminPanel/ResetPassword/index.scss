@@ -1,0 +1,15 @@
+@import "../../../css/mixins";
+
+.c-reset-password {
+  &__button {
+    margin-top: 1em;
+  }
+
+  &__field {
+    max-height: 3em;
+  }
+
+  &__label {
+    padding: 0;
+  }
+}
