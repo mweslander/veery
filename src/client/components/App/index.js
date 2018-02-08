@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Scroll from 'react-scroll';
+import _ from 'lodash';
 
 // Components
 import EventList from '../EventList';
@@ -12,7 +13,6 @@ import VenueMap from '../VenueMap';
 import './index.scss';
 
 // Services
-import eventsService from '../../services/events';
 import venuesService from '../../services/venues';
 
 // PropTypes
@@ -38,17 +38,17 @@ class App extends Component {
   }
 
   componentWillMount() {
-    const promises = [
-      eventsService.showAll(),
-      venuesService.showAll()
-    ];
+    return venuesService
+      .showAll()
+      .then((venues) => {
+        const eventsFromVenues = venues.map(venue => venue.events);
+        const formattedEvents = _.sortBy(_.flatten(eventsFromVenues), ['startDate', 'startTime']);
+        const formattedVenues = venues.filter(venue => venue.events.length > 0);
 
-    return Promise.all(promises)
-      .then(([events, venues]) => {
         this.setState({
-          events,
-          focusedVenue: events[0].venue,
-          venues
+          events: formattedEvents,
+          focusedVenue: formattedEvents[0].venue,
+          venues: formattedVenues
         });
       });
   }
