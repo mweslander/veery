@@ -54,7 +54,7 @@ class InviteVenueAdmin extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const values = mapFormValues(this.newEventForm.elements);
+    const values = mapFormValues(this.inviteVenueAdminForm.elements);
     values.venues = this.state.venueIdsForSubmission;
 
     return adminInvitationsService
@@ -72,7 +72,7 @@ class InviteVenueAdmin extends Component {
     return (
       <form
         className="c-invite-venue-admin o-fieldset o-container o-container--medium"
-        ref={(form) => { this.newEventForm = form; }}
+        ref={(form) => { this.inviteVenueAdminForm = form; }}
         onSubmit={this.handleSubmit}
       >
         <div className="o-grid">

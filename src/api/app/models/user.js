@@ -16,6 +16,8 @@ const userSchema = new Schema({
     required: true,
     type: String
   },
+  resetPasswordExpires: { type: Date },
+  resetPasswordToken: { type: String },
   role: {
     type: String,
     default: 'venueAdmin',

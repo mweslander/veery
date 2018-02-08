@@ -1,5 +1,10 @@
 import api from './api';
 
+function forgotPassword(params) {
+  return api
+    .post('/forgot-password', params);
+}
+
 function isSignedIn() {
   return api
     .get('/is-signed-in');
@@ -8,6 +13,11 @@ function isSignedIn() {
 function register(params) {
   return api
     .post('/register', params);
+}
+
+function resetPassword(params, token) {
+  return api
+    .put(`/reset-password/${token}`, params);
 }
 
 function signIn(params) {
@@ -21,8 +31,10 @@ function signOut() {
 }
 
 export default {
+  forgotPassword,
   isSignedIn,
   register,
+  resetPassword,
   signIn,
   signOut
 };

@@ -1,7 +1,65 @@
 'use strict';
 
+const crypto = require('crypto');
+
+const config = require('../../config');
+const mailgun = require('../../config/mailgun');
+
 const Invitation = require('../models/invitation');
 const User = require('../models/user');
+
+function sendEmail(email, resetToken) {
+  // For local testing, you'll need to add ':8080' after {config.domain}.
+  const link = `http://${config.domain}/api/reset-password/${resetToken}`;
+  const body = `Please visit the following link to reset your Veery password: \n ${link}`;
+
+  return mailgun.sendEmail(
+    email,
+    'Veery Account Password Reset',
+    body
+  );
+}
+
+function setupPasswordReset(user, res, next) {
+  return crypto.randomBytes(48, (_, buffer) => {
+    const resetToken = buffer.toString('hex');
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+    return user.save()
+      .then((_user) => {
+        return sendEmail(_user.email, resetToken);
+      })
+      .then(() => {
+        return res.status(202).json({ message: `Forgot password email sent to ${user.email}.` });
+      })
+      .catch((err) => {
+        console.log('Error:', err && err.message); // eslint-disable-line no-console
+        next(err);
+      });
+  });
+}
+
+function forgotPassword(req, res, next) {
+  const email = req.body.email;
+
+  if (!email) {
+    return res.status(422).send({ error: 'No email was attached.' });
+  }
+
+  return User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: `Could not find user with email ${email}.` });
+      }
+
+      return setupPasswordReset(user, res, next);
+    })
+    .catch((err) => {
+      console.log('Error:', err && err.message); // eslint-disable-line no-console
+      next(err);
+    });
+}
 
 function isSignedIn(req, res) {
   res.status(200).json({ user: req.user });
@@ -46,6 +104,66 @@ function register(req, res) {
     });
 }
 
+function findUserForPasswordReset(token) {
+  const options = {
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() }
+  };
+
+  return User.findOne(options);
+}
+
+function updateUser(user, password, res) {
+  user.password = password;
+  user.resetPasswordExpires = null;
+  user.resetPasswordToken = null;
+
+  return user.save()
+    .then((_user) => {
+      return res.status(202).json({ user: _user });
+    });
+}
+
+function resetPassword(req, res, next) {
+  const password = req.body.password;
+
+  if (!password) {
+    return res.status(422).send({ error: 'No password was attached.' });
+  }
+
+  return findUserForPasswordReset(req.params.token)
+    .then((user) => {
+      if (!user) {
+        return res.status(401).send({ error: 'The reset password link has expired.' });
+      }
+
+      return updateUser(user, password, res);
+    })
+    .catch((err) => {
+      console.log('Error:', err && err.message); // eslint-disable-line no-console
+      next(err);
+    });
+}
+
+function resetPasswordRedirect(req, res) {
+  const token = req.params.token;
+  const failureRedirect = `http://${config.domain}/#/admin/forgot-password?token=expired`;
+
+  return findUserForPasswordReset(token)
+    .then((user) => {
+      if (!user) {
+        return res.redirect(failureRedirect);
+      }
+
+      // For local testing, you'll need to add ':8080' after {config.domain}.
+      return res.redirect(`http://${config.domain}/#/admin/reset-password?token=${token}`);
+    })
+    .catch((err) => {
+      console.log('Error:', err && err.message); // eslint-disable-line no-console
+      return res.redirect(failureRedirect);
+    });
+}
+
 function showAll(req, res) {
   return User
     .find({})
@@ -67,8 +185,11 @@ function signOut(req, res) {
 }
 
 module.exports = {
+  forgotPassword,
   isSignedIn,
   register,
+  resetPassword,
+  resetPasswordRedirect,
   showAll,
   signIn,
   signOut

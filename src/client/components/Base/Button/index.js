@@ -7,12 +7,13 @@ import './index.scss';
 
 // PropTypes
 const propTypes = {
+  classes: PropTypes.string,
   value: PropTypes.string
 };
 
-function Button(props) {
+function Button({ value, classes }) {
   return (
-    <input className="c-button" type="submit" {...props} />
+    <input className={`c-button ${classes}`} type="submit" value={value} />
   );
 }
 

@@ -14,7 +14,9 @@ import EventsNew from '../components/AdminPanel/Events/New';
 import EventsShowAll from '../components/AdminPanel/Events/ShowAll';
 
 import InviteVenueAdmin from '../components/AdminPanel/InviteVenueAdmin';
+import ForgotPassword from '../components/AdminPanel/ForgotPassword';
 import Register from '../components/AdminPanel/Register';
+import ResetPassword from '../components/AdminPanel/ResetPassword';
 import SignIn from '../components/AdminPanel/SignIn';
 
 import VenuesDeletionModal from '../components/AdminPanel/Venues/DeletionModal';
@@ -51,8 +53,10 @@ function AdminRoutes() {
     <Route path="/admin" component={AdminPanel}>
       <IndexRedirect to="venues" />
 
-      <Route path="sign-in" component={SignIn} />
+      <Route path="forgot-password" component={ForgotPassword} />
+      <Route path="reset-password" component={ResetPassword} />
       <Route path="register" component={Register} />
+      <Route path="sign-in" component={SignIn} />
 
       <Route path="events" onEnter={requireSignIn}>
         <IndexRedirect to="all" />

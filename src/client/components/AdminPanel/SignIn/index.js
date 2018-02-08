@@ -3,6 +3,9 @@ import React, {
   Component,
   PropTypes
 } from 'react';
+import {
+  Link
+} from 'react-router';
 
 // Components
 import Button from '../../Base/Button';
@@ -79,6 +82,9 @@ class SignIn extends Component {
             Password
             <input className="c-field" name="password" type="password" />
           </label>
+          <div className="c-sign-in__forgot-password-link">
+            <Link className="c-link" to="/admin/forgot-password">Forgot Password?</Link>
+          </div>
           <Button value="Sign In" />
         </form>
       </div>
