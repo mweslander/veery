@@ -69,7 +69,7 @@ describe('user requests', function() {
 
       shared.itBehavesLike('a valid request', { statusCode: 202 });
 
-      it('resets the password', function() {
+      it('resets the password and signs in the user', function() {
         return this.promise
           .then(() => User.findById(venueAdmin._id))
           .then((user) => {
@@ -81,6 +81,10 @@ describe('user requests', function() {
           .then(([isMatchOnUser, isMatchOnVenueAdmin]) => {
             expect(isMatchOnUser).to.be.true;
             expect(isMatchOnVenueAdmin).to.be.false;
+            return agent.get('/api/is-signed-in');
+          })
+          .then((res) => {
+            expect(res.body.user).to.exist;
           });
       });
 

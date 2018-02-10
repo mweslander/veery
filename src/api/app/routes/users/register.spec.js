@@ -20,7 +20,7 @@ function establishSpecResources(invitationDetails, venueOptions = {}) {
     .then((invitation) => invitation);
 }
 
-function aValidUserCreation(promise, email) {
+function aValidUserCreation(promise, email, agent) {
   return promise
     .then(() => {
       return User.findOne({ email });
@@ -28,6 +28,10 @@ function aValidUserCreation(promise, email) {
     .then((user) => {
       expect(user).to.exist;
       expect(user.role).to.eq('venueAdmin');
+      return agent.get('/api/is-signed-in');
+    })
+    .then((res) => {
+      expect(res.body.user).to.exist;
     });
 }
 
@@ -126,8 +130,8 @@ describe('user requests', function() {
 
           shared.itBehavesLike('a valid request', { statusCode: 201 });
 
-          it('will create a user', function() {
-            return aValidUserCreation(this.promise, email, invitation);
+          it('will create a user and sign that user in', function() {
+            return aValidUserCreation(this.promise, email, agent);
           });
 
           it('adds the new user on as a venueAdmin', function() {
@@ -158,8 +162,8 @@ describe('user requests', function() {
               });
           });
 
-          it('will create a user', function() {
-            return aValidUserCreation(this.promise, email, invitation);
+          it('will create a user and sign that user in', function() {
+            return aValidUserCreation(this.promise, email, agent);
           });
 
           it('adds the new user on as a venueAdmin', function() {

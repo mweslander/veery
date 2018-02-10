@@ -62,7 +62,7 @@ function forgotPassword(req, res, next) {
 }
 
 function isSignedIn(req, res) {
-  res.status(200).json({ user: req.user });
+  return res.status(200).json({ user: req.user });
 }
 
 function register(req, res) {
@@ -88,8 +88,12 @@ function register(req, res) {
       return new User(params).save();
     })
     .then((user) => {
-      res.status(201).json({ user });
-      return invitation.remove();
+      return req.login(user, (err) => {
+        if (err) { throw new Error(err); }
+
+        res.status(201).json({ user });
+        return invitation.remove();
+      });
     })
     .catch((err) => {
       console.log('Error:', err && err.message); // eslint-disable-line no-console
@@ -113,14 +117,17 @@ function findUserForPasswordReset(token) {
   return User.findOne(options);
 }
 
-function updateUser(user, password, res) {
+function updateAndSignInUser(user, password, req, res) {
   user.password = password;
   user.resetPasswordExpires = null;
   user.resetPasswordToken = null;
 
   return user.save()
     .then((_user) => {
-      return res.status(202).json({ user: _user });
+      return req.login(user, (err) => {
+        if (err) { throw new Error(err); }
+        return res.status(202).json({ user: _user });
+      });
     });
 }
 
@@ -137,7 +144,7 @@ function resetPassword(req, res, next) {
         return res.status(401).send({ error: 'The reset password link has expired.' });
       }
 
-      return updateUser(user, password, res);
+      return updateAndSignInUser(user, password, req, res);
     })
     .catch((err) => {
       console.log('Error:', err && err.message); // eslint-disable-line no-console
