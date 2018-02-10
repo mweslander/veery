@@ -47,7 +47,7 @@ class ResetPassword extends Component {
       .resetPassword(values, this.props.router.location.query.token)
       .then(() => {
         this.props.setAlertMessage({ successMessage: 'Your new password has been set.' });
-        return this.props.router.push('/admin/sign-in');
+        return this.props.router.push('/admin/venues');
       })
       .catch(({ response }) => {
         if (response.status === 401) {
