@@ -24,8 +24,8 @@ function createAndSendInvitation(invitationDetails, res) {
   return User.findOne({ email })
     .then((existingUser) => {
       if (existingUser) {
-        res.status(422);
-        throw new Error(`A user with the email ${email} already exists`);
+        res.status(403);
+        throw new Error(`A user with the email ${email} already exists.`);
       }
 
       return Invitation.findOne({ email });

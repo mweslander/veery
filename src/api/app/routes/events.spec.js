@@ -1,6 +1,5 @@
 'use strict';
 
-const flatten = require('lodash').flatten;
 const Event = require('../models/event');
 const Venue = require('../models/venue');
 const {
@@ -26,7 +25,7 @@ function establishSpecResources(agent, extraEvents = () => []) {
         eventPromises.push(createEvent({ venue: venues[1]._id }));
       }
 
-      return Promise.all(flatten([eventPromises, extraEvents(venues)]));
+      return Promise.all(_.flatten([eventPromises, extraEvents(venues)]));
     });
 }
 

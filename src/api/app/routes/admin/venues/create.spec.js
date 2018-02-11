@@ -199,7 +199,7 @@ describe('admin venue requests', function() {
             });
 
             shared.itBehavesLike('a protected POST endpoint');
-            shared.itBehavesLike('an invalid request', { statusCode: 422 });
+            shared.itBehavesLike('an invalid request', { statusCode: 403 });
 
             it('does not invite that user', function() {
               return this.promise

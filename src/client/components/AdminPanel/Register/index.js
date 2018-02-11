@@ -79,7 +79,7 @@ class Register extends Component {
             Email: {email}
           </label>
           <label className="c-label" htmlFor="password">
-            Password
+            Enter a password
             <input className="c-field" name="password" type="password" />
           </label>
           <Button value="Register" />

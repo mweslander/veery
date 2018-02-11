@@ -18,6 +18,7 @@ import ForgotPassword from '../components/AdminPanel/ForgotPassword';
 import Register from '../components/AdminPanel/Register';
 import ResetPassword from '../components/AdminPanel/ResetPassword';
 import SignIn from '../components/AdminPanel/SignIn';
+import SignUp from '../components/AdminPanel/SignUp';
 
 import VenuesDeletionModal from '../components/AdminPanel/Venues/DeletionModal';
 import VenuesEdit from '../components/AdminPanel/Venues/Edit';
@@ -57,6 +58,7 @@ function AdminRoutes() {
       <Route path="reset-password" component={ResetPassword} />
       <Route path="register" component={Register} />
       <Route path="sign-in" component={SignIn} />
+      <Route path="sign-up" component={SignUp} />
 
       <Route path="events" onEnter={requireSignIn}>
         <IndexRedirect to="all" />
