@@ -12,16 +12,42 @@ const {
   signInAndCreateUser
 } = require('../../../spec/specHelper');
 
-function establishSpecResources(agent, role) {
+function establishSpecResources(agent, role, extraVenues = () => []) {
   return signInAndCreateUser(agent, role)
-    .then(() => {
+    .then((admin) => {
       const promises = [];
 
       for (let i = 10; i > 0; i--) {
         promises.push(createVenue());
       }
 
-      return Promise.all(promises);
+      return Promise.all(_.flatten([promises, extraVenues(admin)]));
+    });
+}
+
+function aFailedInvite(promise, email, sendEmail) {
+  return promise
+    .then(expect.fail)
+    .catch(() => Invitation.findOne({ email }).lean())
+    .then((invitation) => {
+      expect(invitation).not.to.exist;
+      expect(sendEmail.called).to.be.false;
+    });
+}
+
+function aSuccessfulInvite(promise, invitationDetails, sendEmail, expectationCallback = () => {}) {
+  return promise
+    .then(() => Invitation.findOne({ email: invitationDetails.email }))
+    .then((invitation) => {
+      const venues = invitation.venues.map((venue) => venue.toString());
+      expect(invitation).to.be.an.object;
+      expect(invitation.role).to.equal('venueAdmin');
+      // mailgun tests
+      expect(sendEmail.calledOnce).to.be.true;
+      const [email] = sendEmail.firstCall.args;
+      expect(email).to.equal(invitationDetails.email);
+      // extra tests
+      return expectationCallback(venues);
     });
 }
 
@@ -36,14 +62,24 @@ describe('admin invitation requests', function() {
 
   describe('POST /admin/invitations', function() {
     let agent;
+    let email;
     let endpoint;
     let sendEmail;
 
     beforeEach(function() {
       agent = apiRequest(app);
       this.agent = agent;
+      email = faker.internet.email().toLowerCase();
       endpoint = '/api/admin/invitations';
       sendEmail = this.sandbox.stub(mailgun, 'sendEmail');
+    });
+
+    afterEach(function() {
+      return Promise.all([
+        Invitation.remove(),
+        User.remove(),
+        Venue.remove()
+      ]);
     });
 
     context('when the inviter is an admin', function() {
@@ -67,55 +103,40 @@ describe('admin invitation requests', function() {
             });
         });
 
-        afterEach(function() {
-          return Promise.all([
-            Invitation.remove(),
-            User.remove(),
-            Venue.remove()
-          ]);
-        });
-
-        shared.itBehavesLike('a protected POST endpoint');
         shared.itBehavesLike('a valid request', { statusCode: 201 });
 
-        it('creates an invitation', function() {
-          return this.promise
-            .then(() => Invitation.findOne({ email: invitationDetails.email }))
-            .then((invitation) => {
-              const venues = invitation.venues.map((venue) => venue.toString());
-              expect(invitation).to.be.an.object;
-              expect(invitation.role).to.equal('venueAdmin');
-              expect(venues).to.include(attachedVenue._id.toString());
-            });
-        });
+        it('invites the user', function() {
+          const expectationCallback = (venues) => {
+            expect(venues).to.include(attachedVenue._id.toString());
+          };
 
-        it('sends an email indicating the invitation was created', function() {
-          return this.promise
+          return aSuccessfulInvite(this.promise, invitationDetails, sendEmail, expectationCallback);
+        });
+      });
+
+      context('when an email was not attached', function() {
+        beforeEach(function() {
+          return establishSpecResources(agent, 'admin')
             .then(() => {
-              expect(sendEmail.calledOnce).to.be.true;
-              const [email] = sendEmail.firstCall.args;
-              expect(email).to.equal(invitationDetails.email);
+              const invitationDetails = {
+                role: 'venueAdmin'
+              };
+
+              this.promise = agent
+                .post(endpoint)
+                .send(invitationDetails);
             });
         });
 
-        it('responds with a 201', function() {
-          return this.promise
-            .then((response) => {
-              const responseJSON = JSON.parse(response.text);
-              expect(response).to.have.status(201);
-              expect(responseJSON).to.deep.equal({
-                message: `Account activation email sent to ${invitationDetails.email}`
-              });
-            });
+        shared.itBehavesLike('an invalid request', { statusCode: 422 });
+
+        it('does not invite that user', function() {
+          return aFailedInvite(this.promise, email, sendEmail);
         });
       });
 
       context('when a user with that email already exists', function() {
-        let email;
-
         beforeEach(function() {
-          email = faker.internet.email().toLowerCase();
-
           return createUser('venueAdmin', { email })
             .then(() => establishSpecResources(agent, 'admin'))
             .then(() => {
@@ -130,34 +151,167 @@ describe('admin invitation requests', function() {
             });
         });
 
-        shared.itBehavesLike('a protected POST endpoint');
-        shared.itBehavesLike('an invalid request', { statusCode: 422 });
+        shared.itBehavesLike('an invalid request', { statusCode: 403 });
 
         it('does not invite that user', function() {
-          return this.promise
-            .then(expect.fail)
-            .catch(() => {
-              expect(sendEmail.called).to.be.false;
-            });
-        });
-
-        it('does not create an invitation', function() {
-          return this.promise
-            .then(expect.fail)
-            .catch(() => {
-              return Invitation
-                .findOne({ email })
-                .lean();
-            })
-            .then((invitation) => {
-              expect(invitation).not.to.exist;
-            });
+          return aFailedInvite(this.promise, email, sendEmail);
         });
       });
 
       context('when a user with email has already been invited', function() {
         // not the current setup but will be in the future
         it('combines resends the invitation');
+      });
+    });
+
+    context('when the inviter is a venueAdmin', function() {
+      let extraVenues;
+
+      beforeEach(function() {
+        extraVenues = (admin) => {
+          const promises = [];
+
+          for (let i = 10; i > 0; i--) {
+            promises.push(createVenue({ venueAdmins: [admin._id] }));
+          }
+
+          return promises;
+        };
+      });
+
+      context('when the inviter does have access to the venues', function() {
+        let attachedVenue;
+        let invitationDetails;
+
+        beforeEach(function() {
+          return establishSpecResources(agent, 'venueAdmin', extraVenues)
+            .then((venues) => {
+              attachedVenue = venues[venues.length - 1];
+              invitationDetails = {
+                email,
+                role: 'venueAdmin',
+                venues: [attachedVenue._id]
+              };
+
+              this.promise = agent
+                .post(endpoint)
+                .send(invitationDetails);
+            });
+        });
+
+        shared.itBehavesLike('a valid request', { statusCode: 201 });
+
+        it('invites the user', function() {
+          const expectationCallback = (venues) => {
+            expect(venues).to.include(attachedVenue._id.toString());
+          };
+
+          return aSuccessfulInvite(this.promise, invitationDetails, sendEmail, expectationCallback);
+        });
+      });
+
+      context('when the inviter does not have access to the venues', function() {
+        beforeEach(function() {
+          return establishSpecResources(agent, 'venueAdmin', extraVenues)
+            .then((venues) => {
+              const attachedVenue = venues[0];
+              const invitationDetails = {
+                email,
+                role: 'venueAdmin',
+                venues: [attachedVenue._id]
+              };
+
+              this.promise = agent
+                .post(endpoint)
+                .send(invitationDetails);
+            });
+        });
+
+        shared.itBehavesLike('an invalid request', { statusCode: 401 });
+
+        it('does not invite that user', function() {
+          return aFailedInvite(this.promise, email, sendEmail);
+        });
+      });
+
+      context('when the inviter attached an admin role', function() {
+        beforeEach(function() {
+          return establishSpecResources(agent, 'venueAdmin')
+            .then(() => {
+              const invitationDetails = {
+                email,
+                role: 'admin',
+                venues: []
+              };
+
+              this.promise = agent
+                .post(endpoint)
+                .send(invitationDetails);
+            });
+        });
+
+        shared.itBehavesLike('an invalid request', { statusCode: 401 });
+
+        it('does not invite that user', function() {
+          return aFailedInvite(this.promise, email, sendEmail);
+        });
+      });
+    });
+
+    context('when the inviter does not exist', function() {
+      context('when the params are valid', function() {
+        let invitationDetails;
+
+        beforeEach(function() {
+          invitationDetails = {
+            email,
+            role: 'venueAdmin',
+            venues: []
+          };
+
+          this.promise = agent
+            .post(endpoint)
+            .send(invitationDetails);
+        });
+
+        shared.itBehavesLike('a valid request', { statusCode: 201 });
+
+        it('invites the user', function() {
+          return aSuccessfulInvite(this.promise, invitationDetails, sendEmail);
+        });
+      });
+
+      context('when the inviter attached a venue', function() {
+        let attachedVenue;
+        let invitationDetails;
+
+        beforeEach(function() {
+          const promises = [];
+
+          for (let i = 10; i > 0; i--) {
+            promises.push(createVenue());
+          }
+
+          return Promise.all(promises)
+            .then((venues) => {
+              attachedVenue = venues[venues.length - 1];
+              invitationDetails = {
+                email,
+                role: 'venueAdmin',
+                venues: [attachedVenue._id]
+              };
+
+              this.promise = agent
+                .post(endpoint)
+                .send(invitationDetails);
+            });
+        });
+
+        shared.itBehavesLike('an invalid request', { statusCode: 401 });
+
+        it('does not invite that user', function() {
+          return aFailedInvite(this.promise, email, sendEmail);
+        });
       });
     });
   });

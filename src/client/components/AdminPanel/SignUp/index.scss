@@ -1,0 +1,5 @@
+@import "../../../css/mixins";
+
+.c-sign-up {
+  @include centered;
+}

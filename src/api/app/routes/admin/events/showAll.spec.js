@@ -1,6 +1,5 @@
 'use strict';
 
-const flatten = require('lodash').flatten;
 const Event = require('../../../models/event');
 const User = require('../../../models/user');
 const Venue = require('../../../models/venue');
@@ -25,7 +24,7 @@ function establishSpecResources(agent, role, extraVenues = () => []) {
         promises.push(createVenue());
       }
 
-      return Promise.all(flatten([promises, extraVenues(admin)]));
+      return Promise.all(_.flatten([promises, extraVenues(admin)]));
     })
     .then((venues) => {
       const eventPromises = [];

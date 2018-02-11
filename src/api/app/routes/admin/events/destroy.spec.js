@@ -1,6 +1,5 @@
 'use strict';
 
-const flatten = require('lodash').flatten;
 const moment = require('moment');
 
 const Event = require('../../../models/event');
@@ -29,7 +28,7 @@ function establishSpecResources(agent, role, venuesCallback = () => {}, extraEve
         promises.push(createEvent({ venue: venues[venues.length - 1]._id }));
       }
 
-      return Promise.all(flatten([promises, extraEvents(venues)]));
+      return Promise.all(_.flatten([promises, extraEvents(venues)]));
     });
 }
 

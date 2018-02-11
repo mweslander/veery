@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 // Components
 import Event from '../Event';
+import Footer from '../Footer';
 
 // CSS
 import './index.scss';
@@ -38,6 +39,8 @@ function EventList({ events, focusedVenue, updateFocusedVenue }) {
           })}
         </li>
       </ul>
+
+      <Footer />
     </div>
   );
 }
