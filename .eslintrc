@@ -29,6 +29,9 @@
     "templateStrings": true,
     "jsx": true
   },
+  "globals": {
+    "_": true
+  },
   "parser": "babel-eslint",
   "plugins": [
     "react"

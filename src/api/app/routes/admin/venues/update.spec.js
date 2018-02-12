@@ -1,5 +1,7 @@
 'use strict';
 
+const googleMaps = require('../../../../config/googleMaps');
+
 const User = require('../../../models/user');
 const Venue = require('../../../models/venue');
 const {
@@ -36,6 +38,9 @@ describe('admin venue requests', function() {
 
   describe('PUT /admin/venues/:id', function() {
     let agent;
+    let expectedLatitude;
+    let expectedLongitude;
+    let geocode;
     let name;
     let newName;
 
@@ -44,6 +49,13 @@ describe('admin venue requests', function() {
       this.agent = agent;
       name = faker.hacker.noun();
       newName = faker.hacker.verb();
+
+      expectedLatitude = faker.random.number();
+      expectedLongitude = faker.random.number();
+      geocode = this.sandbox.stub(googleMaps, 'geocode').returns(Promise.resolve({
+        lat: expectedLatitude,
+        lng: expectedLongitude
+      }));
     });
 
     afterEach(function() {
@@ -62,10 +74,17 @@ describe('admin venue requests', function() {
             .then((newVenue) => {
               venue = newVenue;
               const endpoint = `/api/admin/venues/${newVenue._id}`;
+              const params = {
+                name: newName,
+                address: venue.address,
+                city: venue.city,
+                state: venue.state,
+                zipCode: venue.zipCode
+              };
 
               this.promise = agent
                 .put(endpoint)
-                .send({ name: newName });
+                .send(params);
             });
         });
 
@@ -74,6 +93,49 @@ describe('admin venue requests', function() {
 
         it('updates the venue', function() {
           return aValidVenueUpdate(venue, this.promise, name, newName);
+        });
+
+        it('does not call geocode', function() {
+          return this.promise
+            .then(() => {
+              expect(geocode.called).to.be.false;
+            });
+        });
+      });
+
+      context('when updating a part of the address', function() {
+        let address;
+        let venue;
+
+        beforeEach(function() {
+          address = faker.address.streetAddress();
+
+          return establishSpecResources(agent, 'admin', () => createVenue({ name }))
+            .then((newVenue) => {
+              venue = newVenue;
+              const endpoint = `/api/admin/venues/${venue._id}`;
+              const params = {
+                name: newName,
+                address,
+                city: venue.city,
+                state: venue.state,
+                zipCode: venue.zipCode
+              };
+
+              this.promise = agent
+                .put(endpoint)
+                .send(params);
+            });
+        });
+
+        shared.itBehavesLike('a protected PUT endpoint');
+        shared.itBehavesLike('a valid request', { statusCode: 202 });
+
+        it('calls geocode and updates the longitude and longitude', function() {
+          return aValidVenueUpdate(venue, this.promise, venue.longitude, expectedLongitude, 'longitude')
+            .then(() => {
+              expect(geocode.called).to.be.true;
+            });
         });
       });
 

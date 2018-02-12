@@ -1,6 +1,8 @@
 'use strict';
 
+const googleMaps = require('../../../../config/googleMaps');
 const mailgun = require('../../../../config/mailgun');
+
 const Invitation = require('../../../models/invitation');
 const User = require('../../../models/user');
 const Venue = require('../../../models/venue');
@@ -19,7 +21,7 @@ function establishSpecResources(agent, role, callback = () => {}) {
 
 function aValidVenueCreation(promise, attribute, key = 'name') {
   return promise
-    .then(() => Venue.findOne({ [key]: attribute }))
+    .then(() => Venue.findOne({ [key]: attribute }).lean())
     .then((newVenue) => {
       expect(newVenue).to.exist;
       return newVenue;
@@ -67,22 +69,67 @@ describe('admin venue requests', function() {
       ]);
     });
 
-    context('when the creator is an admin', function() {
-      context('when using basic attributes', function() {
-        beforeEach(function() {
-          return establishSpecResources(agent, 'admin')
-            .then(() => {
-              this.promise = agent
-                .post(endpoint)
-                .send({ name });
-            });
+    context('when the address can be found', function() {
+      let expectedLatitude;
+      let expectedLongitude;
+
+      beforeEach(function() {
+        // not using faker.address.[lat/long]itude() bc if it ends in a zero, the db won't
+        // store the zero and the tests will break for the wrong reason
+        expectedLatitude = faker.random.number();
+        expectedLongitude = faker.random.number();
+        this.sandbox.stub(googleMaps, 'geocode').returns(Promise.resolve({
+          lat: expectedLatitude,
+          lng: expectedLongitude
+        }));
+      });
+
+      context('when the creator is an admin', function() {
+        context('when using basic attributes', function() {
+          beforeEach(function() {
+            return establishSpecResources(agent, 'admin')
+              .then(() => {
+                this.promise = agent
+                  .post(endpoint)
+                  .send({ name });
+              });
+          });
+
+          shared.itBehavesLike('a protected POST endpoint');
+          shared.itBehavesLike('a valid request', { statusCode: 201 });
+
+          it('creates the venue', function() {
+            return aValidVenueCreation(this.promise, name);
+          });
         });
 
-        shared.itBehavesLike('a protected POST endpoint');
-        shared.itBehavesLike('a valid request', { statusCode: 201 });
+        context('when attaching an address', function() {
+          beforeEach(function() {
+            return establishSpecResources(agent, 'admin')
+              .then(() => {
+                const venueDetails = {
+                  address: faker.address.streetAddress(),
+                  city: faker.address.city(),
+                  name,
+                  state: faker.address.state()
+                };
 
-        it('creates the venue', function() {
-          return aValidVenueCreation(this.promise, name);
+                this.promise = agent
+                  .post(endpoint)
+                  .send(venueDetails);
+              });
+          });
+
+          shared.itBehavesLike('a protected POST endpoint');
+          shared.itBehavesLike('a valid request', { statusCode: 201 });
+
+          it('attaches the longitude and latitude of the address', function() {
+            return aValidVenueCreation(this.promise, name)
+              .then((newVenue) => {
+                expect(newVenue.latitude).to.eq(expectedLatitude);
+                expect(newVenue.longitude).to.eq(expectedLongitude);
+              });
+          });
         });
       });
 
@@ -308,67 +355,102 @@ describe('admin venue requests', function() {
           });
         });
       });
-    });
 
-    context('when the creator is a venueAdmin', function() {
-      context('when not attaching other venueAdmins to the params', function() {
-        let creator;
+      context('when the creator is a venueAdmin', function() {
+        context('when not attaching other venueAdmins to the params', function() {
+          let creator;
 
-        beforeEach(function() {
-          return establishSpecResources(agent, 'venueAdmin', (newAdmin) => newAdmin)
-            .then((newAdmin) => {
-              creator = newAdmin;
+          beforeEach(function() {
+            return establishSpecResources(agent, 'venueAdmin', (newAdmin) => newAdmin)
+              .then((newAdmin) => {
+                creator = newAdmin;
 
-              this.promise = agent
-                .post(endpoint)
-                .send({ name });
-            });
+                this.promise = agent
+                  .post(endpoint)
+                  .send({ name });
+              });
+          });
+
+          shared.itBehavesLike('a protected POST endpoint');
+          shared.itBehavesLike('a valid request', { statusCode: 201 });
+
+          it('creates the venue', function() {
+            return aValidVenueCreation(this.promise, name);
+          });
+
+          it('attaches itself as a venueAdmin to the newly created venue', function() {
+            return aValidSelfAttachemnt(this.promise, creator, name);
+          });
         });
 
-        shared.itBehavesLike('a protected POST endpoint');
-        shared.itBehavesLike('a valid request', { statusCode: 201 });
+        context('when attaching other venueAdmins to the params', function() {
+          let anotherVenueAdmin;
+          let creator;
 
-        it('creates the venue', function() {
-          return aValidVenueCreation(this.promise, name);
-        });
+          beforeEach(function() {
+            return createUser('venueAdmin')
+              .then((newAdmin) => {
+                anotherVenueAdmin = newAdmin;
+                return establishSpecResources(agent, 'venueAdmin', (admin) => admin);
+              })
+              .then((newAdmin) => {
+                creator = newAdmin;
 
-        it('attaches itself as a venueAdmin to the newly created venue', function() {
-          return aValidSelfAttachemnt(this.promise, creator, name);
+                this.promise = agent
+                  .post(endpoint)
+                  .send({ name, venueAdmins: [anotherVenueAdmin._id] });
+              });
+          });
+
+          shared.itBehavesLike('a protected POST endpoint');
+          shared.itBehavesLike('a valid request', { statusCode: 201 });
+
+          it('creates the venue', function() {
+            return aValidVenueCreation(this.promise, name);
+          });
+
+          it('attaches itself as a venueAdmin to the newly created venue', function() {
+            return aValidSelfAttachemnt(this.promise, creator, name)
+              .then((newVenue) => {
+                expect(newVenue.venueAdmins.length).to.eq(2);
+              });
+          });
         });
       });
+    });
 
-      context('when attaching other venueAdmins to the params', function() {
-        let anotherVenueAdmin;
-        let creator;
+    context('when the address cannot be found', function() {
+      beforeEach(function() {
+        this.sandbox.stub(googleMaps, 'geocode', () => Promise.reject());
 
-        beforeEach(function() {
-          return createUser('venueAdmin')
-            .then((newAdmin) => {
-              anotherVenueAdmin = newAdmin;
-              return establishSpecResources(agent, 'venueAdmin', (admin) => admin);
-            })
-            .then((newAdmin) => {
-              creator = newAdmin;
+        return establishSpecResources(agent, 'admin')
+          .then(() => {
+            const venueDetails = {
+              address: faker.address.streetAddress(),
+              city: faker.address.city(),
+              name,
+              state: faker.address.state()
+            };
 
-              this.promise = agent
-                .post(endpoint)
-                .send({ name, venueAdmins: [anotherVenueAdmin._id] });
-            });
-        });
+            this.promise = agent
+              .post(endpoint)
+              .send(venueDetails);
+          });
+      });
 
-        shared.itBehavesLike('a protected POST endpoint');
-        shared.itBehavesLike('a valid request', { statusCode: 201 });
+      shared.itBehavesLike('a protected POST endpoint');
+      shared.itBehavesLike('an invalid request', { statusCode: 422 });
 
-        it('creates the venue', function() {
-          return aValidVenueCreation(this.promise, name);
-        });
-
-        it('attaches itself as a venueAdmin to the newly created venue', function() {
-          return aValidSelfAttachemnt(this.promise, creator, name)
-            .then((newVenue) => {
-              expect(newVenue.venueAdmins.length).to.eq(2);
-            });
-        });
+      it('does not create a venue and throws the error back', function() {
+        return this.promise
+          .then(expect.fail)
+          .catch(({ response }) => {
+            expect(response.error.text).to.exist;
+            return Venue.findOne({ name });
+          })
+          .then((venue) => {
+            expect(venue).not.to.exist;
+          });
       });
     });
   });
