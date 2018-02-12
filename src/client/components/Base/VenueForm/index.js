@@ -72,28 +72,6 @@ function VenueForm({ handleChange, venue }) {
           value: venue.zipCode
         }}
       />
-
-      <LabelGroup
-        name="latitude"
-        options={{
-          onChange: handleChange,
-          placeholder: '34.12345',
-          step: '0.000001',
-          type: 'number',
-          value: venue.latitude
-        }}
-      />
-
-      <LabelGroup
-        name="longitude"
-        options={{
-          onChange: handleChange,
-          placeholder: '-78.42069',
-          step: '0.000001',
-          type: 'number',
-          value: venue.longitude
-        }}
-      />
     </div>
   );
 }
