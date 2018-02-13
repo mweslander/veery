@@ -13,9 +13,9 @@ import logoImg from './logo-img.svg';
 */
 
 const Header = () => (
-  <header className="header">
-    <img className="header__img" src={logoImg} alt="Veery logo" />
-    <h1 className="header__type">Veery</h1>
+  <header className="c-header">
+    <img className="c-header__img" src={logoImg} alt="Veery logo" />
+    <h1 className="c-header__type">Veery</h1>
   </header>
 );
 

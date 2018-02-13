@@ -1,36 +1,31 @@
 //=============================================================================
-// Event .event
+// Event .c-event
 //=============================================================================
 
 @import "../../css/variables";
 
-.event {
-  width: 100%;
-  background-color: $overlay-gold-highlight;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1px;
-
-  &--focused {
-    background-color: $overlay-orange-highlight;
-  }
-}
-
-.event-details {
+.c-event {
   flex-grow: 1;
   text-align: left;
   color: $white;
   padding: $small-spacing 0 $small-spacing $base-spacing;
 
-  &:hover {
-    cursor: pointer;
+  &__address {
+    font-style: normal;
+    font-size: 10px;
   }
 
-  &__performance-type {
-    margin: 0;
-    text-transform: uppercase;
-    font-size: 15px;
+  &__container {
+    width: 100%;
+    background-color: $overlay-gold-highlight;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1px;
+
+    &--focused {
+      background-color: $overlay-orange-highlight;
+    }
   }
 
   &__name {
@@ -40,18 +35,23 @@
     padding: 3px 0;
   }
 
-  &__address {
-    font-style: normal;
-    font-size: 10px;
-  }
-}
-
-.event-time {
-  padding-right: $small-spacing;
-  text-align: right;
-  color: $white;
-
-  h4 {
+  &__performance-type {
     margin: 0;
+    text-transform: uppercase;
+    font-size: 15px;
+  }
+
+  &__time {
+    padding-right: $small-spacing;
+    text-align: right;
+    color: $white;
+
+    h4 {
+      margin: 0;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
   }
 }

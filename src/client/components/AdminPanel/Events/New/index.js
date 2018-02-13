@@ -63,7 +63,7 @@ class NewEvent extends Component {
   render() {
     return (
       <form
-        className="new-event o-fieldset o-container o-container--small"
+        className="c-new-event o-fieldset o-container o-container--small"
         ref={(form) => { this.newEventForm = form; }}
         onSubmit={this.handleSubmit}
       >

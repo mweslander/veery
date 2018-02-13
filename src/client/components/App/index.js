@@ -80,9 +80,9 @@ class App extends Component {
 
   render() {
     return (
-      <div className="app">
+      <div className="l-app">
         <Header />
-        <div className="interactive-container">
+        <div className="c-interactive-container">
           <VenueMap
             focusedVenue={this.state.focusedVenue}
             updateFocusedVenue={this.updateFocusedVenue}

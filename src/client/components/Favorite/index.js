@@ -11,7 +11,7 @@ import './index.scss';
 
 function Favorite() {
   return (
-    <div className="favorite">
+    <div className="c-favorite">
       <svg width="24px" height="23px" viewBox="0 0 24 23">
         <g id="Welcome" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           <g transform="translate(-7.000000, -390.000000)" stroke="#042B63" fill="#FF9900">

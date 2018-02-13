@@ -1,0 +1,5 @@
+@import "../../../../css/mixins";
+
+.c-admin-events-show-all {
+  @include admin-show-all;
+}

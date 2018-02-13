@@ -31,26 +31,26 @@ function getTime(time) {
 
 function Event({ event, focusedVenue, updateFocusedVenue }) {
   const isFocusedVenue = event.venue._id === focusedVenue._id;
-  const eventClass = classNames('event', { 'event--focused': isFocusedVenue });
+  const eventClass = classNames('c-event__container', { 'c-event__container--focused': isFocusedVenue });
 
   return (
     <Element name={event._id} className={eventClass}>
       <Favorite />
       <div
         onClick={() => { updateFocusedVenue(event.venue, event); }}
-        className="event-details"
+        className="c-event"
       >
-        <h2 className="event-details__performance-type">{event.title}</h2>
-        <h3 className="event-details__name">{event.venue.name}</h3>
-        <address className="event-details__address">
+        <h2 className="c-event__performance-type">{event.title}</h2>
+        <h3 className="c-event__name">{event.venue.name}</h3>
+        <address className="c-event__address">
           <span>{event.venue.address}</span>
           <br />
           <span>{`${event.venue.city}, ${event.venue.state} ${event.venue.zipCode}`}</span>
         </address>
       </div>
-      <div className="event-time">
-        <h4 className="event-time__date">{getTime(event.startDate)}</h4>
-        <h4 className="event-time__time">{event.startTime}</h4>
+      <div className="c-event__time">
+        <h4>{getTime(event.startDate)}</h4>
+        <h4>{event.startTime}</h4>
       </div>
     </Element>
   );

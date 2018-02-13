@@ -56,49 +56,5 @@ h1 {
   margin: 0;
 }
 
-//=============================================================================
-// Components
-//=============================================================================
-
-.c-admin-show-all {
-  @include centered;
-  margin-top: $base-spacing;
-  width: 95%;
-
-  &__link {
-    float: right;
-  }
-}
-
-//=============================================================================
-// Object overrides
-//=============================================================================
-
-.o-modal {
-  width: initial;
-  padding: 0 2em;
-}
-
-//=============================================================================
-// Component overrides
-//=============================================================================
-
-.c-alert {
-  border-radius: 0;
-}
-
-.c-button {
-  background-color: $darkest-gray;
-}
-
-.c-field {
-  margin-top: .25em;
-}
-
-.c-label {
-  text-align: left;
-}
-
-.c-nav {
-  background-color: $darkest-gray;
-}
+@import "css/objectOverrides";
+@import "css/componentOverrides";

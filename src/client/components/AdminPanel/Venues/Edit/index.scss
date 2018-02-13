@@ -1,0 +1,5 @@
+@import "../../../../css/mixins";
+
+.c-edit-venue {
+  @include centered;
+}

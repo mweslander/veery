@@ -152,7 +152,7 @@ class VenueMap extends Component {
   }
 
   render() {
-    return <div className="map" id="googleMap" />;
+    return <div className="c-map" id="googleMap" />;
   }
 }
 

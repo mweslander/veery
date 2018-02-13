@@ -2,6 +2,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// CSS
+import './index.scss';
+
 // Components
 import LabelGroup from '../LabelGroup';
 
@@ -18,7 +21,7 @@ const propTypes = {
 
 function VenueForm({ handleChange, venue }) {
   return (
-    <div>
+    <div className="c-venue-form">
       <LabelGroup
         name="name"
         options={{

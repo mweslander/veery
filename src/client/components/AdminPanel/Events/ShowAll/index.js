@@ -9,6 +9,9 @@ import {
 } from 'react-router';
 import moment from 'moment';
 
+// CSS
+import './index.scss';
+
 // Services
 import adminEventsService from '../../../../services/admin/events';
 
@@ -16,6 +19,7 @@ import adminEventsService from '../../../../services/admin/events';
 const propTypes = {
   children: PropTypes.node,
   events: PropTypes.array,
+  isMobileScreen: PropTypes.bool,
   removeAlert: PropTypes.func,
   router: PropTypes.shape({
     push: PropTypes.func.isRequired
@@ -56,15 +60,18 @@ class Events extends Component {
 
   render() {
     return (
-      <div className="c-admin-show-all">
-        <Link className="c-admin-show-all__link c-button c-button--brand" to="/admin/events/new">Add a New Event</Link>
+      <div className="c-admin-events-show-all">
+        <Link className="c-admin-events-show-all__link c-button c-button--brand" to="/admin/events/new">Add a New Event</Link>
         <table className="c-table c-table--striped">
           <thead className="c-table__head">
             <tr className="c-table__row c-table__row--heading">
               <th className="c-table__cell">Title</th>
               <th className="c-table__cell">Start Date</th>
-              <th className="c-table__cell">Start Time</th>
-              <th className="c-table__cell">Venue</th>
+              {!this.props.isMobileScreen &&
+                <th className="c-table__cell">Start Time</th>}
+              {!this.props.isMobileScreen ?
+                <th className="c-table__cell">Venue</th>:
+                <th className="c-table__cell" />}
               <th className="c-table__cell" />
             </tr>
           </thead>
@@ -78,11 +85,13 @@ class Events extends Component {
                 >
                   <td className="c-table__cell">{event.title}</td>
                   <td className="c-table__cell">{moment(event.startDate).format('MM-YY-DD')}</td>
-                  <td className="c-table__cell">{event.startTime}</td>
-                  <td className="c-table__cell">
-                    <Link className="c-link" to={`/admin/venues/${event.venue._id}/edit`}>{event.venue.name}</Link>
-                  </td>
-                  <td className="c-table__cell o-grid">
+                  {!this.props.isMobileScreen &&
+                    <td className="c-table__cell">{event.startTime}</td>}
+                  {!this.props.isMobileScreen &&
+                    <td className="c-table__cell">
+                      <Link className="c-link" to={`/admin/venues/${event.venue._id}/edit`}>{event.venue.name}</Link>
+                    </td>}
+                  <td className="c-table__cell c-admin-venues-show-all__grid o-grid">
                     <Link className="c-link o-grid__cell" to={`/admin/events/${event._id}/edit`}>Edit</Link>
                     <Link className="c-link o-grid__cell" to={`/admin/events/all/${event._id}/delete`}>destroy</Link>
                   </td>
