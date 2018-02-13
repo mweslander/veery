@@ -2,6 +2,7 @@
 
 .c-sign-in {
   @include centered;
+  padding: 1em;
 
   &__forgot-password-link {
     margin: 1em 0;

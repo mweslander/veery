@@ -2,6 +2,8 @@
 // Mixins
 //=============================================================================
 
+@import "./variables";
+
 @mixin clearfix {
   &::after {
     clear: both;
@@ -31,4 +33,18 @@
 
 @mixin centered {
   margin: 0 auto;
+}
+
+@mixin admin-show-all {
+  @include centered;
+  margin-top: $base-spacing;
+  width: 95%;
+
+  &__grid {
+    overflow: initial;
+  }
+
+  &__link {
+    float: right;
+  }
 }

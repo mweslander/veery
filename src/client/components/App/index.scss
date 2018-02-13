@@ -4,7 +4,7 @@
 
 @import "../../css/variables";
 
-.app {
+.l-app {
   background: $deep-blue;
   position: relative;
   display: flex;
@@ -14,7 +14,7 @@
   height: 100%;
 }
 
-.interactive-container {
+.c-interactive-container {
   position: relative;
   display: flex;
   flex-direction: column;

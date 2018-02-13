@@ -29,7 +29,7 @@ function Modal({ children, closeModal, handleSubmit, heading }) {
       <div className="c-overlay c-overlay--visible" />
       <div className="o-modal">
         <form
-          className="new-event o-fieldset o-container o-container--small"
+          className="c-modal__form o-fieldset o-container o-container--small"
           onSubmit={handleSubmit}
         >
           <div className="c-card">

@@ -3,12 +3,12 @@ import React, {
   cloneElement,
   Component
 } from 'react';
-import {
-  Link
-} from 'react-router';
 import PropTypes from 'prop-types';
 import 'blaze';
 import classnames from 'classnames';
+
+// Components
+import Nav from './Nav';
 
 // Services
 import usersService from '../../services/users';
@@ -35,10 +35,12 @@ class AdminPanel extends Component {
     super();
 
     this.handleSignOut = this.handleSignOut.bind(this);
+    this.isAuthRoute = this.isAuthRoute.bind(this);
     this.removeAlert = this.removeAlert.bind(this);
     this.setAlertMessage = this.setAlertMessage.bind(this);
     this.updateVenues = this.updateVenues.bind(this);
     this.state = {
+      isMobileScreen: screen.width <= 500,
       signedIn: false,
       venues: []
     };
@@ -91,20 +93,11 @@ class AdminPanel extends Component {
 
     return (
       <div>
-        <div className="c-nav c-nav--inline">
-          {this.isAuthRoute() ?
-            <div>
-              <div className="c-nav__item" />
-              <Link className="c-nav__item c-nav__item--right" to="/admin/sign-in">Sign In</Link>
-            </div> :
-            <div>
-              <Link className="c-nav__item" to="/admin/venues">Venues</Link>
-              <Link className="c-nav__item" to="/admin/events">Events</Link>
-              <Link className="c-nav__item" to="/admin/invite-venue-admin">Invite a Venue Admin</Link>
-              <a className="c-nav__item c-nav__item--right" onClick={this.handleSignOut}>Sign Out</a>
-            </div>
-          }
-        </div>
+        <Nav
+          {...this.props}
+          isMobileScreen={this.state.isMobileScreen}
+          isAuthRoute={this.isAuthRoute}
+        />
 
         {alertFlash &&
           <div
@@ -119,6 +112,7 @@ class AdminPanel extends Component {
 
         {this.props.children &&
           cloneElement(this.props.children, {
+            isMobileScreen: this.state.isMobileScreen,
             removeAlert: this.removeAlert,
             setAlertMessage: this.setAlertMessage,
             updateVenues: this.updateVenues,

@@ -1,0 +1,23 @@
+//=============================================================================
+// Component overrides
+//=============================================================================
+
+.c-alert {
+  border-radius: 0;
+}
+
+.c-button {
+  background-color: $darkest-gray;
+}
+
+.c-field {
+  margin-top: .25em;
+}
+
+.c-label {
+  text-align: left;
+}
+
+.c-nav {
+  background-color: $darkest-gray;
+}

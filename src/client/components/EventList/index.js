@@ -23,10 +23,10 @@ const propTypes = {
 
 function EventList({ events, focusedVenue, updateFocusedVenue }) {
   return (
-    <div className="event-list">
-      <button className="list-toggle">All</button>
-      <ul className="list element" id="containerElement">
-        <li className="list__item">
+    <div className="c-event-list__container">
+      <button className="c-event-list__toggle">All</button>
+      <ul className="c-event-list element" id="containerElement">
+        <li className="c-event-list__item">
           {events.map((event) => {
             return (
               <Event

@@ -26,7 +26,7 @@ function EventForm({ handleStartDateChange, event, venues }) {
   const frequencies = ['one time', 'weekly', 'first of the month'];
 
   return (
-    <div>
+    <div className="c-event-form">
       <LabelGroup
         name="title"
         options={{
