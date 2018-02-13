@@ -9,9 +9,6 @@ import { startCase } from 'lodash';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-// CSS
-import './index.scss';
-
 // PropTypes
 const propTypes = {
   handleSignOut: PropTypes.func,

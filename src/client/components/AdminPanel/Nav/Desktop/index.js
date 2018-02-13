@@ -5,9 +5,6 @@ import {
 } from 'react-router';
 import PropTypes from 'prop-types';
 
-// CSS
-import './index.scss';
-
 // PropTypes
 const propTypes = {
   handleSignOut: PropTypes.func,
