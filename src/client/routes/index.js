@@ -6,6 +6,7 @@ import {
   Route,
   Router
 } from 'react-router';
+import ReactGA from 'react-ga';
 
 // Components
 import App from '../components/App';
@@ -13,9 +14,16 @@ import App from '../components/App';
 // Routes
 import adminRoutes from './admin';
 
+ReactGA.initialize('UA-114144285-1', { debug: true });
+
 function Routes() {
+  const sendPageview = () => {
+    console.log('called');
+    return ReactGA.pageview(window.location.hash + window.location.search);
+  };
+
   return (
-    <Router history={history}>
+    <Router onUpdate={sendPageview} history={history}>
       <Route path="/">
         <IndexRoute component={App} />
       </Route>
