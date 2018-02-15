@@ -1,5 +1,12 @@
+@import "../../../css/variables";
+
 .c-event-form {
   padding: 1em;
+
+  &__disclaimer {
+    color: $darkest-gray;
+    font-size: $small-font-size;
+  }
 
   &__field-description {
     margin-right: .5em;

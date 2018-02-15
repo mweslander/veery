@@ -18,7 +18,6 @@ ReactGA.initialize('UA-114144285-1', { debug: true });
 
 function Routes() {
   const sendPageview = () => {
-    console.log('called');
     return ReactGA.pageview(window.location.hash + window.location.search);
   };
 

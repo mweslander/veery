@@ -48,7 +48,6 @@ function blueNoteGrill($) {
         startDate,
         startTime,
         title,
-        type: 'open',
         venue: venue._id
       };
     }).toArray();

@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import DatePicker from '../../DatePicker';
 import LabelGroup from '../LabelGroup';
 import TimePicker from '../../TimePicker';
-
 // PropTypes
 const propTypes = {
   event: PropTypes.object,
@@ -67,19 +66,24 @@ function EventForm({ handleStartDateChange, event, venues }) {
         </label>
       </div>
 
-      <label className="c-label" htmlFor="frequency">
-        <span className="c-event-form__field-description">Frequency:</span>
-        <select name="frequency">
-          {frequencies.map((frequency) => {
-            return (
-              <option
-                key={frequency}
-                value={frequency}
-              >{frequency}</option>
-            );
-          })}
-        </select>
-      </label>
+      <div>
+        <label className="c-label" htmlFor="frequency">
+          <span className="c-event-form__field-description">Frequency:</span>
+          <select name="frequency">
+            {frequencies.map((frequency) => {
+              return (
+                <option
+                  key={frequency}
+                  value={frequency}
+                >{frequency}</option>
+              );
+            })}
+          </select>
+        </label>
+        <div className="c-event-form__disclaimer">
+          * - you'll have to use the "one time" frequency if you want to add an event that occurs on a holiday
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,20 +1,50 @@
 'use strict';
 
-const moment = require('moment');
+const _ = require('lodash');
+const moment = require('moment-holiday');
 const Event = require('../app/models/event');
 
-function buildWeeklyEvents(params) {
-  const events = [];
-  events.push(new Event(params).save());
+// TODO: amend
+
+const holidays = moment().holidays([
+  'New Years Day',
+  'Martin Luther King Jr. Day',
+  'Valentine\'s Day',
+  'Easter Sunday',
+  'Memorial Day',
+  'Mother\'s Day',
+  'Father\'s Day',
+  'Independence Day',
+  'Halloween',
+  'Thanksgiving Day',
+  'Day after Thanksgiving',
+  'Christmas Eve',
+  'Christmas Day',
+  'New Year\'s Eve'
+]);
+const holidayValues = Object.values(holidays).map(h => h.valueOf());
+
+function buildWeeklyStartDates(originalStartDate) {
+  const startDates = [];
+  startDates.push(moment(new Date(originalStartDate)));
 
   // 26 total weeks (25 + original)
   for (let i = 1; i <= 25; i++) {
-    const lastDate = moment(new Date(params.startDate));
-    params.startDate = lastDate.add(1, 'week');
-    events.push(new Event(params).save());
+    startDates.push(moment(new Date(originalStartDate)).add(i, 'week'));
   }
 
-  return events;
+  return startDates.filter((date) => {
+    return !_.includes(holidayValues, date.valueOf());
+  });
+}
+
+function buildWeeklyEvents(params) {
+  const startDates = buildWeeklyStartDates(params.startDate);
+
+  return startDates.map((startDate) => {
+    const eventAttributes = Object.assign({}, params, { startDate });
+    return new Event(eventAttributes).save();
+  });
 }
 
 function buildEventPromises(params) {
