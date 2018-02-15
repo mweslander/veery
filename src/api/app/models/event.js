@@ -13,13 +13,22 @@ const eventSchema = new Schema({
     ],
     type: String
   },
-  startDate: Date,
-  startTime: String,
-  title: String,
-  type: String,
+  startDate: {
+    required: true,
+    type: Date
+  },
+  startTime: {
+    required: true,
+    type: String
+  },
+  title: {
+    required: true,
+    type: String
+  },
   venue: {
-    type: Schema.Types.ObjectId,
-    ref: 'Venue'
+    ref: 'Venue',
+    required: true,
+    type: Schema.Types.ObjectId
   }
 });
 
