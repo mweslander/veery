@@ -68,7 +68,7 @@ class AdminPanel extends Component {
   isAuthRoute() {
     const pathname = this.props.location.pathname;
     // TODO: change to an is-signed-in check
-    const authRoutes = ['register', 'sign-in', 'sign-up'];
+    const authRoutes = ['forgot-password', 'reset-password', 'register', 'sign-in', 'sign-up'];
 
     return authRoutes.find(route => pathname.includes(route));
   }

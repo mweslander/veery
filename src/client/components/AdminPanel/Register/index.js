@@ -1,8 +1,8 @@
 // Imports
 import React, {
-  Component,
-  PropTypes
+  Component
 } from 'react';
+import PropTypes from 'prop-types';
 
 // Components
 import Button from '../../Base/Button';
