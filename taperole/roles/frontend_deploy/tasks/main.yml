@@ -3,7 +3,7 @@
   register: fe_app_path_stat
 
 - name: Check if there are commited changes on {{ fe_app_branch }}
-  remote_user: "{{ deployer_user.name }}"
+  remote_user: root
   command: bash -lc "git fetch origin && git diff --name-only origin/{{ fe_app_branch }}"
   args:
     chdir: "{{fe_app_path}}"
@@ -16,7 +16,7 @@
 
 - name: clone the FE app
   when: fe_app_repo is defined
-  remote_user: "{{ deployer_user.name }}"
+  remote_user: root
   git: dest={{ fe_app_path }}
        repo={{ fe_app_repo }}
        version={{ fe_app_branch }}
@@ -31,21 +31,9 @@
 
 - name: NPM install
   when: fe_app_repo is defined and npm_result|success
-  remote_user: "{{ deployer_user.name }}"
+  remote_user: root
   command: chdir={{ fe_app_path }}
     bash -lc 'npm install'
-
-- name: Detect bower.json
-  command: chdir={{ fe_app_path }}
-    bash -lc 'test -e bower.json'
-  register: bower_result
-  ignore_errors: true
-
-- name: Bower install
-  when: fe_app_repo is defined and bower_result|success
-  remote_user: "{{ deployer_user.name }}"
-  command: chdir={{ fe_app_path }}
-    bash -lc 'bower install'
 
 - name: Build FE
   when: fe_app_repo is defined
