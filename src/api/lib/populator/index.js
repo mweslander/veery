@@ -23,7 +23,10 @@ const populator = {
   buildAllEventPromises(allEvents) {
     return allEvents.map((eventsArray) => {
       const promises = _.compact(eventsArray).reduce((memo, event) => {
-        if (event) { memo.push(buildEventPromises(event)); }
+        if (event) {
+          event.scraped = true;
+          memo.push(buildEventPromises(event));
+        }
         return memo;
       }, []);
 
@@ -52,11 +55,8 @@ const populator = {
   },
 
   renewMicNights(allEvents) {
-    const handsomeEvents = _.compact(_.flatten(allEvents));
-    const venueIds = handsomeEvents.map((event) => event.venue);
-
     return Event
-      .remove({ venue: { $in: venueIds } })
+      .remove({ scraped: true })
       .then(() => {
         const promises = populator.buildAllEventPromises(allEvents);
         return Promise.all(_.flatten(promises));
