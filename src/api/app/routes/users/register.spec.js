@@ -90,6 +90,7 @@ describe('user requests', function() {
 
   describe('POST /register', function() {
     let agent;
+    let baseParams;
     let email;
     let endpoint;
     let password;
@@ -98,6 +99,10 @@ describe('user requests', function() {
       agent = apiRequest(app);
       email = faker.internet.email().toLowerCase();
       password = faker.internet.password();
+      baseParams = {
+        password,
+        passwordConfirmation: password
+      };
       this.agent = agent;
       endpoint = '/api/register';
     });
@@ -112,6 +117,38 @@ describe('user requests', function() {
 
     context('when the invitation exists', function() {
       context('when the params are valid', function() {
+        context('when the user has a good password and it matches the password confirmation', function() {
+          let invitation;
+
+          beforeEach(function() {
+            const invitationDetails = { email };
+
+            return establishSpecResources(invitationDetails)
+              .then((newInvitation) => {
+                invitation = newInvitation;
+                const params = Object.assign({}, baseParams, { invitationId: invitation._id });
+
+                this.promise = agent
+                  .post(endpoint)
+                  .send(params);
+              });
+          });
+
+          shared.itBehavesLike('a valid request', { statusCode: 201 });
+
+          it('will create a user and sign that user in', function() {
+            return aValidUserCreation(this.promise, email, agent);
+          });
+
+          it('adds the new user on as a venueAdmin', function() {
+            return aValidVenueAdminAttachment(this.promise, email, invitation, 1);
+          });
+
+          it('will delete the invitation', function() {
+            return aValidInvitationDeletion(this.promise, email);
+          });
+        });
+
         context('when the venue does not have any venueAdmins', function() {
           let invitation;
 
@@ -121,10 +158,11 @@ describe('user requests', function() {
             return establishSpecResources(invitationDetails)
               .then((newInvitation) => {
                 invitation = newInvitation;
+                const params = Object.assign({}, baseParams, { invitationId: invitation._id });
 
                 this.promise = agent
                   .post(endpoint)
-                  .send({ password, invitationId: invitation._id });
+                  .send(params);
               });
           });
 
@@ -155,10 +193,11 @@ describe('user requests', function() {
               })
               .then((newInvitation) => {
                 invitation = newInvitation;
+                const params = Object.assign({}, baseParams, { invitationId: invitation._id });
 
                 this.promise = agent
                   .post(endpoint)
-                  .send({ password, invitationId: invitation._id });
+                  .send(params);
               });
           });
 
@@ -209,13 +248,90 @@ describe('user requests', function() {
             });
         });
       });
+
+      context('when there is no password confirmation attached to the params', function() {
+        let invitation;
+
+        beforeEach(function() {
+          const invitationDetails = { email };
+
+          return establishSpecResources(invitationDetails)
+            .then((newInvitation) => {
+              invitation = newInvitation;
+
+              this.promise = agent
+                .post(endpoint)
+                .send({ password, invitationId: invitation._id });
+            });
+        });
+
+        shared.itBehavesLike('an invalid request', { statusCode: 422 });
+
+        it('will not create a user', function() {
+          return anInvalidUserCreation(this.promise, email);
+        });
+
+        it('will not delete the invitation', function() {
+          return this.promise
+            .then(expect.fail)
+            .catch(() => {
+              return Invitation.findOne({ email });
+            })
+            .then((foundInvitation) => {
+              expect(foundInvitation).to.exist;
+            });
+        });
+      });
+
+      context('when the password sucks', function() {
+        let invitation;
+        let suckyPassword;
+
+        beforeEach(function() {
+          const invitationDetails = { email };
+
+          return establishSpecResources(invitationDetails)
+            .then((newInvitation) => {
+              invitation = newInvitation;
+              suckyPassword = '123';
+              const params = {
+                password: suckyPassword,
+                passwordConfirmation: suckyPassword,
+                invitationId: invitation._id
+              };
+
+              this.promise = agent
+                .post(endpoint)
+                .send(params);
+            });
+        });
+
+        shared.itBehavesLike('an invalid request', { statusCode: 422 });
+
+        it('will not create a user', function() {
+          return anInvalidUserCreation(this.promise, email);
+        });
+
+        it('will not delete the invitation', function() {
+          return this.promise
+            .then(expect.fail)
+            .catch(() => {
+              return Invitation.findOne({ email });
+            })
+            .then((foundInvitation) => {
+              expect(foundInvitation).to.exist;
+            });
+        });
+      });
     });
 
     context('when the invitation does not exist', function() {
       beforeEach(function() {
+        const params = Object.assign({}, baseParams, { invitationId: 0 });
+
         this.promise = agent
           .post(endpoint)
-          .send({ password, invitationId: 0 });
+          .send(params);
       });
 
       shared.itBehavesLike('an invalid request', { statusCode: 404 });

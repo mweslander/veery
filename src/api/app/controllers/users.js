@@ -65,12 +65,27 @@ function isSignedIn(req, res) {
   return res.status(200).json({ user: req.user });
 }
 
+function validatePassword(password, passwordConfirmation) {
+  if (!password) {
+    return 'You must enter a password.';
+  }
+
+  if (password !== passwordConfirmation) {
+    return 'The passwords must match.';
+  }
+
+  if (password.length < 6) {
+    return 'The password must be 6 characters or more.';
+  }
+}
+
 function register(req, res) {
   let invitation;
   const password = req.body.password;
+  const passwordBasedError = validatePassword(password, req.body.passwordConfirmation);
 
-  if (!password) {
-    return res.status(422).send({ error: 'You must enter a password.' });
+  if (passwordBasedError) {
+    return res.status(422).send({ error: passwordBasedError });
   }
 
   return Invitation
@@ -133,9 +148,10 @@ function updateAndSignInUser(user, password, req, res) {
 
 function resetPassword(req, res, next) {
   const password = req.body.password;
+  const passwordBasedError = validatePassword(password, req.body.passwordConfirmation);
 
-  if (!password) {
-    return res.status(422).send({ error: 'No password was attached.' });
+  if (passwordBasedError) {
+    return res.status(422).send({ error: passwordBasedError });
   }
 
   return findUserForPasswordReset(req.params.token)

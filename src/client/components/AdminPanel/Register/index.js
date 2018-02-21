@@ -78,9 +78,25 @@ class Register extends Component {
           <label className="c-label" htmlFor="email">
             Email: {email}
           </label>
+
           <label className="c-label" htmlFor="password">
             Enter a password
-            <input className="c-field" name="password" type="password" />
+            <input
+              className="c-field o-grid__cell"
+              name="password"
+              type="password"
+              placeholder="password"
+            />
+          </label>
+
+          <label className="c-label" htmlFor="password">
+            Confirm your password
+            <input
+              className="c-field o-grid__cell"
+              name="passwordConfirmation"
+              type="password"
+              placeholder="password"
+            />
           </label>
           <Button value="Register" />
         </form>

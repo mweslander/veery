@@ -23,7 +23,7 @@ function aFailedPasswordReset(promise, venueAdmin, password) {
     });
 }
 
-describe('user requests', function() {
+describe.only('user requests', function() {
   let agent;
   let endpoint;
   let resetPasswordExpires;
@@ -46,11 +46,16 @@ describe('user requests', function() {
   });
 
   describe('PUT /reset-password?token=', function() {
+    let baseParams;
     let password;
     let venueAdmin;
 
     beforeEach(function() {
       password = faker.internet.password();
+      baseParams = {
+        password,
+        passwordConfirmation: password
+      }
     });
 
     context('with valid params', function() {
@@ -63,7 +68,7 @@ describe('user requests', function() {
 
             this.promise = agent
               .put(endpoint)
-              .send({ password });
+              .send(baseParams);
           });
       });
 
@@ -132,6 +137,73 @@ describe('user requests', function() {
         });
       });
 
+      context('when the password does not match the password confirmation', function() {
+        beforeEach(function() {
+          const options = { resetPasswordExpires, resetPasswordToken };
+
+          return createUser('venueAdmin', options)
+            .then((newAdmin) => {
+              venueAdmin = newAdmin;
+
+              this.promise = agent
+                .put(endpoint)
+                .send({ password, passwordConfirmation: 'foobar' });
+            });
+        });
+
+        shared.itBehavesLike('an invalid request', { statusCode: 422 });
+
+        it('does not change the password', function() {
+          return this.promise
+            .then(expect.fail)
+            .catch(() => User.findById(venueAdmin._id))
+            .then((_user) => {
+              return Promise.all([
+                _user.comparePassword(password),
+                venueAdmin.comparePassword(password)
+              ]);
+            })
+            .then(([isMatchOnUser, isMatchOnVenueAdmin]) => {
+              expect(isMatchOnUser).to.be.false;
+              expect(isMatchOnVenueAdmin).to.be.false;
+            });
+        });
+      });
+
+      context('when the password sucks', function() {
+        beforeEach(function() {
+          const options = { resetPasswordExpires, resetPasswordToken };
+
+          return createUser('venueAdmin', options)
+            .then((newAdmin) => {
+              venueAdmin = newAdmin;
+              const suckyPassword = '123';
+
+              this.promise = agent
+                .put(endpoint)
+                .send({ password: suckyPassword, passwordConfirmation: suckyPassword });
+            });
+        });
+
+        shared.itBehavesLike('an invalid request', { statusCode: 422 });
+
+        it('does not change the password', function() {
+          return this.promise
+            .then(expect.fail)
+            .catch(() => User.findById(venueAdmin._id))
+            .then((_user) => {
+              return Promise.all([
+                _user.comparePassword(password),
+                venueAdmin.comparePassword(password)
+              ]);
+            })
+            .then(([isMatchOnUser, isMatchOnVenueAdmin]) => {
+              expect(isMatchOnUser).to.be.false;
+              expect(isMatchOnVenueAdmin).to.be.false;
+            });
+        });
+      });
+
       context('when the token cannot be found on a user', function() {
         beforeEach(function() {
           const options = { resetPasswordExpires, resetPasswordToken: 0 };
@@ -142,7 +214,7 @@ describe('user requests', function() {
 
               this.promise = agent
                 .put(endpoint)
-                .send({ password });
+                .send(baseParams);
             });
         });
 
@@ -163,7 +235,7 @@ describe('user requests', function() {
 
               this.promise = agent
                 .put(endpoint)
-                .send({ password });
+                .send(baseParams);
             });
         });
 

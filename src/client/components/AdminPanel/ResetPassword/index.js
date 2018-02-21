@@ -76,6 +76,17 @@ class ResetPassword extends Component {
             type="password"
             placeholder="password"
           />
+
+          <label className="c-label c-reset-password__label o-grid__cell o-grid__cell--width-40" htmlFor="passwordConfirmation">
+            Confirm your new password:
+          </label>
+
+          <input
+            className="c-field c-reset-password__field o-grid__cell"
+            name="passwordConfirmation"
+            type="password"
+            placeholder="password"
+          />
         </div>
 
         <Button classes="c-reset-password__button" value="Submit" />
