@@ -13,6 +13,7 @@ const eventSchema = new Schema({
     ],
     type: String
   },
+  scraped: Boolean,
   startDate: {
     required: true,
     type: Date
