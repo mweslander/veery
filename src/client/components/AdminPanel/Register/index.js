@@ -1,8 +1,8 @@
 // Imports
 import React, {
-  Component,
-  PropTypes
+  Component
 } from 'react';
+import PropTypes from 'prop-types';
 
 // Components
 import Button from '../../Base/Button';
@@ -47,8 +47,8 @@ class Register extends Component {
         this.props.setAlertMessage({ successMessage: 'Registration successful.' });
         return this.transitionToNextPage();
       })
-      .catch(() => {
-        return this.props.setAlertMessage({ errorMessage: 'You must enter a password.' });
+      .catch(({ response }) => {
+        return this.props.setAlertMessage({ errorMessage: response.data.error });
       });
   }
 

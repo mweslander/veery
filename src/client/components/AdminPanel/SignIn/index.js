@@ -1,11 +1,11 @@
 // Imports
 import React, {
-  Component,
-  PropTypes
+  Component
 } from 'react';
 import {
   Link
 } from 'react-router';
+import PropTypes from 'prop-types';
 
 // Components
 import Button from '../../Base/Button';
