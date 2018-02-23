@@ -8,4 +8,4 @@ letsencrypt:
 # App Configs
 fe_app_repo: git@github.com:mweslander/veery.git
 fe_build_command: npm run build:production
-nodejs_version: "6.x"
+nodejs_version: "7.x"
