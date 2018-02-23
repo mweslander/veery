@@ -1,6 +1,6 @@
 // Imports
 import React from 'react';
-import ReactGa from 'react-ga';
+import ReactGA from 'react-ga';
 import {
   Link
 } from 'react-router';
