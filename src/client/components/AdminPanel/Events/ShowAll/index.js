@@ -70,7 +70,7 @@ class Events extends Component {
               {!this.props.isMobileScreen &&
                 <th className="c-table__cell">Start Time</th>}
               {!this.props.isMobileScreen ?
-                <th className="c-table__cell">Venue</th>:
+                <th className="c-table__cell">Venue</th> :
                 <th className="c-table__cell" />}
               <th className="c-table__cell" />
             </tr>
@@ -84,7 +84,7 @@ class Events extends Component {
                   className="c-table__row"
                 >
                   <td className="c-table__cell">{event.title}</td>
-                  <td className="c-table__cell">{moment(event.startDate).format('MM-YY-DD')}</td>
+                  <td className="c-table__cell">{moment(event.startDate).format('MM-DD-YY')}</td>
                   {!this.props.isMobileScreen &&
                     <td className="c-table__cell">{event.startTime}</td>}
                   {!this.props.isMobileScreen &&

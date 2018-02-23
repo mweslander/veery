@@ -44,7 +44,7 @@ function scrape(site, error, html, resolve, reject) {
     const message = `${site.url} did not return any html`;
     console.error(message); // eslint-disable-line no-console
     console.log('html of bad site:', html); // eslint-disable-line no-console
-    emailJordanAboutHisBadScraper(site, { stack: message });
+    emailJordanAboutHisBadScraper(site, { stack: `${message} \n ${html}` });
     return resolve();
   }
 

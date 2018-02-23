@@ -1,6 +1,6 @@
 'use strict';
 
-const moment = require('moment');
+const moment = require('moment-holiday');
 
 const Event = require('../../../models/event');
 const User = require('../../../models/user');
@@ -38,14 +38,20 @@ describe('admin event requests', function() {
 
   describe('POST /admin/events', function() {
     let agent;
+    let baseParams;
     let endpoint;
     let title;
 
     beforeEach(function() {
       agent = apiRequest(app);
+      title = faker.hacker.noun();
+      baseParams = {
+        startDate: faker.date.future(),
+        startTime: '9:00 pm',
+        title
+      };
       this.agent = agent;
       endpoint = '/api/admin/events/';
-      title = faker.hacker.noun();
     });
 
     afterEach(function() {
@@ -67,7 +73,7 @@ describe('admin event requests', function() {
 
               this.promise = agent
                 .post(endpoint)
-                .send({ title, venue: venue._id });
+                .send({ ...baseParams, venue: venue._id });
             });
         });
 
@@ -80,16 +86,50 @@ describe('admin event requests', function() {
       });
 
       context('when the event params has a weekly frequency', function() {
+        let expectedDaysCreated;
+        let holidays;
+        let holidayValues;
+        let startDate;
         let venue;
 
         beforeEach(function() {
+          holidays = moment().holidays([
+            'New Years Day',
+            'Martin Luther King Jr. Day',
+            'Valentine\'s Day',
+            'Easter Sunday',
+            'Memorial Day',
+            'Mother\'s Day',
+            'Father\'s Day',
+            'Independence Day',
+            'Halloween',
+            'Thanksgiving Day',
+            'Day after Thanksgiving',
+            'Christmas Eve',
+            'Christmas Day',
+            'New Year\'s Eve'
+          ]);
+          startDate = moment().add(_.random(0, 6), 'days').format('MM-DD-YY');
+
+          const eventDays = [];
+          eventDays.push(moment(new Date(startDate)));
+
+          // 26 total weeks (25 + original)
+          for (let i = 1; i <= 25; i++) {
+            eventDays.push(moment(new Date(startDate)).add(i, 'week'));
+          }
+
+          holidayValues = Object.values(holidays).map(h => h.valueOf());
+          expectedDaysCreated = eventDays.filter((day) => {
+            return !_.includes(holidayValues, day.valueOf());
+          });
+
           return establishSpecResources(agent, 'admin', createVenue)
             .then((newVenue) => {
               venue = newVenue;
               const options = {
+                ...baseParams,
                 frequency: 'weekly',
-                startDate: moment().add(2, 'days').format('MM-DD-YY'),
-                title,
                 venue: venue._id
               };
 
@@ -106,15 +146,26 @@ describe('admin event requests', function() {
           return aValidEventCreation(this.promise, venue, title);
         });
 
-        it('creates 25 other events, all with different start dates', function() {
+        it('creates more events, all with different start dates', function() {
           return this.promise
             .then(() => Event.find({}))
             .then((events) => {
               const startDates = events.map(e => e.startDate);
               const testedStartDate = startDates[0];
               startDates.splice(startDates.indexOf(testedStartDate), 1);
-              expect(events.length).to.eq(26);
+              expect(events.length).to.eq(expectedDaysCreated.length);
               expect(startDates).not.to.include(testedStartDate);
+            });
+        });
+
+        it('does not create the holidays', function() {
+          return this.promise
+            .then(() => Event.find({}))
+            .then((events) => {
+              const startDates = events.map(e => moment(e.startDate).valueOf());
+              return startDates.forEach((date) => {
+                expect(holidayValues).not.to.include(date);
+              });
             });
         });
       });
@@ -135,7 +186,7 @@ describe('admin event requests', function() {
 
               this.promise = agent
                 .post(endpoint)
-                .send({ title, venue: venue._id });
+                .send({ ...baseParams, venue: venue._id });
             });
         });
 
@@ -161,7 +212,7 @@ describe('admin event requests', function() {
 
               this.promise = agent
                 .post(endpoint)
-                .send({ title, venue: venue._id });
+                .send({ ...baseParams, venue: venue._id });
             });
         });
 
