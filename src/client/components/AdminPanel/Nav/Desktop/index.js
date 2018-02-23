@@ -29,7 +29,13 @@ function NavDesktop({ isAuthRoute, handleSignOut }) {
           <Link className="c-nav__item" to="/admin/venues">Venues</Link>
           <Link className="c-nav__item" to="/admin/events">Events</Link>
           <Link className="c-nav__item" to="/admin/invite-venue-admin">Invite a Venue Admin</Link>
-          <a className="c-nav__item c-nav__item--right" onClick={handleSignOut}>Sign Out</a>
+
+          <a
+            className="c-nav__item c-nav__item--right"
+            onClick={() => handleSignOut(() => {})}
+          >
+            Sign Out
+          </a>
         </div>
       }
     </div>
