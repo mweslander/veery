@@ -9,6 +9,9 @@ module.exports = {
     name: 'veery_development'
   },
   domain: 'localhost',
+  googleAnalytics: {
+    propertyId: 'UA-114144285-1'
+  },
   googleMaps: {
     key: 'AIzaSyBqtMZ7Hndm7fhCS9KbTYVb0xMr-JYVu_Y'
   },
