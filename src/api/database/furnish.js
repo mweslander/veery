@@ -20,6 +20,9 @@ function furnish() {
       return Promise.all(promises);
     })
     .then(() => {
+      return populator.removeScrapedEvents();
+    })
+    .then(() => {
       return populator.addMicNights(require('./seeds/events'), 'HARD CODED EVENTS SUCCESSFULLY ADDED');
     })
     .then(() => {

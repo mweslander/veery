@@ -54,13 +54,13 @@ const populator = {
       });
   },
 
+  removeScrapedEvents() {
+    return Event.remove({ scraped: true });
+  },
+
   renewMicNights(allEvents) {
-    return Event
-      .remove({ scraped: true })
-      .then(() => {
-        const promises = populator.buildAllEventPromises(allEvents);
-        return Promise.all(_.flatten(promises));
-      })
+    const promises = populator.buildAllEventPromises(allEvents);
+    return Promise.all(_.flatten(promises))
       .catch((e) => {
         console.error(e); // eslint-disable-line no-console
       });

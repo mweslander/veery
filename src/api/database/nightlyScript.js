@@ -6,8 +6,10 @@ const populator = require('../lib/populator');
 const siteScraper = require('../lib/siteScraper');
 
 function furnish() {
-  return populator
-    .addMicNights(require('./seeds/events'), 'HARD CODED EVENTS SUCCESSFULLY ADDED')
+  return populator.removeScrapedEvents()
+    .then(() => {
+      return populator.addMicNights(require('./seeds/events'), 'HARD CODED EVENTS SUCCESSFULLY ADDED');
+    })
     .then(() => {
       return populator.addMicNights(siteScraper.run(), 'SCRAPE SUCCESSFULLY FINISHED');
     })

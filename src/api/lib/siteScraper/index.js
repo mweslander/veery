@@ -11,8 +11,8 @@ const sites = [
   require('./sites/durham/blueNoteGrill'),
   require('./sites/durham/socialDurham'),
   require('./sites/raleigh/deepSouth'),
-  require('./sites/raleigh/fallsRiverMusic'),
-  require('./sites/raleigh/gizmoBrewWorks')
+  require('./sites/raleigh/fallsRiverMusic')
+  // require('./sites/raleigh/gizmoBrewWorks')
 ];
 
 function buildEventsFromSite(site, resolve, $) {

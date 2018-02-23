@@ -42,7 +42,6 @@ class Nav extends Component {
   }
 
   handleSignOut(toggleDrawer) {
-    console.log(toggleDrawer);
     const router = this.props.router;
 
     return usersService
