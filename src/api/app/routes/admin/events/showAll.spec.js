@@ -10,7 +10,7 @@ const {
   createVenue,
   shared,
   signInAndCreateUser
-} = require('../../../../spec/specHelper');
+} = require('../../../../../../support/spec/specHelper');
 
 function establishSpecResources(agent, role, extraVenues = () => []) {
   let admin;

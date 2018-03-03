@@ -1,6 +1,6 @@
 'use strict';
 
-const User = require('../../app/models/user');
+const User = require('../../../src/api/app/models/user');
 
 function buildUser(role) {
   return {

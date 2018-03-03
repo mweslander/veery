@@ -9,7 +9,7 @@ const {
   createUser,
   createVenue,
   shared
-} = require('../../../spec/specHelper');
+} = require('../../../../../support/spec/specHelper');
 
 function establishSpecResources(invitationDetails, venueOptions = {}) {
   return createVenue(venueOptions)

@@ -5,7 +5,7 @@ const {
   app,
   createUser,
   shared
-} = require('../../../spec/specHelper');
+} = require('../../../../../support/spec/specHelper');
 
 function aFailedPasswordReset(promise, venueAdmin, password) {
   return promise
@@ -23,7 +23,7 @@ function aFailedPasswordReset(promise, venueAdmin, password) {
     });
 }
 
-describe.only('user requests', function() {
+describe('user requests', function() {
   let agent;
   let endpoint;
   let resetPasswordExpires;
@@ -55,7 +55,7 @@ describe.only('user requests', function() {
       baseParams = {
         password,
         passwordConfirmation: password
-      }
+      };
     });
 
     context('with valid params', function() {

@@ -1,6 +1,6 @@
 'use strict';
 
-const Venue = require('../../app/models/venue');
+const Venue = require('../../../src/api/app/models/venue');
 
 function buildVenue() {
   return {

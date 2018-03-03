@@ -1,8 +1,8 @@
 import api from './api';
 
-function showAll() {
+function showAll(params) {
   return api
-    .get('/venues')
+    .get('/venues', { params })
     .then(({ data }) => data.venues);
 }
 

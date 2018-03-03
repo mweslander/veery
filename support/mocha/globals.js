@@ -7,8 +7,13 @@ const enzymeAdapterReact15 = require('enzyme-adapter-react-15');
 
 enzyme.configure({ adapter: new enzymeAdapterReact15() });
 
+const document = {
+  getElementById: () => {}
+};
+
 global._ = lodash;
 global.apiRequest = chai.request.agent;
+global.document = document;
 global.expect = chai.expect;
 global.faker = faker;
 global.sandbox = sinon.sandbox;

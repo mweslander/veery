@@ -17,7 +17,7 @@ function Footer() {
   const handleClick = () => {
     return ReactGA.event({
       category: 'HomePage',
-      action: 'Clicked Venue Owner Sign Up',
+      action: 'Clicked Venue Owner Sign Up'
     });
   };
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const app = require('../config/app');
+const app = require('../../src/api/config/app');
 const createEvent = require('./helperMethods/createEvent');
 const createInvitation = require('./helperMethods/createInvitation');
 const createUser = require('./helperMethods/createUser');

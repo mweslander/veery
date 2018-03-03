@@ -1,6 +1,6 @@
 'use strict';
 
-const Invitation = require('../../app/models/invitation');
+const Invitation = require('../../../src/api/app/models/invitation');
 
 function buildInvitation(role) {
   return {

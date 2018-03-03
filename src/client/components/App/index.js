@@ -26,9 +26,10 @@ const propTypes = {
 */
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
+    this.searchForVenues = this.searchForVenues.bind(this);
     this.updateFocusedVenue = this.updateFocusedVenue.bind(this);
     this.state = {
       events: [],
@@ -37,24 +38,38 @@ class App extends Component {
     };
   }
 
-  componentWillMount() {
+  applyNewStateFromVenues(newState, venues) {
+    const focusedVenue = this.state.focusedVenue;
+    const ids = venues.map(v => v._id.toString());
+    const currentId = focusedVenue && focusedVenue._id.toString();
+
+    if (ids.indexOf(currentId) > -1) {
+      newState.focusedVenue = focusedVenue;
+    }
+
+    return this.setState(newState);
+  }
+
+  searchForVenues(params = {}) {
     return venuesService
-      .showAll()
+      .showAll(params)
       .then((venues) => {
         const eventsFromVenues = venues.map(venue => venue.events);
         const formattedEvents = _.sortBy(_.flatten(eventsFromVenues), ['startDate', 'startTime']);
         const formattedVenues = venues.filter(venue => venue.events.length > 0);
 
-        this.setState({
+        const defaultNewState = {
           events: formattedEvents,
-          focusedVenue: formattedEvents[0].venue,
+          focusedVenue: formattedEvents[0] && formattedEvents[0].venue,
           venues: formattedVenues
-        });
+        };
+
+        return this.applyNewStateFromVenues(defaultNewState, venues);
       });
   }
 
   updateFocusedVenue(focusedVenue, focusedEvent = {}) {
-    this.setState({ focusedVenue }, () => {
+    return this.setState({ focusedVenue }, () => {
       const scroller = Scroll.scroller;
       const nextEvent = this.state.events.find((event) => {
         return event.venue._id === focusedVenue._id;
@@ -68,16 +83,6 @@ class App extends Component {
     });
   }
 
-  eventsToday(venues) {
-    return venues;
-    // const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    // const d = new Date();
-    // const n = d.getDay();
-    // return venues.filter((venue) => {
-    //   return venue.eventDay === weekdays[n];
-    // });
-  }
-
   render() {
     return (
       <div className="l-app">
@@ -85,6 +90,7 @@ class App extends Component {
         <div className="c-interactive-container">
           <VenueMap
             focusedVenue={this.state.focusedVenue}
+            searchForVenues={this.searchForVenues}
             updateFocusedVenue={this.updateFocusedVenue}
             venues={this.state.venues}
           />

@@ -10,7 +10,7 @@ const {
   createVenue,
   shared,
   signInAndCreateUser
-} = require('../../../../spec/specHelper');
+} = require('../../../../../../support/spec/specHelper');
 
 function establishSpecResources(agent, role, venuesCallback = () => {}) {
   return signInAndCreateUser(agent, role)
@@ -129,6 +129,7 @@ describe('admin event requests', function() {
               venue = newVenue;
               const options = {
                 ...baseParams,
+                startDate,
                 frequency: 'weekly',
                 venue: venue._id
               };
