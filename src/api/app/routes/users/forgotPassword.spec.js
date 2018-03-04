@@ -6,7 +6,7 @@ const {
   app,
   createUser,
   shared
-} = require('../../../spec/specHelper');
+} = require('../../../../../support/spec/specHelper');
 
 describe('user requests', function() {
   beforeEach(function() {

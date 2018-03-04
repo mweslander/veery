@@ -1,6 +1,6 @@
 'use strict';
 
-const specHelper = require('../../spec/specHelper');
+const specHelper = require('../../../../support/spec/specHelper');
 const app = specHelper.app;
 
 describe('General requests', function() {

@@ -7,7 +7,7 @@ const {
   createEvent,
   createVenue,
   shared
-} = require('../../spec/specHelper');
+} = require('../../../../support/spec/specHelper');
 
 function establishSpecResources(agent, extraEvents = () => []) {
   const promises = [];
@@ -29,7 +29,7 @@ function establishSpecResources(agent, extraEvents = () => []) {
     });
 }
 
-function aValidEventShowAll(promise, length = (events) => events.length) {
+function aValidEventShowAll(promise) {
   let events;
 
   return Event
@@ -40,7 +40,7 @@ function aValidEventShowAll(promise, length = (events) => events.length) {
       return promise;
     })
     .then(({ body }) => {
-      expect(body.events.length).to.eq(length(events));
+      expect(body.events.length).to.eq(events.length);
     });
 }
 

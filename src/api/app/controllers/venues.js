@@ -3,8 +3,30 @@
 const Venue = require('../models/venue');
 
 function showAll(req, res) {
+  let options = {};
+
+  if (req.query.latitudeMin) {
+    const {
+      latitudeMin,
+      latitudeMax,
+      longitudeMin,
+      longitudeMax
+    } = req.query;
+
+    options = {
+      latitude: {
+        $gt: latitudeMin,
+        $lt: latitudeMax
+      },
+      longitude: {
+        $gt: longitudeMin,
+        $lt: longitudeMax
+      }
+    };
+  }
+
   return Venue
-    .find({})
+    .find(options)
     .populate({
       path: 'events',
       match: {

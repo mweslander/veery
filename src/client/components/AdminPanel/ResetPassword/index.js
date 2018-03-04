@@ -54,7 +54,7 @@ class ResetPassword extends Component {
           return this.props.setAlertMessage({ errorMessage: 'Your reset password link has expired.' });
         }
 
-        return this.props.setAlertMessage({ errorMessage: 'You must enter a password.' });
+        return this.props.setAlertMessage({ errorMessage: response.data.error });
       });
   }
 
@@ -65,18 +65,25 @@ class ResetPassword extends Component {
         ref={(form) => { this.resetPasswordForm = form; }}
         onSubmit={this.handleSubmit}
       >
-        <div className="o-grid">
-          <label className="c-label c-reset-password__label o-grid__cell o-grid__cell--width-40" htmlFor="password">
-            Enter your new password:
-          </label>
-
+        <label className="c-label" htmlFor="password">
+          Enter your new password:
           <input
-            className="c-field c-reset-password__field o-grid__cell"
+            className="c-field o-grid__cell"
             name="password"
             type="password"
             placeholder="password"
           />
-        </div>
+        </label>
+
+        <label className="c-label" htmlFor="password">
+          Confirm your new password:
+          <input
+            className="c-field o-grid__cell"
+            name="passwordConfirmation"
+            type="password"
+            placeholder="password"
+          />
+        </label>
 
         <Button classes="c-reset-password__button" value="Submit" />
       </form>

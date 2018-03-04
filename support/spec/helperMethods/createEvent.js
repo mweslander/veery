@@ -1,6 +1,6 @@
 'use strict';
 
-const Event = require('../../app/models/event');
+const Event = require('../../../src/api/app/models/event');
 
 function buildEvent() {
   return {

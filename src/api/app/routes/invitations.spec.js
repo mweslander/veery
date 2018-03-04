@@ -5,7 +5,7 @@ const User = require('../models/user');
 const {
   app,
   createInvitation
-} = require('../../spec/specHelper');
+} = require('../../../../support/spec/specHelper');
 
 function establishSpecResources() {
   return createInvitation('venueAdmin')
