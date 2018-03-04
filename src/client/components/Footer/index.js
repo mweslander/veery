@@ -16,7 +16,7 @@ import './index.scss';
 function Footer() {
   const handleClick = () => {
     return ReactGA.event({
-      category: 'HomePage',
+      category: 'Home Page',
       action: 'Clicked Venue Owner Sign Up'
     });
   };

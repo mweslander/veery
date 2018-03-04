@@ -3,6 +3,7 @@ import React, {
   Component
 } from 'react';
 import PropTypes from 'prop-types';
+import ReactGA from 'react-ga';
 
 // Components
 import Button from '../../Base/Button';
@@ -44,6 +45,11 @@ class Register extends Component {
     return usersService
       .register(values)
       .then(() => {
+        ReactGA.event({
+          category: 'Sign Up',
+          action: 'Registration Successfully Finished'
+        });
+
         this.props.setAlertMessage({ successMessage: 'Registration successful.' });
         return this.transitionToNextPage();
       })
@@ -98,6 +104,7 @@ class Register extends Component {
               placeholder="password"
             />
           </label>
+
           <Button value="Register" />
         </form>
       </div>
