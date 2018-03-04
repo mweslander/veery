@@ -1,5 +1,6 @@
 // Imports
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 
 // CSS
@@ -42,7 +43,14 @@ class SignUp extends Component {
 
     return adminInvitationsService
       .inviteVenueAdmin(values)
-      .then(() => this.props.setAlertMessage({ successMessage }))
+      .then(() => {
+        ReactGA.event({
+          category: 'Sign Up',
+          action: 'Registration Email Successfully Sent'
+        });
+
+        return this.props.setAlertMessage({ successMessage });
+      })
       .catch(({ response }) => {
         let errorMessage = 'You must provide an email address.';
 

@@ -17,7 +17,7 @@ import adminRoutes from './admin';
 // Config
 import config from '../../api/config';
 
-ReactGA.initialize(config.googleAnalytics.propertyId, { debug: true });
+ReactGA.initialize(config.googleAnalytics.propertyId, { debug: false });
 
 function Routes() {
   const sendPageview = () => {
