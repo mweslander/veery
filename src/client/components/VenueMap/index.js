@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 // CSS
 import './index.scss';
 
+// Images
+import spinner from '../../img/spinner.svg';
+
 // Services
 import googleMapsService from '../../services/googleMaps';
 
@@ -15,8 +18,10 @@ import googleMapsService from '../../services/googleMaps';
 
 const propTypes = {
   focusedVenue: PropTypes.object,
-  updateFocusedVenue: PropTypes.func,
+  isLoading: PropTypes.bool,
+  isMobileScreen: PropTypes.bool,
   searchForVenues: PropTypes.func,
+  updateFocusedVenue: PropTypes.func,
   venues: PropTypes.array
 };
 
@@ -115,6 +120,7 @@ class VenueMap extends Component {
 
     return this.updateMapPropsWithNewCoordinates(newMapProps, () => {
       const params = googleMapsService.getBounds(map);
+
       return this.props.searchForVenues(params);
     });
   }
@@ -130,7 +136,20 @@ class VenueMap extends Component {
   }
 
   render() {
-    return <div className="c-map" id="googleMap" />;
+    if (this.props.isMobileScreen) {
+      return <div className="c-map" id="googleMap" />;
+    }
+
+    return (
+      <div className="c-map__container">
+        {this.props.isLoading &&
+          <div className="c-map__overlay">
+            <img className="c-map__spinner" src={spinner} />
+          </div>}
+
+        <div className="c-map" id="googleMap" />
+      </div>
+    );
   }
 }
 

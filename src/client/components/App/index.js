@@ -12,6 +12,9 @@ import VenueMap from '../VenueMap';
 // CSS
 import './index.scss';
 
+// Images
+import spinner from '../../img/spinner.svg';
+
 // Services
 import venuesService from '../../services/venues';
 
@@ -34,6 +37,8 @@ class App extends Component {
     this.state = {
       events: [],
       focusedVenue: null,
+      isMobileScreen: screen.width <= 500,
+      isLoading: false,
       venues: []
     };
   }
@@ -51,16 +56,27 @@ class App extends Component {
   }
 
   searchForVenues(params = {}) {
+    let loaded = false;
+
+    setTimeout(() => {
+      if (!loaded) {
+        return this.setState({ isLoading: true });
+      }
+    }, 100);
+
     return venuesService
       .showAll(params)
       .then((venues) => {
         const eventsFromVenues = venues.map(venue => venue.events);
         const formattedEvents = _.sortBy(_.flatten(eventsFromVenues), ['startDate', 'startTime']);
         const formattedVenues = venues.filter(venue => venue.events.length > 0);
+        const focusedVenue = formattedEvents[0] && formattedEvents[0].venue || null;
+        loaded = true;
 
         const defaultNewState = {
           events: formattedEvents,
-          focusedVenue: formattedEvents[0] && formattedEvents[0].venue,
+          focusedVenue,
+          isLoading: false,
           venues: formattedVenues
         };
 
@@ -88,12 +104,19 @@ class App extends Component {
       <div className="l-app">
         <Header />
         <div className="c-interactive-container">
+          {this.state.isLoading && this.state.isMobileScreen &&
+            <div className="c-map__overlay">
+              <img className="c-map__spinner" src={spinner} />
+            </div>}
+
           <VenueMap
             focusedVenue={this.state.focusedVenue}
+            isMobileScreen={this.state.isMobileScreen}
             searchForVenues={this.searchForVenues}
             updateFocusedVenue={this.updateFocusedVenue}
             venues={this.state.venues}
           />
+
           <EventList
             events={this.state.events}
             focusedVenue={this.state.focusedVenue}
