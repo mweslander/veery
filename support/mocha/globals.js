@@ -11,10 +11,15 @@ const document = {
   getElementById: () => {}
 };
 
+const screen = {
+  width: faker.random.number()
+};
+
 global._ = lodash;
 global.apiRequest = chai.request.agent;
 global.document = document;
 global.expect = chai.expect;
 global.faker = faker;
 global.sandbox = sinon.sandbox;
+global.screen = screen;
 global.shallow = enzyme.shallow;
