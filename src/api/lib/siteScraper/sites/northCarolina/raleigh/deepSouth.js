@@ -1,7 +1,7 @@
 'use strict';
 
 const url = 'https://www.deepsouththebar.com/calendar/';
-const Venue = require('../../../../app/models/venue');
+const Venue = require('../../../../../app/models/venue');
 
 function getEventDetails(dayOfWeek, $, venueId) {
   return $(dayOfWeek).map((i, day) => {

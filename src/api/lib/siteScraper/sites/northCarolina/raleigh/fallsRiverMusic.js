@@ -1,9 +1,10 @@
 'use strict';
 
 const moment = require('moment');
-const searchForOpenMicNights = require('../../../../utils/searchForOpenMicNights');
+
+const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNights');
 const url = 'http://www.fallsrivermusic.com/';
-const Venue = require('../../../../app/models/venue');
+const Venue = require('../../../../../app/models/venue');
 
 function fallsRiverMusic($) {
   return Venue

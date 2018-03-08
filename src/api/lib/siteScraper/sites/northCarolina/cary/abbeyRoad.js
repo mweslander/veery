@@ -1,9 +1,9 @@
 'use strict';
 
 const moment = require('moment');
-const searchForOpenMicNights = require('../../../../utils/searchForOpenMicNights');
+const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNights');
 const url = 'http://abbeyroadnc.com/open-mic/';
-const Venue = require('../../../../app/models/venue');
+const Venue = require('../../../../../app/models/venue');
 
 function abbeyRoad($) {
   const events = (venue) => {
