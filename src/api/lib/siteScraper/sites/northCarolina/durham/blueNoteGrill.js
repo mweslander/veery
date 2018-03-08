@@ -1,7 +1,7 @@
 'use strict';
 
 const url = 'http://www.thebluenotegrill.com/events/';
-const Venue = require('../../../../app/models/venue');
+const Venue = require('../../../../../app/models/venue');
 
 function getMicNights($) {
   const blueJams = $('.event').filter((i, event) => {

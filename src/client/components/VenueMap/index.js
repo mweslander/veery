@@ -28,7 +28,7 @@ const propTypes = {
 class VenueMap extends Component {
   constructor() {
     super();
-    const mapCenter = new google.maps.LatLng(35.992729, -78.903970); // eslint-disable-line no-undef
+    const mapCenter = new google.maps.LatLng(30.263956, -97.739537); // eslint-disable-line no-undef
 
     this.establishMapListenerCallback = this.establishMapListenerCallback.bind(this);
     this.state = {
@@ -120,7 +120,6 @@ class VenueMap extends Component {
 
     return this.updateMapPropsWithNewCoordinates(newMapProps, () => {
       const params = googleMapsService.getBounds(map);
-
       return this.props.searchForVenues(params);
     });
   }

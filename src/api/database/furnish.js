@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const admins = require('./seeds/admins');
 const database = require('./index.js');
 const log = require('../utils/log');
@@ -13,7 +14,7 @@ function furnish() {
   return database
     .drop()
     .then(() => {
-      const promises = venues.map((venue) => {
+      const promises = _.flattenDeep(venues).map((venue) => {
         return new Venue(venue).save();
       });
 

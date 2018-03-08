@@ -1,8 +1,8 @@
 'use strict';
 
-const createWeeklyDates = require('../../../../utils/createWeeklyDates');
+const createWeeklyDates = require('../../../../../utils/createWeeklyDates');
 const url = 'http://socialdurham.com/events/';
-const Venue = require('../../../../app/models/venue');
+const Venue = require('../../../../../app/models/venue');
 
 function getMicNight($) {
   return $('#text-3 .textwidget')

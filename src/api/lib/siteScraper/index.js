@@ -1,18 +1,14 @@
 'use strict';
 
+const _ = require('lodash');
 const cheerio = require('cheerio');
 const emailJordanAboutHisBadScraper = require('../../utils/emailJordanAboutHisBadScraper');
 const htmlparser = require('htmlparser2');
 const request = require('request');
 
 const sites = [
-  require('./sites/apex/abbeyRoad'),
-  require('./sites/cary/abbeyRoad'),
-  require('./sites/durham/blueNoteGrill'),
-  require('./sites/durham/socialDurham'),
-  require('./sites/raleigh/deepSouth'),
-  require('./sites/raleigh/fallsRiverMusic')
-  // require('./sites/raleigh/gizmoBrewWorks')
+  require('./sites/northCarolina'),
+  require('./sites/texas')
 ];
 
 function buildEventsFromSite(site, resolve, $) {
@@ -56,9 +52,9 @@ function scrape(site, error, html, resolve, reject) {
 
 const siteScraper = {
   run() {
-    return sites.map((site) => {
+    return _.flattenDeep(sites).map((site) => {
       return new Promise((resolve, reject) => {
-        const requestCallback = (error, _, html) => {
+        const requestCallback = (error, __, html) => {
           return scrape(site, error, html, resolve, reject);
         };
 
