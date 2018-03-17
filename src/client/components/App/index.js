@@ -38,7 +38,7 @@ class App extends Component {
       events: [],
       focusedVenue: null,
       isMobileScreen: screen.width <= 500,
-      isLoading: false,
+      isLoading: true,
       venues: []
     };
   }
@@ -103,6 +103,7 @@ class App extends Component {
     return (
       <div className="l-app">
         <Header />
+
         <div className="c-interactive-container">
           {this.state.isLoading && this.state.isMobileScreen &&
             <div className="c-map__overlay">
@@ -111,6 +112,7 @@ class App extends Component {
 
           <VenueMap
             focusedVenue={this.state.focusedVenue}
+            isLoading={this.state.isLoading}
             isMobileScreen={this.state.isMobileScreen}
             searchForVenues={this.searchForVenues}
             updateFocusedVenue={this.updateFocusedVenue}

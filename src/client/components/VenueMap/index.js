@@ -28,7 +28,8 @@ const propTypes = {
 class VenueMap extends Component {
   constructor() {
     super();
-    const mapCenter = new google.maps.LatLng(30.263956, -97.739537); // eslint-disable-line no-undef
+    // Durham, NC
+    const mapCenter = new google.maps.LatLng(35.992729, -78.903970); // eslint-disable-line no-undef
 
     this.establishMapListenerCallback = this.establishMapListenerCallback.bind(this);
     this.state = {
@@ -41,16 +42,11 @@ class VenueMap extends Component {
   }
 
   componentDidMount() {
-    const map = this.generateMap();
-
-    const callback = () => {
-      const params = googleMapsService.getBounds(map);
-      return this.props.searchForVenues(params);
-    };
-
-    return google.maps // eslint-disable-line no-undef
-      .event
-      .addListenerOnce(map, 'bounds_changed', callback);
+    return navigator.geolocation.getCurrentPosition((position) => {
+      return this.updateMapPropsWithNewCoordinates(position.coords, this.addBoundsChangedListener);
+    }, () => {
+      return this.addBoundsChangedListener();
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -84,6 +80,19 @@ class VenueMap extends Component {
         const marker = googleMapsService.buildMarker(map, null, venue, focusedVenue);
         this.addMarkerListener(marker, venue);
       });
+  }
+
+  addBoundsChangedListener() {
+    const map = this.generateMap();
+
+    const callback = () => {
+      const params = googleMapsService.getBounds(map);
+      return this.props.searchForVenues(params);
+    };
+
+    return google.maps // eslint-disable-line no-undef
+      .event
+      .addListenerOnce(map, 'bounds_changed', callback);
   }
 
   updateMapPropsWithNewCoordinates(newMapProps, callback) {

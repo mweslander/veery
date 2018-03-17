@@ -18,6 +18,7 @@ function aValidListenerCreation(listenerCall, establishMapListenerCallback, mapI
 describe('VenueMap', function() {
   let addListener;
   let addListenerOnce;
+  let getCurrentPosition;
   let latLng;
   let map;
   let mapInstance;
@@ -83,6 +84,7 @@ describe('VenueMap', function() {
       setMap
     });
 
+    getCurrentPosition = this.sandbox.stub();
     latLng = this.sandbox.stub().returns(mockCenter);
     map = this.sandbox.stub().returns(mapInstance);
 
@@ -96,8 +98,14 @@ describe('VenueMap', function() {
         Marker: marker
       }
     };
+    const mockNavigator = {
+      geolocation: {
+        getCurrentPosition
+      }
+    };
 
     global.google = mockGoogle;
+    global.navigator = mockNavigator;
 
     // Others
     searchForVenues = this.sandbox.stub();
@@ -123,8 +131,6 @@ describe('VenueMap', function() {
     let venueMap;
 
     beforeEach(function() {
-      generateMap = this.sandbox.stub();
-
       const initialProps = {
         focusedVenue: {},
         searchForVenues,
@@ -137,18 +143,80 @@ describe('VenueMap', function() {
       venueMap.instance().componentDidMount();
     });
 
-    it('generates a new map', function() {
-      expect(generateMap.calledOnce).to.be.true;
+    context('when the current position is found', function() {
+      let newLatitude;
+      let newLongitude;
+      let newPosition;
+      let successCallback;
+
+      beforeEach(function() {
+        newLatitude = faker.address.latitude();
+        newLongitude = faker.address.longitude();
+
+        newPosition = {
+          coords: {
+            latitude: newLatitude,
+            longitude: newLongitude
+          }
+        };
+
+        successCallback = getCurrentPosition.firstCall.args[0];
+      });
+
+      it('generates a new map', function() {
+        successCallback(newPosition);
+        expect(generateMap.calledOnce).to.be.true;
+      });
+
+      it('calls searchForVenues based off the map bounds', function() {
+        successCallback(newPosition);
+        const callback = addListenerOnce.firstCall.args[2];
+        callback();
+        const [params] = searchForVenues.firstCall.args;
+        expect(params.latitudeMin).to.eq(mockLatitudeMin);
+        expect(params.latitudeMax).to.eq(mockLatitudeMax);
+        expect(params.longitudeMin).to.eq(mockLongitudeMin);
+        expect(params.longitudeMax).to.eq(mockLongitudeMax);
+      });
+
+      it('updates the map props with new coordinates', function() {
+        expect(latLng.callCount).to.eq(1);
+        successCallback(newPosition);
+        expect(latLng.callCount).to.eq(2);
+        const [latitude, longitude] = latLng.secondCall.args;
+        expect(latitude).to.eq(newLatitude);
+        expect(longitude).to.eq(newLongitude);
+      });
     });
 
-    it('calls searchForVenues based off the initial props', function() {
-      const callback = addListenerOnce.secondCall.args[2];
-      callback();
-      const [params] = searchForVenues.firstCall.args;
-      expect(params.latitudeMin).to.eq(mockLatitudeMin);
-      expect(params.latitudeMax).to.eq(mockLatitudeMax);
-      expect(params.longitudeMin).to.eq(mockLongitudeMin);
-      expect(params.longitudeMax).to.eq(mockLongitudeMax);
+    context('when the current position is not found', function() {
+      let failureCallback;
+
+      beforeEach(function() {
+        failureCallback = getCurrentPosition.firstCall.args[1];
+      });
+
+      it('generates a new map', function() {
+        failureCallback();
+        expect(generateMap.calledOnce).to.be.true;
+      });
+
+      it('calls searchForVenues based off the map bounds', function() {
+        failureCallback();
+        const callback = addListenerOnce.firstCall.args[2];
+        callback();
+        const [params] = searchForVenues.firstCall.args;
+        expect(params.latitudeMin).to.eq(mockLatitudeMin);
+        expect(params.latitudeMax).to.eq(mockLatitudeMax);
+        expect(params.longitudeMin).to.eq(mockLongitudeMin);
+        expect(params.longitudeMax).to.eq(mockLongitudeMax);
+      });
+
+      it('does not update the map props with new coordinates', function() {
+        expect(latLng.callCount).to.eq(1);
+        failureCallback();
+        expect(latLng.callCount).to.eq(1);
+      });
     });
   });
 
@@ -189,7 +257,7 @@ describe('VenueMap', function() {
       });
 
       it('generates a new map', function() {
-        expect(buildBaseMap.calledTwice).to.be.true;
+        expect(buildBaseMap.calledOnce).to.be.true;
       });
     });
 
@@ -214,7 +282,7 @@ describe('VenueMap', function() {
         });
 
         it('does not generate a new map', function() {
-          expect(buildBaseMap.calledTwice).to.be.false;
+          expect(buildBaseMap.calledOnce).to.be.false;
         });
       });
 
@@ -241,7 +309,7 @@ describe('VenueMap', function() {
         it('generates a new map', function() {
           const callback = updateMapPropsWithNewCoordinates.firstCall.args[1];
           callback();
-          expect(buildBaseMap.calledTwice).to.be.true;
+          expect(buildBaseMap.calledOnce).to.be.true;
         });
       });
     });
@@ -438,7 +506,7 @@ describe('VenueMap', function() {
     });
 
     it('adds a listener that calls updateMapPropsWithNewCoordinates with a callback that calls updateFocusedVenue', function() {
-      const callback = addListener.thirdCall.args[1];
+      const callback = addListener.firstCall.args[1];
       callback();
       const [newMapProps, secondCallback] = updateMapPropsWithNewCoordinates.firstCall.args;
       expect(newMapProps).to.deep.equal({
