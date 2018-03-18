@@ -1,4 +1,10 @@
+@import "../../../css/variables";
+
 .c-modal {
+  @media screen and (max-width: $screen-width-max-mini-mobile) {
+    padding: 0;
+  }
+
   &__form {
     min-width: 300px;
   }
