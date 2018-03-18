@@ -89,6 +89,7 @@ class DeletionModal extends Component {
           <div className="c-modal__radio-container">
             <label className="c-label" htmlFor="destroyAllFalseButton">
               <input
+                checked={!this.state.destroyAll}
                 type="radio"
                 id="destroyAllFalseButton"
                 onClick={() => this.handleClick(false)}
@@ -102,6 +103,7 @@ class DeletionModal extends Component {
             <div className="c-modal__radio-container">
               <label className="c-label" htmlFor="destroyAllTrueButton">
                 <input
+                  checked={this.state.destroyAll}
                   type="radio"
                   id="destroyAllTrueButton"
                   onClick={() => this.handleClick(true)}

@@ -5,4 +5,8 @@
 .o-modal {
   width: initial;
   padding: 0 2em;
+
+  @media screen and (max-width: $screen-width-max-mini-mobile) {
+    padding: 0;
+  }
 }
