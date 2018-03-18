@@ -1,6 +1,7 @@
 // Imports
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
 
 // CSS
 import './index.scss';
@@ -50,11 +51,11 @@ class VenueMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const receivedNewVenues = !_.isEqual(
+    const receivedNewVenues = !isEqual(
       this.props.venues.sort(),
       nextProps.venues.sort()
     );
-    const receivedNewFocusedVenue = !_.isEqual(
+    const receivedNewFocusedVenue = !isEqual(
       this.props.focusedVenue,
       nextProps.focusedVenue
     );

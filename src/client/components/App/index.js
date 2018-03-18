@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Scroll from 'react-scroll';
-import _ from 'lodash';
+import flatten from 'lodash/flatten';
+import sortBy from 'lodash/sortBy';
 
 // Components
 import EventList from '../EventList';
@@ -68,7 +69,7 @@ class App extends Component {
       .showAll(params)
       .then((venues) => {
         const eventsFromVenues = venues.map(venue => venue.events);
-        const formattedEvents = _.sortBy(_.flatten(eventsFromVenues), ['startDate', 'startTime']);
+        const formattedEvents = sortBy(flatten(eventsFromVenues), ['startDate', 'startTime']);
         const formattedVenues = venues.filter(venue => venue.events.length > 0);
         const focusedVenue = formattedEvents[0] && formattedEvents[0].venue || null;
         loaded = true;

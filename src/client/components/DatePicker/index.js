@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { DatePicker as AntdDatePicker } from 'antd';
+import AntdDatePicker from 'antd/es/date-picker';
 
 // CSS
 import './index.scss';
