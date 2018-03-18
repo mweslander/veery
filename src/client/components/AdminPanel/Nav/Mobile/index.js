@@ -5,7 +5,7 @@ import React, {
 import {
   Link
 } from 'react-router';
-import { startCase } from 'lodash';
+import startCase from 'lodash/startCase';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 

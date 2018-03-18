@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { TimePicker as AntdTimePicker } from 'antd';
+import AntdTimePicker from 'antd/es/time-picker';
 
 const propTypes = {
   defaultTime: PropTypes.string

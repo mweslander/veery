@@ -3,9 +3,9 @@ const enzyme = require('enzyme');
 const faker = require('faker');
 const lodash = require('lodash');
 const sinon = require('sinon');
-const enzymeAdapterReact15 = require('enzyme-adapter-react-15');
+const enzymeAdapterReact16 = require('enzyme-adapter-react-16');
 
-enzyme.configure({ adapter: new enzymeAdapterReact15() });
+enzyme.configure({ adapter: new enzymeAdapterReact16() });
 
 const document = {
   getElementById: () => {}
