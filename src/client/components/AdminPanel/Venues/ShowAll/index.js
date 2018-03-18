@@ -76,7 +76,10 @@ class Venues extends Component {
                   key={venue._id}
                   className="c-table__row"
                 >
-                  <td className="c-table__cell">{venue.name}</td>
+                  <td className="c-table__cell">
+                    <Link className="c-link" to={`/admin/venues/${venue._id}`}>{venue.name}</Link>
+                  </td>
+
                   <td className="c-table__cell c-admin-venues-show-all__grid o-grid">
                     <Link className="c-link o-grid__cell" to={`/admin/venues/${venue._id}/edit`}>Edit</Link>
                     <Link className="c-link o-grid__cell" to={`/admin/venues/all/${venue._id}/delete`}>destroy</Link>

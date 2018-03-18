@@ -34,7 +34,7 @@ function Modal({ children, closeModal, handleSubmit, heading }) {
         >
           <div className="c-card">
             <header className="c-card__header">
-              <button className="c-button--close" onClick={closeModal}>&times;</button>
+              <div className="c-button--close" onClick={closeModal}>&times;</div>
               <h2 className="c-heading">{heading}</h2>
             </header>
 

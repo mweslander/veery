@@ -82,6 +82,10 @@ function showAll(req, res, next) {
 
   return Venue
     .find(options)
+    .populate({
+      path: 'events',
+      options: { sort: 'startDate' }
+    })
     .sort('name')
     .then((venues) => res.json({ venues }))
     .catch((err) => {
