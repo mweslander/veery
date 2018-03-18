@@ -13,7 +13,6 @@ config.optimization = {
 config.profile = false;
 
 config.plugins = config.plugins.concat([
-  new BundleAnalyzerPlugin(),
   new CompressionPlugin()
 ]);
 
