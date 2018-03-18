@@ -11,16 +11,17 @@ import adminEventsService from '../../../../services/admin/events';
 // PropTypes
 const propTypes = {
   events: PropTypes.array,
+  handleUpdate: PropTypes.func,
   removeAlert: PropTypes.func,
   router: PropTypes.shape({
+    goBack: PropTypes.func,
     params: PropTypes.shape({
+      eventId: PropTypes.string,
       id: PropTypes.string
     }),
     push: PropTypes.func.isRequired
   }),
-  setAlertMessage: PropTypes.func,
-  updateEvents: PropTypes.func,
-  updateVenues: PropTypes.func
+  setAlertMessage: PropTypes.func
 };
 
 /*
@@ -33,7 +34,7 @@ class DeletionModal extends Component {
     super();
 
     this.closeModal = this.closeModal.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       destroyAll: false,
@@ -44,17 +45,20 @@ class DeletionModal extends Component {
 
   componentWillReceiveProps(nextProps) {
     const event = nextProps.events.find((nextEvent) => {
-      return nextEvent._id === nextProps.router.params.id;
+      const eventId = nextProps.router.params.eventId;
+      const id = nextProps.router.params.id;
+
+      return nextEvent._id === eventId || nextEvent._id === id;
     }) || {};
 
     return this.setState({ event });
   }
 
   closeModal() {
-    return this.props.router.push('/admin/events/all');
+    return this.props.router.goBack();
   }
 
-  handleClick(bool) {
+  handleChange(bool) {
     const successMessage = `Event${bool ? 's' : ''} successfully destroyed.`;
 
     return this.setState({
@@ -68,8 +72,8 @@ class DeletionModal extends Component {
 
     return adminEventsService
       .destroyEvent(this.state.event._id, { destroyAll: this.state.destroyAll })
+      .then(this.props.handleUpdate)
       .then(this.closeModal)
-      .then(this.props.updateEvents)
       .then(() => {
         return this.props.setAlertMessage({ successMessage: this.state.successMessage });
       });
@@ -92,7 +96,7 @@ class DeletionModal extends Component {
                 checked={!this.state.destroyAll}
                 type="radio"
                 id="destroyAllFalseButton"
-                onClick={() => this.handleClick(false)}
+                onChange={() => this.handleChange(false)}
               />
 
               <span className="c-modal__radio-explanation">This event</span>
@@ -106,7 +110,7 @@ class DeletionModal extends Component {
                   checked={this.state.destroyAll}
                   type="radio"
                   id="destroyAllTrueButton"
-                  onClick={() => this.handleClick(true)}
+                  onChange={() => this.handleChange(true)}
                 />
 
                 <span className="c-modal__radio-explanation">This and following {event.title} events</span>

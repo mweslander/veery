@@ -23,6 +23,7 @@ import SignUp from '../components/AdminPanel/SignUp';
 import VenuesDeletionModal from '../components/AdminPanel/Venues/DeletionModal';
 import VenuesEdit from '../components/AdminPanel/Venues/Edit';
 import VenuesNew from '../components/AdminPanel/Venues/New';
+import VenuesShow from '../components/AdminPanel/Venues/Show';
 import VenuesShowAll from '../components/AdminPanel/Venues/ShowAll';
 
 // Services
@@ -82,6 +83,9 @@ function AdminRoutes() {
         </Route>
         <Route path="new" component={VenuesNew} />
         <Route path=":id/edit" component={VenuesEdit} />
+        <Route path=":id" component={VenuesShow}>
+          <Route path="events/:eventId/delete" component={EventsDeletionModal} />
+        </Route>
       </Route>
     </Route>
   );

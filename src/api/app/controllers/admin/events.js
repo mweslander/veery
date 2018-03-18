@@ -48,7 +48,6 @@ function respondWithEvents(res, next, options = {}) {
   return Event
     .find(options)
     .populate('venue')
-    .sort('venue')
     .sort('startDate')
     .then((events) => res.json({ events }))
     .catch((err) => {

@@ -11,8 +11,9 @@ import classnames from 'classnames';
 import Nav from './Nav';
 
 // Services
-import usersService from '../../services/users';
+import adminEventsService from '../../services/admin/events';
 import adminVenuesService from '../../services/admin/venues';
+import usersService from '../../services/users';
 
 // PropTypes
 const propTypes = {
@@ -38,8 +39,10 @@ class AdminPanel extends Component {
     this.isAuthRoute = this.isAuthRoute.bind(this);
     this.removeAlert = this.removeAlert.bind(this);
     this.setAlertMessage = this.setAlertMessage.bind(this);
+    this.updateEvents = this.updateEvents.bind(this);
     this.updateVenues = this.updateVenues.bind(this);
     this.state = {
+      events: [],
       isMobileScreen: screen.width <= 500,
       signedIn: false,
       venues: []
@@ -56,6 +59,13 @@ class AdminPanel extends Component {
 
   removeAlert() {
     return this.setState({ alertFlash: null });
+  }
+
+  updateEvents() {
+    return adminEventsService.showAll()
+      .then((events) => {
+        this.setState({ events });
+      });
   }
 
   updateVenues() {
@@ -112,9 +122,11 @@ class AdminPanel extends Component {
 
         {this.props.children &&
           cloneElement(this.props.children, {
+            events: this.state.events,
             isMobileScreen: this.state.isMobileScreen,
             removeAlert: this.removeAlert,
             setAlertMessage: this.setAlertMessage,
+            updateEvents: this.updateEvents,
             updateVenues: this.updateVenues,
             venues: this.state.venues
           })}
