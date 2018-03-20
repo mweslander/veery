@@ -286,13 +286,13 @@ describe('admin venue requests', function() {
             });
 
             shared.itBehavesLike('a protected POST endpoint');
-            shared.itBehavesLike('an invalid request', { statusCode: 422 });
+            shared.itBehavesLike('a valid request', { statusCode: 201 });
 
-            it('does not invite that user again', function() {
+            it('invites that user again', function() {
               return this.promise
                 .then(expect.fail)
                 .catch(() => {
-                  expect(sendEmail.called).to.be.false;
+                  expect(sendEmail.called).to.be.true;
                 });
             });
           });

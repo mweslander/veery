@@ -6,6 +6,7 @@ const User = require('../../models/user');
 const Venue = require('../../models/venue');
 const {
   app,
+  createInvitation,
   createUser,
   createVenue,
   shared,
@@ -158,9 +159,108 @@ describe('admin invitation requests', function() {
         });
       });
 
-      context('when a user with email has already been invited', function() {
-        // not the current setup but will be in the future
-        it('combines resends the invitation');
+      context('when a user with that email has already been invited', function() {
+        let createdVenues;
+        let options;
+
+        beforeEach(function() {
+          return establishSpecResources(agent, 'admin')
+            .then((venues) => {
+              createdVenues = venues;
+              options = {
+                email,
+                venues: [venues[2]._id]
+              };
+            });
+        });
+
+        context('when that invitation does not contain the venue the user is being invited to', function() {
+          let invitationDetails;
+
+          beforeEach(function() {
+            return createInvitation('venueAdmin', options)
+              .then(() => {
+                invitationDetails = {
+                  email,
+                  role: 'venueAdmin',
+                  venues: [createdVenues[3]._id]
+                };
+
+                this.promise = agent
+                  .post(endpoint)
+                  .send(invitationDetails);
+              });
+          });
+
+          shared.itBehavesLike('a valid request', { statusCode: 202 });
+
+          it('combines the invitation', function() {
+            const expectationCallback = (venues) => {
+              expect(venues).to.include(createdVenues[2]._id.toString());
+              expect(venues).to.include(createdVenues[3]._id.toString());
+            };
+
+            return aSuccessfulInvite(this.promise, invitationDetails, sendEmail, expectationCallback);
+          });
+        });
+
+        context('when that invitation already contains the venue the user is being invited to', function() {
+          let invitationDetails;
+
+          beforeEach(function() {
+            return createInvitation('venueAdmin', options)
+              .then(() => {
+                invitationDetails = {
+                  email,
+                  role: 'venueAdmin',
+                  venues: [createdVenues[2]._id]
+                };
+
+                this.promise = agent
+                  .post(endpoint)
+                  .send(invitationDetails);
+              });
+          });
+
+          shared.itBehavesLike('a valid request', { statusCode: 202 });
+
+          it('combines the invitation', function() {
+            const expectationCallback = (venues) => {
+              expect(venues.length).to.eq(1);
+              expect(venues).to.include(createdVenues[2]._id.toString());
+            };
+
+            return aSuccessfulInvite(this.promise, invitationDetails, sendEmail, expectationCallback);
+          });
+        });
+
+        context('when that invitation does not contain any venues', function() {
+          let invitationDetails;
+
+          beforeEach(function() {
+            return createInvitation('venueAdmin', options)
+              .then(() => {
+                invitationDetails = {
+                  email,
+                  role: 'venueAdmin'
+                };
+
+                this.promise = agent
+                  .post(endpoint)
+                  .send(invitationDetails);
+              });
+          });
+
+          shared.itBehavesLike('a valid request', { statusCode: 202 });
+
+          it('combines the invitation', function() {
+            const expectationCallback = (venues) => {
+              expect(venues).to.include(createdVenues[2]._id.toString());
+            };
+
+            return aSuccessfulInvite(this.promise, invitationDetails, sendEmail, expectationCallback);
+          });
+        });
       });
     });
 
