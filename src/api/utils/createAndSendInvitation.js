@@ -1,10 +1,12 @@
 'use strict';
 
-const config = require('../config');
-const mailgun = require('../config/mailgun');
+const sortedUniq = require('lodash/sortedUniq');
 
 const Invitation = require('../app/models/invitation');
 const User = require('../app/models/user');
+
+const config = require('../config');
+const mailgun = require('../config/mailgun');
 
 function sendEmail(invitation) {
   // For local testing, you'll need to add ':8080' after {config.domain}.
@@ -16,6 +18,15 @@ function sendEmail(invitation) {
     'Veery Account Creation',
     body
   );
+}
+
+function saveAndSendEmail(invitationObject, res, statusCode) {
+  return invitationObject
+    .save()
+    .then((invitation) => {
+      res.status(statusCode);
+      return sendEmail(invitation);
+    });
 }
 
 function createAndSendInvitation(invitationDetails, res) {
@@ -32,14 +43,13 @@ function createAndSendInvitation(invitationDetails, res) {
     })
     .then((existingInvitation) => {
       if (existingInvitation) {
-        res.status(422);
-        throw new Error(`An invitation for the user ${email} is still pending.`);
+        const combinedVenues = existingInvitation.venues.concat([], invitationDetails.venues || []);
+        existingInvitation.venues = sortedUniq(combinedVenues.map((v) => v.toString()));
+
+        return saveAndSendEmail(existingInvitation, res, 202);
       }
 
-      return new Invitation(invitationDetails).save();
-    })
-    .then((invitation) => {
-      return sendEmail(invitation);
+      return saveAndSendEmail(new Invitation(invitationDetails), res, 201);
     });
 }
 

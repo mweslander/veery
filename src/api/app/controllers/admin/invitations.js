@@ -11,7 +11,7 @@ function create(req, res) {
 
   return createAndSendInvitation(req.body, res)
     .then(() => {
-      return res.status(201).json({ message: `Account activation email sent to ${email}` });
+      return res.json({ message: `Account activation email sent to ${email}` });
     })
     .catch((err) => {
       console.log('Error:', err && err.message); // eslint-disable-line no-console
