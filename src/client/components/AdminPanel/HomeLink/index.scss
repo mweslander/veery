@@ -1,0 +1,16 @@
+@import "../../../css/variables";
+
+.c-home-link {
+  @media screen and (max-width: $screen-width-max-mobile) {
+    display: none;
+  }
+
+  span {
+    margin-left: 2px;
+  }
+
+  &__container {
+    margin-top: $small-spacing;
+    text-align: left;
+  }
+}

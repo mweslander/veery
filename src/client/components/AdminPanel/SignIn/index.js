@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 
 // Components
 import Button from '../../Base/Button';
+import HomeLink from '../HomeLink';
 
 // CSS
 import './index.scss';
@@ -69,6 +70,8 @@ class SignIn extends Component {
   render() {
     return (
       <div className="c-sign-in o-container o-container--small">
+        <HomeLink />
+
         <form
           className="o-fieldset o-container o-container--small"
           ref={(form) => { this.signInForm = form; }}

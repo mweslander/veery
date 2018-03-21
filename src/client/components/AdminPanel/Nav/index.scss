@@ -14,17 +14,50 @@
     color: $black;
     text-align: left;
     text-decoration: none;
+
+    &:last-child {
+      padding-top: .6em;
+    }
+  }
+
+  &__heading {
+    color: $white;
+    font-weight: 300;
+    padding: 0;
+  }
+
+  &__img {
+    height: 36px;
+    margin-top: 9px;
+    padding-left: 0;
   }
 
   &__item {
     text-align: left;
 
     &--left {
-      max-width: 8em;
+      float: left;
+    }
+
+    &--right {
+      padding-right: 0;
     }
 
     @media screen and (min-width: $screen-width-max-mobile) {
       text-align: center;
     }
   }
+
+  &--desktop {
+    width: 95%;
+    margin: 0 auto;
+  }
+}
+
+// override
+.c-nav__item.c-nav__logo-container {
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 16px;
+  padding-left: 0;
 }

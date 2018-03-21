@@ -10,6 +10,7 @@ import {
 
 // Components
 import EventsTable from '../../../Base/EventsTable';
+import HomeLink from '../../HomeLink';
 
 // CSS
 import './index.scss';
@@ -45,6 +46,8 @@ class Events extends Component {
   render() {
     return (
       <div className="c-admin-events-show-all">
+        <HomeLink />
+
         <Link className="c-admin-events-show-all__link c-button c-button--brand" to="/admin/events/new">Add a New Event</Link>
 
         <EventsTable
