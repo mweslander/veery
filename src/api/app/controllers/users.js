@@ -103,6 +103,13 @@ function register(req, res) {
       return new User(params).save();
     })
     .then((user) => {
+      // Just so I can be notified if someone signs up
+      mailgun.sendEmail(
+        'jahammo2@gmail.com',
+        'Someone Signed Up!',
+        `${user}`
+      );
+
       return req.login(user, (err) => {
         if (err) { throw new Error(err); }
 
