@@ -1,5 +1,6 @@
 'use strict';
 
+const mailgun = require('../../../config/mailgun');
 const Invitation = require('../../models/invitation');
 const User = require('../../models/user');
 const Venue = require('../../models/venue');
@@ -105,6 +106,7 @@ describe('user requests', function() {
       };
       this.agent = agent;
       endpoint = '/api/register';
+      this.sandbox.stub(mailgun, 'sendEmail');
     });
 
     afterEach(function() {
