@@ -5,7 +5,7 @@ import React from 'react';
 import './index.scss';
 
 // Images
-import logoImg from './logo-img.svg';
+import logoImg from '../../img/logo-img.svg';
 
 /*
   Header

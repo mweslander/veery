@@ -8,6 +8,7 @@ import './index.scss';
 
 // Components
 import Button from '../../Base/Button';
+import HomeLink from '../HomeLink';
 
 // Services
 import adminInvitationsService from '../../../services/admin/invitations';
@@ -69,6 +70,8 @@ class SignUp extends Component {
         ref={(form) => { this.signUpForm = form; }}
         onSubmit={this.handleSubmit}
       >
+        <HomeLink />
+
         <label className="c-label" htmlFor="email">
           Enter your email
           <input

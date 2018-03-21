@@ -5,7 +5,6 @@ import React, {
 import {
   Link
 } from 'react-router';
-import startCase from 'lodash/startCase';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -35,9 +34,9 @@ class MobileNav extends Component {
       <Link
         className="c-card__item c-nav__hamburger-item"
         onClick={this.toggleDrawer}
-        to={`/admin/${route}`}
+        to={`${route}`}
       >
-        {text || startCase(route)}
+        {text}
       </Link>
     );
   }
@@ -67,7 +66,7 @@ class MobileNav extends Component {
 
         <div className="c-nav">
           <div
-            className="c-nav__item c-nav__item--left"
+            className="c-nav__item"
             onClick={this.toggleDrawer}
           >
             <i className="fa fa-bars" /> Menu
@@ -78,19 +77,23 @@ class MobileNav extends Component {
           <div className="c-card">
             <div className="c-card__body">
               {this.props.isAuthRoute() ?
-                <div
-                  className="c-nav__hamburger-item"
-                  onClick={this.toggleDrawer}
-                >
-                  <div className="c-button c-nav__button">
-                    Sign In
+                <div>
+                  {this.buildLink('/', '< Back to Map')}
+                  <div
+                    className="c-card__item c-nav__hamburger-item"
+                    onClick={this.toggleDrawer}
+                  >
+                    <Link className="c-button c-nav__button" to="/admin/sign-in">
+                      Sign In
+                    </Link>
                   </div>
                 </div> :
 
                 <div>
-                  {this.buildLink('venues')}
-                  {this.buildLink('events')}
-                  {this.buildLink('invite-venue-admin', 'Invite a Venue Admin')}
+                  {this.buildLink('/', '< Back to Map')}
+                  {this.buildLink('/admin/venues', 'Venues')}
+                  {this.buildLink('/admin/events', 'Events')}
+                  {this.buildLink('/admin/invite-venue-admin', 'Invite a Venue Admin')}
 
                   <div
                     className="c-card__item c-nav__hamburger-item"

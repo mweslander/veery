@@ -7,7 +7,7 @@ const htmlparser = require('htmlparser2');
 const request = require('request');
 
 const sites = [
-  // require('./sites/northCarolina'),
+  require('./sites/northCarolina'),
   require('./sites/texas')
 ];
 

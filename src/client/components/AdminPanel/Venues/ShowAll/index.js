@@ -11,6 +11,9 @@ import {
 // CSS
 import './index.scss';
 
+// Components
+import HomeLink from '../../HomeLink';
+
 // Services
 import adminVenuesService from '../../../../services/admin/venues';
 
@@ -60,6 +63,8 @@ class Venues extends Component {
   render() {
     return (
       <div className="c-admin-venues-show-all">
+        <HomeLink />
+
         <Link className="c-admin-venues-show-all__link c-button c-button--brand" to="/admin/venues/new">Add a New Venue</Link>
         <table className="c-table c-table--striped">
           <thead className="c-table__head">
