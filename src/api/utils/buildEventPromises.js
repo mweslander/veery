@@ -4,8 +4,6 @@ const _ = require('lodash');
 const moment = require('moment-holiday');
 const Event = require('../app/models/event');
 
-// TODO: amend
-
 const holidays = moment().holidays([
   'New Years Day',
   'Martin Luther King Jr. Day',
@@ -24,12 +22,11 @@ const holidays = moment().holidays([
 ]);
 const holidayValues = Object.values(holidays).map(h => h.valueOf());
 
-function buildWeeklyStartDates(originalStartDate) {
+function buildWeeklyStartDates(originalStartDate, amountOfWeeks = 26) {
   const startDates = [];
   startDates.push(moment(new Date(originalStartDate)));
 
-  // 26 total weeks (25 + original)
-  for (let i = 1; i <= 25; i++) {
+  for (let i = 1; i < amountOfWeeks; i++) {
     startDates.push(moment(new Date(originalStartDate)).add(i, 'week'));
   }
 
@@ -39,7 +36,7 @@ function buildWeeklyStartDates(originalStartDate) {
 }
 
 function buildWeeklyEvents(params) {
-  const startDates = buildWeeklyStartDates(params.startDate);
+  const startDates = buildWeeklyStartDates(params.startDate, params.amountOfWeeks);
 
   return startDates.map((startDate) => {
     const eventAttributes = Object.assign({}, params, { startDate });

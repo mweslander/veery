@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 // Components
 import Button from '../../Base/Button';
 import HomeLink from '../HomeLink';
+import LabelGroup from '../../Base/LabelGroup';
 
 // CSS
 import './index.scss';
@@ -77,14 +78,22 @@ class SignIn extends Component {
           ref={(form) => { this.signInForm = form; }}
           onSubmit={this.handleSubmit}
         >
-          <label className="c-label" htmlFor="email">
-            Email
-            <input className="c-field" name="email" type="text" />
-          </label>
-          <label className="c-label" htmlFor="password">
-            Password
-            <input className="c-field" name="password" type="password" />
-          </label>
+          <LabelGroup
+            name="email"
+            options={{
+              placeholder: 'user@bar.com',
+              type: 'text'
+            }}
+          />
+
+          <LabelGroup
+            name="password"
+            options={{
+              placeholder: 'password',
+              type: 'password'
+            }}
+          />
+
           <div className="c-sign-in__forgot-password-link">
             <Link className="c-link" to="/admin/forgot-password">Forgot Password?</Link>
           </div>

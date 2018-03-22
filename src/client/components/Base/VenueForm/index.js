@@ -44,7 +44,9 @@ function VenueForm({ handleChange, venue }) {
 
       <div className="o-grid">
         <LabelGroup
-          classes="o-grid__cell"
+          classes={{
+            label: 'o-grid__cell'
+          }}
           name="city"
           options={{
             onChange: handleChange,
@@ -55,7 +57,9 @@ function VenueForm({ handleChange, venue }) {
         />
 
         <LabelGroup
-          classes="o-grid__cell o-grid__cell--offset-10"
+          classes={{
+            label: 'o-grid__cell o-grid__cell--offset-10'
+          }}
           name="state"
           options={{
             onChange: handleChange,

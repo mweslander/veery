@@ -3,6 +3,14 @@
 .c-event-form {
   padding: 1em;
 
+  &__amount-of-events-field {
+    padding: 0;
+  }
+
+  &__amount-of-events-input {
+    max-height: 38px;
+  }
+
   &__disclaimer {
     color: $darkest-gray;
     font-size: $small-font-size;
@@ -10,5 +18,9 @@
 
   &__field-description {
     margin-right: .5em;
+  }
+
+  &__select-field {
+    max-width: 120px;
   }
 }
