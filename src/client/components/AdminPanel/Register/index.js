@@ -7,6 +7,7 @@ import ReactGA from 'react-ga';
 
 // Components
 import Button from '../../Base/Button';
+import LabelGroup from '../../Base/LabelGroup';
 
 // CSS
 import './index.scss';
@@ -85,25 +86,22 @@ class Register extends Component {
             Email: {email}
           </label>
 
-          <label className="c-label" htmlFor="password">
-            Enter a password
-            <input
-              className="c-field o-grid__cell"
-              name="password"
-              type="password"
-              placeholder="password"
-            />
-          </label>
+          <LabelGroup
+            name="password"
+            options={{
+              placeholder: 'password',
+              type: 'password'
+            }}
+          />
 
-          <label className="c-label" htmlFor="password">
-            Confirm your password
-            <input
-              className="c-field o-grid__cell"
-              name="passwordConfirmation"
-              type="password"
-              placeholder="password"
-            />
-          </label>
+          <LabelGroup
+            displayName="Confirm your password"
+            name="passwordConfirmation"
+            options={{
+              placeholder: 'password',
+              type: 'password'
+            }}
+          />
 
           <Button value="Register" />
         </form>

@@ -86,6 +86,7 @@ describe('admin event requests', function() {
       });
 
       context('when the event params has a weekly frequency', function() {
+        let amountOfWeeks;
         let expectedDaysCreated;
         let holidays;
         let holidayValues;
@@ -93,6 +94,7 @@ describe('admin event requests', function() {
         let venue;
 
         beforeEach(function() {
+          amountOfWeeks = _.random(30, 40);
           holidays = moment().holidays([
             'New Years Day',
             'Martin Luther King Jr. Day',
@@ -114,8 +116,7 @@ describe('admin event requests', function() {
           const eventDays = [];
           eventDays.push(moment(new Date(startDate)));
 
-          // 26 total weeks (25 + original)
-          for (let i = 1; i <= 25; i++) {
+          for (let i = 1; i < amountOfWeeks; i++) {
             eventDays.push(moment(new Date(startDate)).add(i, 'week'));
           }
 
@@ -130,6 +131,7 @@ describe('admin event requests', function() {
               const options = {
                 ...baseParams,
                 startDate,
+                amountOfWeeks,
                 frequency: 'weekly',
                 venue: venue._id
               };

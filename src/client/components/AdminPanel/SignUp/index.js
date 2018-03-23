@@ -9,6 +9,7 @@ import './index.scss';
 // Components
 import Button from '../../Base/Button';
 import HomeLink from '../HomeLink';
+import LabelGroup from '../../Base/LabelGroup';
 
 // Services
 import adminInvitationsService from '../../../services/admin/invitations';
@@ -72,15 +73,14 @@ class SignUp extends Component {
       >
         <HomeLink />
 
-        <label className="c-label" htmlFor="email">
-          Enter your email
-          <input
-            className="c-field"
-            name="email"
-            type="text"
-            placeholder="joe@thebar.com"
-          />
-        </label>
+        <LabelGroup
+          displayName="Enter your email:"
+          name="email"
+          options={{
+            placeholder: 'user@bar.com',
+            type: 'text'
+          }}
+        />
 
         <Button value="Sign Up" />
       </form>

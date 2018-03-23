@@ -69,6 +69,7 @@ class NewEvent extends Component {
       >
         <EventForm
           event={{}}
+          form={this.newEventForm}
           handleStartDateChange={this.handleStartDateChange}
           venues={this.props.venues}
         />

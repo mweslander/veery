@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 // Components
 import Button from '../../Base/Button';
+import LabelGroup from '../../Base/LabelGroup';
 
 // CSS
 import './index.scss';
@@ -73,18 +74,18 @@ class ForgotPassword extends Component {
       >
         <h2>Forgot Password?</h2>
 
-        <div className="o-grid">
-          <label className="c-label o-grid__cell o-grid__cell--width-40" htmlFor="email">
-            Enter your email:
-          </label>
-
-          <input
-            className="c-field o-grid__cell"
-            name="email"
-            type="text"
-            placeholder="you@thebar.com"
-          />
-        </div>
+        <LabelGroup
+          classes={{
+            label: 'o-grid__cell--width-40'
+          }}
+          displayName="Enter your email:"
+          name="email"
+          options={{
+            placeholder: 'user@bar.com',
+            type: 'text'
+          }}
+          row
+        />
 
         <Button classes="c-forgot-password__button" value="Submit" />
       </form>
