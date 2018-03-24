@@ -1,7 +1,6 @@
 'use strict';
 
 const url = 'https://www.deepsouththebar.com/calendar/';
-const Venue = require('../../../../../app/models/venue');
 
 function getEventDetails(dayOfWeek, $, venueId) {
   return $(dayOfWeek).map((i, day) => {
@@ -29,18 +28,14 @@ function getEventDetails(dayOfWeek, $, venueId) {
   });
 }
 
-function deepSouth($) {
-  return Venue
-    .findOne({ name: 'Deep South The Bar' })
-    .then((venue) => {
-      const tuesdays = getEventDetails('.Tuesday', $, venue._id).toArray();
-      const wednesdays = getEventDetails('.Wednesday', $, venue._id).toArray();
-
-      return [].concat.apply(tuesdays, wednesdays);
-    });
+function deepSouth($, venue) {
+  const tuesdays = getEventDetails('.Tuesday', $, venue._id).toArray();
+  const wednesdays = getEventDetails('.Wednesday', $, venue._id).toArray();
+  return [].concat.apply(tuesdays, wednesdays);
 }
 
 module.exports = {
   run: deepSouth,
-  url
+  url,
+  venueDetails: { name: 'Deep South The Bar' }
 };

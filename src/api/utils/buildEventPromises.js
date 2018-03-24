@@ -22,7 +22,7 @@ const holidays = moment().holidays([
 ]);
 const holidayValues = Object.values(holidays).map(h => h.valueOf());
 
-function buildWeeklyStartDates(originalStartDate, amountOfWeeks = 26) {
+function buildWeeklyStartDates(originalStartDate, amountOfWeeks = 4) {
   const startDates = [];
   startDates.push(moment(new Date(originalStartDate)));
 

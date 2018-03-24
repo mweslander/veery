@@ -1,6 +1,8 @@
 'use strict';
 
+const flatten = require('lodash/flatten');
 const flattenDeep = require('lodash/flattenDeep');
+
 const admins = require('./seeds/admins');
 const database = require('./index.js');
 const log = require('../utils/log');
@@ -21,13 +23,9 @@ function furnish() {
       return Promise.all(promises);
     })
     .then(() => {
-      return populator.removeScrapedEvents();
-    })
-    .then(() => {
-      return populator.addMicNights(require('./seeds/events'), 'HARD CODED EVENTS SUCCESSFULLY ADDED');
-    })
-    .then(() => {
-      return populator.addMicNights(siteScraper.run(), 'SCRAPE SUCCESSFULLY FINISHED');
+      const sites = flatten([require('./seeds/events'), siteScraper.run()]);
+
+      return populator.addMicNights(sites, 'SCRAPE SUCCESSFULLY FINISHED');
     })
     .then(() => {
       return new User(admins[0]).save();
