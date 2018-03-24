@@ -1,7 +1,6 @@
 'use strict';
 
 const url = 'http://www.thebluenotegrill.com/events/';
-const Venue = require('../../../../../app/models/venue');
 
 function getMicNights($) {
   const blueJams = $('.event').filter((i, event) => {
@@ -25,40 +24,35 @@ function getMicNights($) {
   });
 }
 
-function blueNoteGrill($) {
+function blueNoteGrill($, venue) {
   const micNights = getMicNights($);
 
-  const events = (venue) => {
-    return micNights.map((i, micNight) => {
-      const bluesJam = $(micNight);
+  return micNights.map((i, micNight) => {
+    const bluesJam = $(micNight);
 
-      const title = bluesJam
-        .find('h2')
-        .children('a')
-        .text();
-      const dateTime = bluesJam.find('.date-time');
-      const startDate = dateTime
-        .children('.event-date')
-        .text();
-      const startTime = dateTime
-        .children('.event-time')
-        .text();
+    const title = bluesJam
+      .find('h2')
+      .children('a')
+      .text();
+    const dateTime = bluesJam.find('.date-time');
+    const startDate = dateTime
+      .children('.event-date')
+      .text();
+    const startTime = dateTime
+      .children('.event-time')
+      .text();
 
-      return {
-        startDate,
-        startTime,
-        title,
-        venue: venue._id
-      };
-    }).toArray();
-  };
-
-  return Venue
-    .findOne({ name: 'Blue Note Grill' })
-    .then((venue) => events(venue));
+    return {
+      startDate,
+      startTime,
+      title,
+      venue: venue._id
+    };
+  }).toArray();
 }
 
 module.exports = {
   run: blueNoteGrill,
-  url
+  url,
+  venueDetails: { name: 'Blue Note Grill' }
 };

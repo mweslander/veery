@@ -421,7 +421,7 @@ describe('admin venue requests', function() {
 
     context('when the address cannot be found', function() {
       beforeEach(function() {
-        this.sandbox.stub(googleMaps, 'geocode', () => Promise.reject());
+        this.sandbox.stub(googleMaps, 'geocode').callsFake(() => Promise.reject('Geocode Error'));
 
         return establishSpecResources(agent, 'admin')
           .then(() => {
