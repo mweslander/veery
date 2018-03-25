@@ -38,6 +38,7 @@ class DeletionModal extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       destroy: false,
+      isLoading: false,
       successMessage: 'Venue successfully destroyed.',
       venue: {}
     };
@@ -55,6 +56,16 @@ class DeletionModal extends Component {
     return this.props.router.push('/admin/venues/all');
   }
 
+  destroyVenue() {
+    return adminVenuesService
+      .destroyVenue(this.state.venue._id)
+      .then(this.closeModal)
+      .then(this.props.updateVenues)
+      .then(() => {
+        return this.props.setAlertMessage({ successMessage: this.state.successMessage });
+      });
+  }
+
   handleClick(bool) {
     return this.setState({ destroy: bool });
   }
@@ -63,13 +74,7 @@ class DeletionModal extends Component {
     event.preventDefault();
 
     if (this.state.destroy) {
-      return adminVenuesService
-        .destroyVenue(this.state.venue._id)
-        .then(this.closeModal)
-        .then(this.props.updateVenues)
-        .then(() => {
-          return this.props.setAlertMessage({ successMessage: this.state.successMessage });
-        });
+      return this.setState({ isLoading: true }, this.destroyVenue);
     }
 
     return this.closeModal();
@@ -81,6 +86,7 @@ class DeletionModal extends Component {
         closeModal={this.closeModal}
         handleSubmit={this.handleSubmit}
         heading={`Delete ${this.state.venue.name}?`}
+        isLoading={this.state.isLoading}
       >
         <div className="c-card__body">
           <div className="c-modal__radio-container">

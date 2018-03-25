@@ -11,9 +11,14 @@ const propTypes = {
   value: PropTypes.string
 };
 
-function Button({ value, classes }) {
+function Button({ classes, disabled, value }) {
   return (
-    <input className={`c-button ${classes}`} type="submit" value={value} />
+    <input
+      className={`c-button ${classes}`}
+      disabled={disabled}
+      type="submit"
+      value={value}
+    />
   );
 }
 

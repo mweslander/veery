@@ -17,9 +17,7 @@ const siteScraper = {
   buildEventsFromSite(site, resolve, $) {
     return Venue
       .findOne(site.venueDetails)
-      .then((venue) => {
-        return site.run($, venue);
-      })
+      .then((venue) => site.run($, venue))
       .then((events) => {
         if (events.length < 1) {
           emailJordanAboutHisBadScraper(site, { stack: 'No events were found.' });

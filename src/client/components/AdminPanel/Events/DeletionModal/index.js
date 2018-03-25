@@ -39,6 +39,7 @@ class DeletionModal extends Component {
     this.state = {
       destroyAll: false,
       event: {},
+      isLoading: false,
       successMessage: 'Event successfully destroyed.'
     };
   }
@@ -58,6 +59,16 @@ class DeletionModal extends Component {
     return this.props.router.goBack();
   }
 
+  destroyEvent() {
+    return adminEventsService
+      .destroyEvent(this.state.event._id, { destroyAll: this.state.destroyAll })
+      .then(this.props.handleUpdate)
+      .then(this.closeModal)
+      .then(() => {
+        return this.props.setAlertMessage({ successMessage: this.state.successMessage });
+      });
+  }
+
   handleChange(bool) {
     const successMessage = `Event${bool ? 's' : ''} successfully destroyed.`;
 
@@ -69,14 +80,7 @@ class DeletionModal extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
-    return adminEventsService
-      .destroyEvent(this.state.event._id, { destroyAll: this.state.destroyAll })
-      .then(this.props.handleUpdate)
-      .then(this.closeModal)
-      .then(() => {
-        return this.props.setAlertMessage({ successMessage: this.state.successMessage });
-      });
+    return this.setState({ isLoading: true }, this.destroyEvent);
   }
 
   render() {
@@ -88,6 +92,7 @@ class DeletionModal extends Component {
         closeModal={this.closeModal}
         handleSubmit={this.handleSubmit}
         heading={oneTime ? 'Delete?' : 'Delete Recurring Events'}
+        isLoading={this.state.isLoading}
       >
         <div className="c-card__body">
           <div className="c-modal__radio-container">

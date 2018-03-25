@@ -3,12 +3,14 @@ import React, {
   cloneElement
 } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 // CSS
 import './index.scss';
 
 // Components
 import Button from '../Button';
+import CirclesLoader from '../CirclesLoader';
 
 // PropTypes
 const propTypes = {
@@ -23,7 +25,15 @@ const propTypes = {
   <Modal/>
 */
 
-function Modal({ children, closeModal, handleSubmit, heading }) {
+function Modal(props) {
+  const {
+    children,
+    closeModal,
+    handleSubmit,
+    heading,
+    isLoading
+  } = props;
+
   return (
     <div>
       <div className="c-overlay c-overlay--visible" />
@@ -42,8 +52,11 @@ function Modal({ children, closeModal, handleSubmit, heading }) {
               cloneElement(children)}
 
             <footer className="c-card__footer">
-              <Button value="Submit" />
+              <Button value="Submit" disabled={isLoading} />
             </footer>
+
+            {isLoading &&
+              <CirclesLoader />}
           </div>
         </form>
       </div>

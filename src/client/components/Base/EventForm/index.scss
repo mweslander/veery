@@ -23,4 +23,12 @@
   &__select-field {
     max-width: 120px;
   }
+
+  &__time-picker {
+    margin-left: 20%;
+
+    @media screen and (max-width: $screen-width-max-mobile) {
+      margin-left: 0;
+    }
+  }
 }

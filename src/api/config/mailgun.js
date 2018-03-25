@@ -8,7 +8,7 @@ const mailgun = require('mailgun-js')({
 
 function sendEmail(email, subject, message) {
   const data = {
-    from: `<noreply@${config.domain}.com>`,
+    from: `<noreply@${config.domain}>`,
     to: email,
     subject,
     text: message
