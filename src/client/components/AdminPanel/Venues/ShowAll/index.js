@@ -95,6 +95,11 @@ class Venues extends Component {
           </tbody>
         </table>
 
+        <h5 className="c-heading">
+          If your venue already exists, send me an email at <a className="c-link" href="mailto:jahammo2@gmail.com">jahammo2@gmail.com</a>.
+          I'd be happy to add you to your venue.
+        </h5>
+
         {this.props.children &&
           cloneElement(this.props.children, { ...this.props })}
       </div>

@@ -58,7 +58,7 @@ function VenueForm({ handleChange, venue }) {
 
         <LabelGroup
           classes={{
-            label: 'o-grid__cell o-grid__cell--offset-10'
+            label: 'o-grid__cell c-venue-form__state'
           }}
           name="state"
           options={{

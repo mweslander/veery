@@ -1,3 +1,13 @@
+@import "../../../css/variables";
+
 .c-venue-form {
   padding: 1em;
+
+  &__state {
+    margin-left: 10%;
+
+    @media screen and (max-width: $screen-width-max-mobile) {
+      margin-left: 0;
+    }
+  }
 }

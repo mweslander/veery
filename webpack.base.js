@@ -18,6 +18,7 @@ const plugins = [
   }),
   new HtmlWebpackPlugin({
     filename: 'index.html',
+    favicon: './favicon.ico',
     hash: environment !== 'development',
     inject: 'body',
     template: 'src/client/index.html',
@@ -46,10 +47,6 @@ module.exports = {
       {
         test: /\.s(c|a)ss$/,
         loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!postcss-loader!sass-loader' })
-      },
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!postcss-loader' })
       },
       {
         test: /.*\.(gif|png|jpe?g|svg)$/i,

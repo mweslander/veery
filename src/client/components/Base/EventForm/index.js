@@ -81,7 +81,7 @@ class EventForm extends Component {
             />
           </label>
 
-          <label className="c-label o-grid__cell o-grid__cell--offset-20" htmlFor="startDate">
+          <label className="c-event-form__time-picker c-label o-grid__cell" htmlFor="startDate">
             Start Time
             <TimePicker
               defaultTime={event.startTime}

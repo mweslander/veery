@@ -25,7 +25,6 @@ function establishSpecResources() {
   return Promise.all(promises)
     .then((createdVenues) => {
       venues = createdVenues;
-
       const eventPromises = [];
 
       for (let i = 2; i > 0; i--) {
@@ -73,7 +72,7 @@ describe('nightlyScript', function() {
         removeScrapedEvents = this.sandbox.stub(populator, 'removeScrapedEvents').returns(Promise.resolve());
         buildAllEventPromises = this.sandbox.stub(populator, 'buildAllEventPromises').returns([Promise.resolve()]);
 
-        promise = require('./nightlyScript');
+        promise = require('./nightlyScript')();
       });
   });
 
@@ -86,8 +85,7 @@ describe('nightlyScript', function() {
   });
 
   it('removes the previously scraped events after building the event promises and before saving the new ones', function() {
-    // TODO: call the function in the beforeEach
-    return promise()
+    return promise
       .then(() => {
         return sinon.assert.callOrder(run, removeScrapedEvents, buildAllEventPromises);
       });
