@@ -4,7 +4,6 @@ import React, {
   Component
 } from 'react';
 import PropTypes from 'prop-types';
-import 'blaze';
 import classnames from 'classnames';
 
 // Components

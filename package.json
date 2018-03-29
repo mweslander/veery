@@ -39,7 +39,6 @@
     "array-from": "^2.1.1",
     "axios": "^0.15.3",
     "bcrypt-nodejs": "0.0.3",
-    "blaze": "^3.2.2",
     "body-parser": "^1.15.2",
     "cheerio": "^0.22.0",
     "classnames": "^2.2.5",
