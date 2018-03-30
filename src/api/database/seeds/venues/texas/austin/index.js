@@ -3,6 +3,7 @@ module.exports = [
   require('./bDRileys'),
   require('./brentwoodSocialHouse'),
   require('./cactusCafe'),
+  require('./egos'),
   require('./giddyUps'),
   require('./hardtailsBarAndGrill'),
   require('./houseWineAustin'),
