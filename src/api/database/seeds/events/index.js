@@ -1,6 +1,7 @@
 module.exports = [
   require('./beyuCaffe'),
   require('./bottle501'),
-  require('./theWaterTank'),
-  require('./skewersBarAndGrill')
+  require('./egos'),
+  require('./skewersBarAndGrill'),
+  require('./theWaterTank')
 ];
