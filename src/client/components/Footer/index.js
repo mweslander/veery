@@ -23,11 +23,11 @@ function Footer() {
 
   return (
     <footer className="c-footer">
-      <h6 className="c-footer__text">Venue owner? Sign up&nbsp;
+      <h6 className="c-footer__text">Venue owner? Sign up or sign in&nbsp;
         <Link
           className="c-footer__link"
           onClick={handleClick}
-          to="/admin/sign-up"
+          to="/admin/sign-in"
         >
           here
         </Link>
