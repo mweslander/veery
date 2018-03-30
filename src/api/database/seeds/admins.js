@@ -3,7 +3,7 @@
 const config = require('../../config');
 
 const admins = [{
-  email: 'admin@veery.com',
+  email: 'admin@veery.cool',
   password: config.admin.password,
   role: 'admin'
 }];

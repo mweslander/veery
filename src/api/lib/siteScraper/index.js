@@ -10,6 +10,7 @@ const Venue = require('../../app/models/venue');
 
 const sites = [
   require('./sites/northCarolina'),
+  require('./sites/southCarolina'),
   require('./sites/texas')
 ];
 
