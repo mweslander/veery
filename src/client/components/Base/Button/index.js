@@ -8,6 +8,7 @@ import './index.scss';
 // PropTypes
 const propTypes = {
   classes: PropTypes.string,
+  disabled: PropTypes.bool,
   value: PropTypes.string
 };
 

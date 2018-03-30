@@ -3,7 +3,6 @@ import React, {
   cloneElement
 } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
 // CSS
 import './index.scss';
@@ -17,7 +16,8 @@ const propTypes = {
   children: PropTypes.node,
   closeModal: PropTypes.func,
   handleSubmit: PropTypes.func,
-  heading: PropTypes.string
+  heading: PropTypes.string,
+  isLoading: PropTypes.bool
 };
 
 /*
