@@ -97,6 +97,11 @@ class SignIn extends Component {
           <div className="c-sign-in__forgot-password-link">
             <Link className="c-link" to="/admin/forgot-password">Forgot Password?</Link>
           </div>
+
+          <div className="c-sign-in__forgot-password-link">
+            <Link className="c-link" to="/admin/sign-up">Don't have an account?</Link>
+          </div>
+
           <Button value="Sign In" />
         </form>
       </div>
