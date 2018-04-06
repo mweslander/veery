@@ -5,10 +5,12 @@
 @import "../../css/variables";
 
 .c-event {
-  flex-grow: 1;
-  text-align: left;
   color: $white;
-  padding: $small-spacing 0 $small-spacing $base-spacing;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: $base-spacing 5%;
+  text-align: left;
 
   &__address {
     font-style: normal;
@@ -16,16 +18,26 @@
   }
 
   &__container {
-    width: 100%;
+    align-items: center;
     background-color: $overlay-gold-highlight;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 1px;
+    width: 100%;
 
     &--focused {
       background-color: $overlay-orange-highlight;
     }
+  }
+
+  &__heading {
+    margin: 0;
+  }
+
+  &__info-container {
+    align-self: center;
+    margin-right: 5%;
+    min-width: 50%;
   }
 
   &__name {
@@ -42,13 +54,9 @@
   }
 
   &__time {
-    padding-right: $small-spacing;
-    text-align: right;
+    align-self: center;
     color: $white;
-
-    h4 {
-      margin: 0;
-    }
+    text-align: right;
   }
 
   &:hover {

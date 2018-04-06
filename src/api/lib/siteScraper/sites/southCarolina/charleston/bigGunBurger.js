@@ -10,6 +10,8 @@ function bigGunBurger($, venue) {
 
   return [
     {
+      ageRestriction: false,
+      cover: true,
       frequency: 'weekly',
       startDate: moment().isoWeekday(1).format('MM-DD-YYYY'),
       startTime: '9:30pm',

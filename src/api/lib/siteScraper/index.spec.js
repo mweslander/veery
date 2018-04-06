@@ -9,6 +9,7 @@ const seedVenues = require('../../database/seeds/venues');
 
 const sites = [
   require('./sites/northCarolina'),
+  require('./sites/southCarolina'),
   require('./sites/texas')
 ];
 

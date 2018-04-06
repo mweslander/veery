@@ -9,6 +9,7 @@ function events() {
     .then((venue) => {
       return [
         {
+          cover: true,
           frequency: 'weekly',
           startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
           startTime: '8:00pm - 11:00pm',

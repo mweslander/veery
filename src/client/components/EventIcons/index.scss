@@ -1,0 +1,20 @@
+@import "../../css/variables";
+
+.c-event-icons {
+  &__container {
+    align-self: center;
+    flex: 0 0 10%;
+    margin-right: 5%;
+  }
+
+  &__dollar-icon {
+    color: $gold;
+    font-size: $h3-font-size;
+    margin-left: $h3-font-size / 3;
+  }
+
+  &__icon {
+    height: 32px;
+    position: relative;
+  }
+}
