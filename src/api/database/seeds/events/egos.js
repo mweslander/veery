@@ -11,6 +11,7 @@ function events() {
 
       for (let i = 1; i <= 7; i++) {
         karaokeNights.push({
+          ageRestriction: true,
           frequency: 'weekly',
           startDate: moment().isoWeekday(i).format('MM-DD-YYYY'),
           startTime: '9:00pm',

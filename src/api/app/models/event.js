@@ -4,6 +4,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
+  ageRestriction: {
+    default: false,
+    type: Boolean
+  },
+  cover: {
+    default: false,
+    type: Boolean
+  },
   frequency: {
     default: 'one time',
     enum: [
