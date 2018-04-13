@@ -19,10 +19,10 @@ function buildNoJSGoogleCalendarEvents($, title, venue) {
       .children()
       .eq(columnIndex);
 
-    const previousMonthData = correspondingTableData
-      .attr('class')
-      .indexOf('date-not-month') > -1;
+    const classes = correspondingTableData.attr('class') || [];
+    if (!classes) { return null; }
 
+    const previousMonthData = classes.indexOf('date-not-month') > -1;
     if (previousMonthData) { return null; }
 
     const startDay = correspondingTableData.text();

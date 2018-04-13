@@ -12,6 +12,24 @@ const {
   signInAndCreateUser
 } = require('../../../../../../support/spec/specHelper');
 
+const holidays = moment().holidays([
+  'New Years Day',
+  'Martin Luther King Jr. Day',
+  'Valentine\'s Day',
+  'Easter Sunday',
+  'Memorial Day',
+  'Mother\'s Day',
+  'Father\'s Day',
+  'Independence Day',
+  'Halloween',
+  'Thanksgiving Day',
+  'Day after Thanksgiving',
+  'Christmas Eve',
+  'Christmas Day',
+  'New Year\'s Eve'
+]);
+const holidayValues = Object.values(holidays).map(h => h.valueOf());
+
 function establishSpecResources(agent, role, venuesCallback = () => {}) {
   return signInAndCreateUser(agent, role)
     .then((newAdmin) => venuesCallback(newAdmin));
@@ -24,6 +42,29 @@ function aValidEventCreation(promise, venue, attribute, key = 'title', expectati
       expect(newEvent).to.exist;
       expect(newEvent.venue.toString()).to.eq(venue._id.toString());
       expectationCallback(newEvent);
+    });
+}
+
+function aValidEventsOfDifferentDatesCreation(promise, expectedDaysCreated) {
+  return promise
+    .then(() => Event.find({}))
+    .then((events) => {
+      const startDates = events.map(e => e.startDate);
+      const testedStartDate = startDates[0];
+      startDates.splice(startDates.indexOf(testedStartDate), 1);
+      expect(events.length).to.eq(expectedDaysCreated.length);
+      expect(startDates).not.to.include(testedStartDate);
+    });
+}
+
+function aNoHolidaysAddedCreation(promise) {
+  return promise
+    .then(() => Event.find({}))
+    .then((events) => {
+      const startDates = events.map(e => moment(e.startDate).valueOf());
+      return startDates.forEach((date) => {
+        expect(holidayValues).not.to.include(date);
+      });
     });
 }
 
@@ -88,29 +129,11 @@ describe('admin event requests', function() {
       context('when the event params has a weekly frequency', function() {
         let amountOfWeeks;
         let expectedDaysCreated;
-        let holidays;
-        let holidayValues;
         let startDate;
         let venue;
 
         beforeEach(function() {
           amountOfWeeks = _.random(30, 40);
-          holidays = moment().holidays([
-            'New Years Day',
-            'Martin Luther King Jr. Day',
-            'Valentine\'s Day',
-            'Easter Sunday',
-            'Memorial Day',
-            'Mother\'s Day',
-            'Father\'s Day',
-            'Independence Day',
-            'Halloween',
-            'Thanksgiving Day',
-            'Day after Thanksgiving',
-            'Christmas Eve',
-            'Christmas Day',
-            'New Year\'s Eve'
-          ]);
           startDate = moment().add(_.random(0, 6), 'days').format('MM-DD-YY');
 
           const eventDays = [];
@@ -120,7 +143,6 @@ describe('admin event requests', function() {
             eventDays.push(moment(new Date(startDate)).add(i, 'week'));
           }
 
-          holidayValues = Object.values(holidays).map(h => h.valueOf());
           expectedDaysCreated = eventDays.filter((day) => {
             return !_.includes(holidayValues, day.valueOf());
           });
@@ -150,26 +172,70 @@ describe('admin event requests', function() {
         });
 
         it('creates more events, all with different start dates', function() {
-          return this.promise
-            .then(() => Event.find({}))
-            .then((events) => {
-              const startDates = events.map(e => e.startDate);
-              const testedStartDate = startDates[0];
-              startDates.splice(startDates.indexOf(testedStartDate), 1);
-              expect(events.length).to.eq(expectedDaysCreated.length);
-              expect(startDates).not.to.include(testedStartDate);
-            });
+          return aValidEventsOfDifferentDatesCreation(this.promise, expectedDaysCreated);
         });
 
         it('does not create the holidays', function() {
-          return this.promise
-            .then(() => Event.find({}))
-            .then((events) => {
-              const startDates = events.map(e => moment(e.startDate).valueOf());
-              return startDates.forEach((date) => {
-                expect(holidayValues).not.to.include(date);
-              });
+          return aNoHolidaysAddedCreation(this.promise);
+        });
+      });
+
+      context('when the event params has a daily frequency', function() {
+        let amountOfWeeks;
+        let expectedDaysCreated;
+        let startDate;
+        let venue;
+
+        beforeEach(function() {
+          const eventDays = [];
+          amountOfWeeks = _.random(30, 104);
+          startDate = moment().format('MM-DD-YY');
+
+          for (let i = 0; i < amountOfWeeks; i++) {
+            // Not using a second for loop just to keep this test obvious
+            eventDays.push(moment(new Date(startDate)).add(i, 'week'));
+            eventDays.push(moment(new Date(startDate)).add(i, 'week').add(1, 'day'));
+            eventDays.push(moment(new Date(startDate)).add(i, 'week').add(2, 'day'));
+            eventDays.push(moment(new Date(startDate)).add(i, 'week').add(3, 'day'));
+            eventDays.push(moment(new Date(startDate)).add(i, 'week').add(4, 'day'));
+            eventDays.push(moment(new Date(startDate)).add(i, 'week').add(5, 'day'));
+            eventDays.push(moment(new Date(startDate)).add(i, 'week').add(6, 'day'));
+          }
+
+          expectedDaysCreated = eventDays.filter((day) => {
+            return !_.includes(holidayValues, day.valueOf());
+          });
+
+          return establishSpecResources(agent, 'admin', createVenue)
+            .then((newVenue) => {
+              venue = newVenue;
+              const options = {
+                ...baseParams,
+                startDate,
+                amountOfWeeks,
+                frequency: 'daily',
+                venue: venue._id
+              };
+
+              this.promise = agent
+                .post(endpoint)
+                .send(options);
             });
+        });
+
+        shared.itBehavesLike('a protected POST endpoint');
+        shared.itBehavesLike('a valid request', { statusCode: 201 });
+
+        it('creates the event', function() {
+          return aValidEventCreation(this.promise, venue, title);
+        });
+
+        it('creates more events, all with different start dates', function() {
+          return aValidEventsOfDifferentDatesCreation(this.promise, expectedDaysCreated);
+        });
+
+        it('does not create the holidays', function() {
+          return aNoHolidaysAddedCreation(this.promise);
         });
       });
     });
