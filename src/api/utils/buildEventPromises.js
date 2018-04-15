@@ -22,12 +22,11 @@ const holidays = moment().holidays([
 ]);
 const holidayValues = Object.values(holidays).map(h => h.valueOf());
 
-function buildWeeklyStartDates(originalStartDate, amountOfWeeks = 4) {
+function buildStartDates(amountOfWeeks = 2, forLoopCallback = () => {}) {
   const startDates = [];
-  startDates.push(moment(new Date(originalStartDate)));
 
-  for (let i = 1; i < amountOfWeeks; i++) {
-    startDates.push(moment(new Date(originalStartDate)).add(i, 'week'));
+  for (let i = 0; i < amountOfWeeks; i++) {
+    forLoopCallback(startDates, i);
   }
 
   return startDates.filter((date) => {
@@ -35,8 +34,8 @@ function buildWeeklyStartDates(originalStartDate, amountOfWeeks = 4) {
   });
 }
 
-function buildWeeklyEvents(params) {
-  const startDates = buildWeeklyStartDates(params.startDate, params.amountOfWeeks);
+function buildEvents(params, forLoopCallback) {
+  const startDates = buildStartDates(params.amountOfWeeks, forLoopCallback);
 
   return startDates.map((startDate) => {
     const eventAttributes = Object.assign({}, params, { startDate });
@@ -45,9 +44,21 @@ function buildWeeklyEvents(params) {
 }
 
 function buildEventPromises(params) {
+  let forLoopCallback = (startDates, i) => {
+    startDates.push(moment(new Date(params.startDate)).add(i, 'week'));
+  };
+
   switch (params.frequency) {
+  case 'daily':
+    forLoopCallback = (startDates, i) => {
+      for (let ii = 0; ii < 7; ii++) {
+        startDates.push(moment(new Date(params.startDate)).add(i, 'week').add(ii, 'day'));
+      }
+    };
+
+    return buildEvents(params, forLoopCallback);
   case 'weekly':
-    return buildWeeklyEvents(params);
+    return buildEvents(params, forLoopCallback);
   default:
     return [new Event(params).save()];
   }

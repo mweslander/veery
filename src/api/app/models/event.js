@@ -15,6 +15,7 @@ const eventSchema = new Schema({
   frequency: {
     default: 'one time',
     enum: [
+      'daily',
       'first of the month',
       'one time',
       'weekly'

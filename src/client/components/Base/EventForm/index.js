@@ -45,7 +45,7 @@ class EventForm extends Component {
 
   render() {
     const { handleStartDateChange, event, venues } = this.props;
-    const FREQUENCIES = ['one time', 'weekly'];
+    const FREQUENCIES = ['one time', 'weekly', 'daily'];
 
     return (
       <div className="c-event-form">
