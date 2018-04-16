@@ -32,6 +32,7 @@ class VenueMap extends Component {
     // Durham, NC
     const mapCenter = new google.maps.LatLng(35.992729, -78.903970); // eslint-disable-line no-undef
 
+    this.addBoundsChangedListener = this.addBoundsChangedListener.bind(this);
     this.establishMapListenerCallback = this.establishMapListenerCallback.bind(this);
     this.state = {
       mapProps: {
@@ -43,11 +44,16 @@ class VenueMap extends Component {
   }
 
   componentDidMount() {
-    return navigator.geolocation.getCurrentPosition((position) => {
-      return this.updateMapPropsWithNewCoordinates(position.coords, this.addBoundsChangedListener);
-    }, () => {
-      return this.addBoundsChangedListener();
-    });
+    return navigator.geolocation.getCurrentPosition(
+      (position) => {
+        return this.updateMapPropsWithNewCoordinates(position.coords, this.addBoundsChangedListener);
+      },
+      this.addBoundsChangedListener,
+      {
+        enableHighAccuracy: true,
+        timeout: 6000
+      }
+    );
   }
 
   componentWillReceiveProps(nextProps) {
