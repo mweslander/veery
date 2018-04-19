@@ -1,6 +1,7 @@
 // Imports
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
 
 // CSS
@@ -33,13 +34,15 @@ class VenueMap extends Component {
     const mapCenter = new google.maps.LatLng(35.992729, -78.903970); // eslint-disable-line no-undef
 
     this.addBoundsChangedListener = this.addBoundsChangedListener.bind(this);
-    this.establishMapListenerCallback = this.establishMapListenerCallback.bind(this);
+    this.searchThisArea = this.searchThisArea.bind(this);
     this.state = {
+      map: null,
       mapProps: {
         center: mapCenter,
         zoom: 11,
         mapTypeId: google.maps.MapTypeId.ROADMAP // eslint-disable-line no-undef
-      }
+      },
+      searchThisAreaisDisplaying: false
     };
   }
 
@@ -51,7 +54,7 @@ class VenueMap extends Component {
       this.addBoundsChangedListener,
       {
         enableHighAccuracy: true,
-        timeout: 6000
+        timeout: 9000
       }
     );
   }
@@ -81,7 +84,7 @@ class VenueMap extends Component {
     }
   }
 
-  setMarkers(map, venues = [], focusedVenue = {}) {
+  setMarkers(map, venues, focusedVenue) {
     return venues
       .forEach((venue) => {
         const marker = googleMapsService.buildMarker(map, null, venue, focusedVenue);
@@ -90,16 +93,16 @@ class VenueMap extends Component {
   }
 
   addBoundsChangedListener() {
-    const map = this.generateMap();
+    return this.generateMap([], {}, (map) => {
+      const callback = () => {
+        const params = googleMapsService.getBounds(map);
+        return this.props.searchForVenues(params);
+      };
 
-    const callback = () => {
-      const params = googleMapsService.getBounds(map);
-      return this.props.searchForVenues(params);
-    };
-
-    return google.maps // eslint-disable-line no-undef
-      .event
-      .addListenerOnce(map, 'bounds_changed', callback);
+      return google.maps // eslint-disable-line no-undef
+        .event
+        .addListenerOnce(map, 'bounds_changed', callback);
+    });
   }
 
   updateMapPropsWithNewCoordinates(newMapProps, callback) {
@@ -116,14 +119,14 @@ class VenueMap extends Component {
 
   addMarkerListener(marker, venue) {
     return marker.addListener('click', () => {
-      const { latitude, longitude } = venue;
-      return this.updateMapPropsWithNewCoordinates({ latitude, longitude }, () => {
+      return this.updateMapPropsWithNewCoordinates(venue, () => {
         return this.props.updateFocusedVenue(venue);
       });
     });
   }
 
-  establishMapListenerCallback(map) {
+  searchThisArea() {
+    const map = this.state.map;
     const latitude = map.center.lat();
     const longitude = map.center.lng();
     const zoom = map.zoom;
@@ -135,24 +138,51 @@ class VenueMap extends Component {
     };
 
     return this.updateMapPropsWithNewCoordinates(newMapProps, () => {
+      this.toggleSearchThisAreaButton();
+
       const params = googleMapsService.getBounds(map);
       return this.props.searchForVenues(params);
     });
   }
 
-  generateMap(venues, focusedVenue) {
+  toggleSearchThisAreaButton(bool = !this.state.searchThisAreaisDisplaying) {
+    return this.setState({ searchThisAreaisDisplaying: bool });
+  }
+
+  generateMap(venues = [], focusedVenue = {}, callback = () => {}) {
     const map = googleMapsService.buildBaseMap(this.state.mapProps);
 
     this.setMarkers(map, venues, focusedVenue);
-    map.addListener('zoom_changed', () => this.establishMapListenerCallback(map));
-    map.addListener('dragend', () => this.establishMapListenerCallback(map));
+    map.addListener('zoom_changed', () => this.toggleSearchThisAreaButton(true));
+    map.addListener('dragend', () => this.toggleSearchThisAreaButton(true));
 
-    return map;
+    return this.setState({ map }, () => callback(map));
   }
 
   render() {
+    const mobileClasses = classnames(
+      'c-map__container',
+      { 'c-map__container--with-venues': this.props.venues.length > 0 }
+    );
+    const searchThisAreaClasses = classnames(
+      'c-map__search-this-area',
+      { 'c-map__search-this-area--displaying': this.state.searchThisAreaisDisplaying }
+    );
+
     if (this.props.isMobileScreen) {
-      return <div className="c-map" id="googleMap" />;
+      return (
+        <div className={mobileClasses}>
+          <div className="c-map" id="googleMap" />
+
+          {this.state.searchThisAreaisDisplaying &&
+            <div
+              onClick={this.searchThisArea}
+              className="c-map__search-this-area"
+            >
+              search this area
+            </div>}
+        </div>
+      );
     }
 
     return (
@@ -163,6 +193,13 @@ class VenueMap extends Component {
           </div>}
 
         <div className="c-map" id="googleMap" />
+
+        <div
+          onClick={this.searchThisArea}
+          className={searchThisAreaClasses}
+        >
+          search this area
+        </div>
       </div>
     );
   }

@@ -8,11 +8,11 @@ import {
 import VenueMap from './index';
 import googleMapsService from '../../services/googleMaps';
 
-function aValidListenerCreation(listenerCall, establishMapListenerCallback, mapInstance) {
+function aValidListenerCreation(listenerCall, toggleSearchThisAreaButton) {
   const callback = listenerCall.args[1];
   callback();
-  const [params] = establishMapListenerCallback.firstCall.args;
-  expect(params).to.deep.eq(mapInstance);
+  const [params] = toggleSearchThisAreaButton.firstCall.args;
+  expect(params).to.eq(true);
 }
 
 describe('VenueMap', function() {
@@ -170,6 +170,8 @@ describe('VenueMap', function() {
 
       it('calls searchForVenues based off the map bounds', function() {
         successCallback(newPosition);
+        const generateMapCallback = generateMap.firstCall.args[2];
+        generateMapCallback(mapInstance);
         const callback = addListenerOnce.firstCall.args[2];
         callback();
         const [params] = searchForVenues.firstCall.args;
@@ -203,6 +205,8 @@ describe('VenueMap', function() {
 
       it('calls searchForVenues based off the map bounds', function() {
         failureCallback();
+        const generateMapCallback = generateMap.firstCall.args[2];
+        generateMapCallback(mapInstance);
         const callback = addListenerOnce.firstCall.args[2];
         callback();
         const [params] = searchForVenues.firstCall.args;
@@ -316,10 +320,10 @@ describe('VenueMap', function() {
   });
 
   describe('generateMap', function() {
-    let establishMapListenerCallback;
+    let toggleSearchThisAreaButton;
 
     beforeEach(function() {
-      establishMapListenerCallback = this.sandbox.stub();
+      toggleSearchThisAreaButton = this.sandbox.stub();
     });
 
     context('without passed down venues', function() {
@@ -334,19 +338,20 @@ describe('VenueMap', function() {
         };
 
         venueMap = shallow(<VenueMap {...initialProps} />);
-        venueMap.instance().establishMapListenerCallback = establishMapListenerCallback;
-        generatedMap = venueMap.instance().generateMap();
+        venueMap.instance().toggleSearchThisAreaButton = toggleSearchThisAreaButton;
+        venueMap.instance().generateMap();
+        generatedMap = venueMap.state().map;
       });
 
-      it('adds a callback to the zoom_changed listener that will call establishMapListenerCallback upon a new zoom', function() {
-        return aValidListenerCreation(addListener.firstCall, establishMapListenerCallback, mapInstance);
+      it('adds a callback to the zoom_changed listener that will call toggleSearchThisAreaButton upon a new zoom', function() {
+        return aValidListenerCreation(addListener.firstCall, toggleSearchThisAreaButton, mapInstance);
       });
 
-      it('adds a callback to the dragend listener that will call establishMapListenerCallback upon a dragend', function() {
-        return aValidListenerCreation(addListener.secondCall, establishMapListenerCallback, mapInstance);
+      it('adds a callback to the dragend listener that will call toggleSearchThisAreaButton upon a dragend', function() {
+        return aValidListenerCreation(addListener.secondCall, toggleSearchThisAreaButton, mapInstance);
       });
 
-      it('returns the map', function() {
+      it('sets the state to the new map', function() {
         expect(generatedMap).to.equal(mapInstance);
       });
     });
@@ -365,28 +370,29 @@ describe('VenueMap', function() {
 
         venueMap = shallow(<VenueMap {...initialProps} />);
         venueMap.instance().addMarkerListener = this.sandbox.stub();
-        venueMap.instance().establishMapListenerCallback = establishMapListenerCallback;
-        generatedMap = venueMap.instance().generateMap();
+        venueMap.instance().toggleSearchThisAreaButton = toggleSearchThisAreaButton;
+        venueMap.instance().generateMap();
+        generatedMap = venueMap.state().map;
       });
 
-      it('adds a callback to the zoom_changed listener that will call establishMapListenerCallback upon a new zoom', function() {
+      it('adds a callback to the zoom_changed listener that will call toggleSearchThisAreaButton upon a new zoom', function() {
         // Because generateMap is called from componentWillReceiveProps initially
         const call = addListener.getCall(addListener.callCount - 2);
-        return aValidListenerCreation(call, establishMapListenerCallback, mapInstance);
+        return aValidListenerCreation(call, toggleSearchThisAreaButton, mapInstance);
       });
 
-      it('adds a callback to the dragend listener that will call establishMapListenerCallback upon a dragend', function() {
+      it('adds a callback to the dragend listener that will call toggleSearchThisAreaButton upon a dragend', function() {
         const call = addListener.getCall(addListener.callCount - 1);
-        return aValidListenerCreation(call, establishMapListenerCallback, mapInstance);
+        return aValidListenerCreation(call, toggleSearchThisAreaButton, mapInstance);
       });
 
-      it('returns the map', function() {
+      it('sets the state to the new map', function() {
         expect(generatedMap).to.equal(mapInstance);
       });
     });
   });
 
-  describe('establishMapListenerCallback', function() {
+  describe('searchThisArea', function() {
     let newLatitude;
     let newLongitude;
     let newZoom;
@@ -419,7 +425,8 @@ describe('VenueMap', function() {
       };
 
       venueMap = shallow(<VenueMap {...initialProps} />);
-      return venueMap.instance().establishMapListenerCallback(newMapInstance);
+      venueMap.setState({ map: newMapInstance });
+      return venueMap.instance().searchThisArea();
     });
 
     it('sets the state to a new center with a new latitude, longitude, and zoom', function() {
@@ -509,10 +516,8 @@ describe('VenueMap', function() {
       const callback = addListener.firstCall.args[1];
       callback();
       const [newMapProps, secondCallback] = updateMapPropsWithNewCoordinates.firstCall.args;
-      expect(newMapProps).to.deep.equal({
-        latitude: mockVenue.latitude,
-        longitude: mockVenue.longitude
-      });
+      expect(newMapProps.latitude).to.equal(mockVenue.latitude);
+      expect(newMapProps.longitude).to.equal(mockVenue.longitude);
       secondCallback();
       const [sameVenue] = updateFocusedVenue.firstCall.args;
       expect(sameVenue).to.equal(mockVenue);
