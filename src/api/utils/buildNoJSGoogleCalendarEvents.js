@@ -20,7 +20,8 @@ function buildNoJSGoogleCalendarEvents($, title, venue) {
       .eq(columnIndex);
 
     const classes = correspondingTableData.attr('class');
-    if (!classes) { return null; }
+    // Because `classes` might be something like 'null cell-today'
+    if (!classes || classes.indexOf(null, undefined) > -1) { return null; } // eslint-disable-line no-undefined
 
     const previousMonthData = classes.indexOf('date-not-month') > -1;
     if (previousMonthData) { return null; }

@@ -11,6 +11,13 @@ function events() {
       return [
         {
           frequency: 'weekly',
+          startDate: moment().isoWeekday(2).format('MM-DD-YYYY'),
+          startTime: '8pm - 11pm',
+          title: 'Open Mic',
+          venue: venue._id
+        },
+        {
+          frequency: 'weekly',
           startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
           startTime: '8pm - close',
           title: 'Karaoke',
