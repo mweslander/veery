@@ -34,6 +34,7 @@ class VenueMap extends Component {
     const mapCenter = new google.maps.LatLng(35.992729, -78.903970); // eslint-disable-line no-undef
 
     this.addBoundsChangedListener = this.addBoundsChangedListener.bind(this);
+    this.renderBaseMap = this.renderBaseMap.bind(this);
     this.searchThisArea = this.searchThisArea.bind(this);
     this.state = {
       map: null,
@@ -159,7 +160,7 @@ class VenueMap extends Component {
     return this.setState({ map }, () => callback(map));
   }
 
-  render() {
+  renderBaseMap() {
     const mobileClasses = classnames(
       'c-map__container',
       { 'c-map__container--with-venues': this.props.venues.length > 0 }
@@ -169,29 +170,8 @@ class VenueMap extends Component {
       { 'c-map__search-this-area--displaying': this.state.searchThisAreaisDisplaying }
     );
 
-    if (this.props.isMobileScreen) {
-      return (
-        <div className={mobileClasses}>
-          <div className="c-map" id="googleMap" />
-
-          {this.state.searchThisAreaisDisplaying &&
-            <div
-              onClick={this.searchThisArea}
-              className="c-map__search-this-area"
-            >
-              search this area
-            </div>}
-        </div>
-      );
-    }
-
     return (
-      <div className="c-map__container">
-        {this.props.isLoading &&
-          <div className="c-map__overlay">
-            <img className="c-map__spinner" src={spinner} />
-          </div>}
-
+      <div className={mobileClasses}>
         <div className="c-map" id="googleMap" />
 
         <div
@@ -200,6 +180,20 @@ class VenueMap extends Component {
         >
           search this area
         </div>
+      </div>
+    );
+  }
+
+  render() {
+    if (this.props.isMobileScreen) { return this.renderBaseMap() }
+
+    return (
+      <div className="c-map__container">
+        {this.props.isLoading &&
+          <div className="c-map__overlay">
+            <img className="c-map__spinner" src={spinner} />
+          </div>}
+        {this.renderBaseMap()}
       </div>
     );
   }
