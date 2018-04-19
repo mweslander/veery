@@ -34,6 +34,7 @@ class App extends Component {
     super();
 
     this.searchForVenues = this.searchForVenues.bind(this);
+    this.toggleIsLoading = this.toggleIsLoading.bind(this);
     this.updateFocusedVenue = this.updateFocusedVenue.bind(this);
     this.state = {
       events: [],
@@ -42,6 +43,10 @@ class App extends Component {
       isLoading: true,
       venues: []
     };
+  }
+
+  toggleIsLoading(bool = !this.state.isLoading, callback) {
+    return this.setState({ isLoading: bool }, callback);
   }
 
   applyNewStateFromVenues(newState, venues) {
@@ -53,36 +58,36 @@ class App extends Component {
       newState.focusedVenue = focusedVenue;
     }
 
-    return this.setState(newState);
+    // I'm purposefully adding 125ms because the extremely quick swirly
+    // feels so icky
+    return setTimeout(() => {
+      return this.toggleIsLoading(false, () => {
+        return this.setState(newState);
+      });
+    }, 125);
   }
 
   searchForVenues(params = {}) {
-    let loaded = false;
+    const setNewStateFromVenues = (venues) => {
+      const eventsFromVenues = venues.map(venue => venue.events);
+      const formattedEvents = sortBy(flatten(eventsFromVenues), ['startDate', 'startTime']);
+      const formattedVenues = venues.filter(venue => venue.events.length > 0);
+      const focusedVenue = formattedEvents[0] && formattedEvents[0].venue || null;
 
-    setTimeout(() => {
-      if (!loaded) {
-        return this.setState({ isLoading: true });
-      }
-    }, 100);
+      const defaultNewState = {
+        events: formattedEvents,
+        focusedVenue,
+        venues: formattedVenues
+      };
 
-    return venuesService
-      .showAll(params)
-      .then((venues) => {
-        const eventsFromVenues = venues.map(venue => venue.events);
-        const formattedEvents = sortBy(flatten(eventsFromVenues), ['startDate', 'startTime']);
-        const formattedVenues = venues.filter(venue => venue.events.length > 0);
-        const focusedVenue = formattedEvents[0] && formattedEvents[0].venue || null;
-        loaded = true;
+      return this.applyNewStateFromVenues(defaultNewState, venues);
+    };
 
-        const defaultNewState = {
-          events: formattedEvents,
-          focusedVenue,
-          isLoading: false,
-          venues: formattedVenues
-        };
-
-        return this.applyNewStateFromVenues(defaultNewState, venues);
-      });
+    return this.toggleIsLoading(true, () => {
+      return venuesService
+        .showAll(params)
+        .then((venues) => setNewStateFromVenues(venues));
+    });
   }
 
   updateFocusedVenue(focusedVenue, focusedEvent = {}) {

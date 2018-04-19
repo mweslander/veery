@@ -5,23 +5,70 @@
 @import "../../css/variables";
 
 .c-map {
-  flex-grow: 1;
   height: 100%;
-  width: 100%;
 
   &__container {
-    flex-grow: 1;
     height: 100%;
     position: relative;
     width: 100%;
+
+    &--with-venues {
+      // 32vh being the height of the event list
+      // 44px being the height of the event list toggle
+      height: calc(100% - 32vh - 44px);
+
+      @media screen and (min-width: $screen-width-min-desktop) {
+        height: 100%;
+      }
+    }
   }
 
   &__overlay {
     background: $overlay-white;
-    height: 100%;
+    // 24px being the max footer height
+    height: calc(100% - 24px);
     position: absolute;
     width: 100%;
+    z-index: 2;
+
+    @media screen and (min-width: $screen-width-min-desktop) {
+      height: 100%;
+    }
+  }
+
+  &__search-this-area {
+    background: $cream-white;
+    border-radius: $base-border-radius;
+    color: $deep-blue;
+    font-size: $base-font-size * 0.5;
+    font-weight: $h3-font-weight;
+    left: 30%;
+    opacity: 0;
+    padding: $small-spacing;
+    position: absolute;
+    text-transform: uppercase;
+    // So it always sits below "map|satellite"
+    // "map|satellite" is 35px max height
+    // with margins of 10px
+    top: 55px;
+    transition: opacity 0.3s ease;
+    visibility: hidden;
+    width: 40%;
     z-index: 1;
+
+    @media screen and (min-width: $screen-width-min-desktop) {
+      left: 35%;
+      width: 30%;
+    }
+
+    &--displaying {
+      opacity: 1.0;
+      visibility: visible;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &__spinner {
