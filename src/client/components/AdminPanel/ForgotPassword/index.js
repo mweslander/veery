@@ -68,7 +68,7 @@ class ForgotPassword extends Component {
   render() {
     return (
       <form
-        className="c-invite-venue-admin o-fieldset o-container o-container--small"
+        className="c-invite-venue-admin o-container o-container--small"
         ref={(form) => { this.forgotPasswordForm = form; }}
         onSubmit={this.handleSubmit}
       >

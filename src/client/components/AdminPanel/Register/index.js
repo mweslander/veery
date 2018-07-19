@@ -78,7 +78,7 @@ class Register extends Component {
     return (
       <div className="c-register o-container o-container--small">
         <form
-          className="o-fieldset o-container o-container--small"
+          className="o-container o-container--small"
           ref={(form) => { this.registerForm = form; }}
           onSubmit={this.handleSubmit}
         >

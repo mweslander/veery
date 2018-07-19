@@ -1,9 +1,9 @@
 app_name: veery
 
 letsencrypt:
-  enabled: false
-  hostname:          # REQUIRED should be example.com or subdomain.example.com (do not include the www)
-  email:             # REQUIRED
+  enabled: true
+  hostname: veery.cool         # REQUIRED should be example.com or subdomain.example.com (do not include the www)
+  email: jahammo2@gmail.com             # REQUIRED
 
 # App Configs
 fe_app_repo: git@github.com:mweslander/veery.git

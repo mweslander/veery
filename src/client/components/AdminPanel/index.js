@@ -110,6 +110,7 @@ class AdminPanel extends Component {
 
         {alertFlash &&
           <div
+            role="alert"
             className={
               classnames('c-alert', {
                 'c-alert--error': alertFlash.errorMessage,
