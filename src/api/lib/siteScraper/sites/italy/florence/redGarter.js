@@ -3,10 +3,10 @@
 const moment = require('moment');
 
 const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNights');
-const url = 'http://redgarteritaly.com/karaoke-firenze/';
+const url = 'https://redgarter1962.com/karaoke/';
 
 function redGarter($, venue) {
-  searchForOpenMicNights('21:30 till late LIVE KARAOKE SHOW', $, 'div');
+  searchForOpenMicNights('Al Red Garter il Karaoke', $, 'p');
 
   return [
     {

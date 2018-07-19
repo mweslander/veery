@@ -6,17 +6,18 @@ const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNig
 const url = 'http://www.hardtailsbarandgrill.com/';
 
 function hardtailsBarAndGrill($, venue) {
-  searchForOpenMicNights('Tuesday nights from 7pm to 10pm', $, 'p');
+  // NOTE. Tuesdays may make a comeback
+  // searchForOpenMicNights('Tuesday nights from 7pm to 10pm', $, 'p');
   searchForOpenMicNights('Wednesdays starts at 8pm', $, 'p');
 
   return [
-    {
-      frequency: 'weekly',
-      startDate: moment().isoWeekday(2).format('MM-DD-YYYY'),
-      startTime: '7pm to 10pm',
-      title: 'Open Mic Night',
-      venue: venue._id
-    },
+    // {
+    //   frequency: 'weekly',
+    //   startDate: moment().isoWeekday(2).format('MM-DD-YYYY'),
+    //   startTime: '7pm to 10pm',
+    //   title: 'Open Mic Night',
+    //   venue: venue._id
+    // },
     {
       frequency: 'weekly',
       startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
