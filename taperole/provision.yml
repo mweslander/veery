@@ -29,4 +29,5 @@
     - nginx
     - frontend_deploy
     - node_api_configure
+    - letsencrypt
     - monit_activate # Run Last
