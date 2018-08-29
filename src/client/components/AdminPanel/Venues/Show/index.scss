@@ -1,12 +1,39 @@
 @import "../../../../css/mixins";
 @import "../../../../css/variables";
 
+a.c-admin-venues-show {
+  &__button {
+    margin-bottom: $small-spacing;
+  }
+}
+
+div.c-admin-venues-show {
+  &__buttons {
+    @media screen and (max-width: $screen-width-max-mobile) {
+      max-width: 100%;
+    }
+  }
+
+  &__info {
+    @media screen and (max-width: $screen-width-max-mobile) {
+      max-width: 100%;
+    }
+  }
+}
+
+h2.c-admin-venues-show {
+  &__events-heading,
+  &__heading {
+    font-weight: 600;
+    margin-bottom: $small-spacing;
+  }
+}
+
 .c-admin-venues-show {
   @include admin-show-all;
 
   &__button {
     height: 40px;
-    margin-bottom: $small-spacing;
     width: 100%;
   }
 
@@ -15,7 +42,6 @@
 
     @media screen and (max-width: $screen-width-max-mobile) {
       margin-left: 0;
-      max-width: 100%;
     }
   }
 
@@ -29,10 +55,7 @@
   }
 
   &__info {
+    margin-bottom: $small-spacing;
     text-align: left;
-
-    @media screen and (max-width: $screen-width-max-mobile) {
-      max-width: 100%;
-    }
   }
 }

@@ -2,7 +2,7 @@
 // Component overrides
 //=============================================================================
 
-.c-alert {
+.c-alert[role="alert"] {
   border-radius: 0;
 }
 
@@ -16,6 +16,7 @@
 
 .c-heading {
   font-weight: 400;
+  padding: initial;
 }
 
 .c-label {

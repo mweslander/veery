@@ -67,7 +67,7 @@ class SignUp extends Component {
   render() {
     return (
       <form
-        className="c-sign-up o-fieldset o-container o-container--small"
+        className="c-sign-up o-container o-container--small"
         ref={(form) => { this.signUpForm = form; }}
         onSubmit={this.handleSubmit}
       >

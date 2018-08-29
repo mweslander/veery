@@ -2,17 +2,17 @@
 // Object overrides
 //=============================================================================
 
+.o-grid {
+  @media screen and (max-width: $screen-width-max-mobile) {
+    display: block;
+  }
+}
+
 .o-modal {
   width: initial;
   padding: 0 2em;
 
   @media screen and (max-width: $screen-width-max-mini-mobile) {
     padding: 0;
-  }
-}
-
-.o-grid {
-  @media screen and (max-width: $screen-width-max-mobile) {
-    display: block;
   }
 }

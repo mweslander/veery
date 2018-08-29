@@ -54,7 +54,7 @@ class NewVenue extends Component {
   render() {
     return (
       <form
-        className="c-new-venue o-fieldset o-container o-container--small"
+        className="c-new-venue o-container o-container--small"
         ref={(form) => { this.newVenueForm = form; }}
         onSubmit={this.handleSubmit}
       >

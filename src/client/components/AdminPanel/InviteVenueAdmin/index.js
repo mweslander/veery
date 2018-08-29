@@ -71,7 +71,7 @@ class InviteVenueAdmin extends Component {
   render() {
     return (
       <form
-        className="c-invite-venue-admin o-fieldset o-container o-container--medium"
+        className="c-invite-venue-admin o-container o-container--medium"
         ref={(form) => { this.inviteVenueAdminForm = form; }}
         onSubmit={this.handleSubmit}
       >

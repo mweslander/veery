@@ -74,7 +74,7 @@ class SignIn extends Component {
         <HomeLink />
 
         <form
-          className="o-fieldset o-container o-container--small"
+          className="o-container o-container--small"
           ref={(form) => { this.signInForm = form; }}
           onSubmit={this.handleSubmit}
         >

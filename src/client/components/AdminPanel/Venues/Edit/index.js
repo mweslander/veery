@@ -79,7 +79,7 @@ class Edit extends Component {
 
     return (
       <form
-        className="c-edit-venue o-fieldset o-container o-container--small"
+        className="c-edit-venue o-container o-container--small"
         ref={(form) => { this.editForm = form; }}
         onSubmit={this.handleSubmit}
       >
