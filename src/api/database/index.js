@@ -37,9 +37,8 @@ const database = {
 
   connect() {
     return new Promise((resolve, reject) => {
-      console.log(process.env);
-      const databaseName = `mongodb://${config.database.host}/${config.database.name}`;
-      // const databaseName = process.env.MONGODB_URI;
+      // const databaseName = `mongodb://${config.database.host}/${config.database.name}`;
+      const databaseName = process.env.MONGODB_URI;
 
       mongoose.connect(databaseName, {
         useMongoClient: true
