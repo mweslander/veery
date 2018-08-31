@@ -5,8 +5,8 @@ module.exports = {
     password: 'password'
   },
   database: {
-    host: 'heroku_2g66vw1r:67cv41qorhklhu5qmn3669akrl@ds237832.mlab.com:37832',
-    name: 'heroku_2g66vw1r'
+    host: 'localhost',
+    name: 'veery_development'
   },
   domain: 'localhost',
   googleAnalytics: {
