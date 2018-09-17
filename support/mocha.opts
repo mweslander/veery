@@ -1,3 +1,5 @@
 --require support/mocha/addons.js
 --require support/mocha/globals.js
 --require support/mocha/nullCompilers.js
+
+--timeout 3000

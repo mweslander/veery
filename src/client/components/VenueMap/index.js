@@ -185,7 +185,7 @@ class VenueMap extends Component {
   }
 
   render() {
-    if (this.props.isMobileScreen) { return this.renderBaseMap() }
+    if (this.props.isMobileScreen) { return this.renderBaseMap(); }
 
     return (
       <div className="c-map__container">

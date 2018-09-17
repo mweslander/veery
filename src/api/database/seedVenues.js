@@ -1,12 +1,14 @@
 'use strict';
 
+const flattenDeep = require('lodash/flattenDeep');
+
 const venues = require('./seeds/venues');
 const database = require('./index.js');
 const log = require('../utils/log');
 const Venue = require('../app/models/venue.js');
 
 function seedVenues() {
-  const promises = venues.map((venue) => {
+  const promises = flattenDeep(venues).map((venue) => {
     return new Venue(venue).save();
   });
 
