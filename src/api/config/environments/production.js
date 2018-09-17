@@ -2,19 +2,21 @@
 
 module.exports = {
   admin: {
-    password: 'password'
+    password: process.env.ADMIN_PASSWORD
   },
   database: {
-    host: 'heroku_2g66vw1r:67cv41qorhklhu5qmn3669akrl@ds237832.mlab.com:37832',
-    name: 'heroku_2g66vw1r'
+    mongodbUri: process.env.MONGODB_URI
   },
-  domain: 'localhost',
+  domain: process.env.DOMAIN,
+  googleAnalytics: {
+    propertyId: process.env.GOOGLE_ANALYTICS_PROPERTY_ID
+  },
   googleMaps: {
-    key: 'AIzaSyBqtMZ7Hndm7fhCS9KbTYVb0xMr-JYVu_Y'
+    key: process.env.GOOGLE_MAPS_KEY
   },
   mailgun: {
-    apiKey: 'key-870c72393e50ee32d6306cb91924cd02',
-    domain: 'sandboxb3c88bf4188e4f6ca71624650ecfcf08.mailgun.org'
+    apiKey: process.env.MAILGUN_API_KEY,
+    domain: process.env.MAILGUN_DOMAIN
   },
-  sessionSecret: 'secret'
+  sessionSecret: process.env.SESSION_SECRET
 };
