@@ -43,7 +43,8 @@ venueSchema.pre('save', function(next) {
       });
   }
 
-  next();
+  // TODO: remove the return if CI still fails
+  return next();
 });
 
 module.exports = mongoose.model('Venue', venueSchema);
