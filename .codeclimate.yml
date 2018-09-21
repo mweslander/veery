@@ -17,7 +17,7 @@ checks:
       threshold: 20
   method-lines:
     config:
-      threshold: 50
+      threshold: 40
   nested-control-flow:
     config:
       threshold: 4
@@ -30,3 +30,12 @@ checks:
   identical-code:
     config:
       threshold: # language-specific defaults. an override will affect all languages.
+exclude_patterns:
+  - "dist/"
+  - "**/node_modules/"
+  - "**/*_test.go"
+  - "**/*.d.ts"
+  - "**/*.spec.js"
+  - "**/*.svg"
+  - "src/api/database/seeds/venues/"
+  - "src/client/data/"
