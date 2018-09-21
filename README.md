@@ -93,6 +93,8 @@ We have to use the seed feature because I have not been able to hash passwords f
 #### Venue Admin
 
 * `venueadmin-1@example.com` / `password`
+...
+* `venueadmin-10@example.com` / `password`
 
 ### Testing
 
