@@ -7,7 +7,7 @@
     "build": "webpack -d",
     "build:production": "NODE_ENV=production webpack --colors --progress",
     "client:start": "webpack-dev-server -d --hot --port 8080",
-    "client:test": "NODE_ENV=test mocha --compilers jsx:babel-register --opts 'support/mocha.opts' 'src/client/**/*.spec.js'",
+    "client:test": "NODE_ENV=test mocha --require babel-register --opts 'support/mocha.opts' 'src/client/**/*.spec.js' --exit",
     "development": "npm run start:server & npm run start:client",
     "db:drop": "node src/api/database/drop.js",
     "db:drop:test": "NODE_ENV=test npm run db:drop",
@@ -21,7 +21,7 @@
     "lint": "eslint ./src",
     "start": "node src/api/server.js",
     "server:start": "nodemon --watch src/api src/api/server.js",
-    "server:test": "NODE_ENV=test npm run db:drop:test && NODE_ENV=test mocha --opts 'support/mocha.opts' 'src/api/**/*.spec.js'",
+    "server:test": "NODE_ENV=test npm run db:drop:test && NODE_ENV=test mocha --opts 'support/mocha.opts' 'src/api/**/*.spec.js' --exit",
     "test": "npm run server:test && npm run client:test"
   },
   "repository": {
@@ -106,13 +106,13 @@
     "htmlparser2": "^3.9.2",
     "inline-manifest-webpack-plugin": "^3.0.1",
     "json-loader": "^0.5.4",
-    "mocha": "^2.4.5",
+    "mocha": "^5.2.0",
     "react-addons-test-utils": "^15.6.2",
     "react-hot-loader": "^1.3.0",
     "react-test-renderer": "^16.2.0",
     "resolve-url-loader": "^1.4.3",
     "sinon": "^4.4.8",
-    "url-loader": "^0.5.9",
+    "url-loader": "^1.1.1",
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-dev-server": "^3.1.5"
   }
