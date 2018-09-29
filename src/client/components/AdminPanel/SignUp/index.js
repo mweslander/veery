@@ -22,8 +22,7 @@ const propTypes = {
   router: PropTypes.shape({
     push: PropTypes.func.isRequired
   }),
-  setAlertMessage: PropTypes.func,
-  venues: PropTypes.array
+  setAlertMessage: PropTypes.func
 };
 
 /*
@@ -34,8 +33,8 @@ const propTypes = {
 class SignUp extends Component {
   constructor() {
     super();
-
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setForm = (form) => this.signUpForm = form;
   }
 
   handleSubmit(event) {
@@ -68,7 +67,7 @@ class SignUp extends Component {
     return (
       <form
         className="c-sign-up o-container o-container--small"
-        ref={(form) => { this.signUpForm = form; }}
+        ref={this.setForm}
         onSubmit={this.handleSubmit}
       >
         <HomeLink />

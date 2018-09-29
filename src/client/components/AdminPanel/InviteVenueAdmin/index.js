@@ -15,13 +15,7 @@ import adminInvitationsService from '../../../services/admin/invitations';
 import mapFormValues from '../../../utils/mapFormValues';
 
 // PropTypes
-const propTypes = {
-  router: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }),
-  setAlertMessage: PropTypes.func,
-  venues: PropTypes.array
-};
+import propTypes from '../../../constants/propTypes/adminPanel/baseVenues';
 
 /*
   InviteVenueAdmin
@@ -34,6 +28,7 @@ class InviteVenueAdmin extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.setForm = (form) => this.inviteVenueAdminForm = form;
     this.state = {
       venueIdsForSubmission: []
     };
@@ -72,7 +67,7 @@ class InviteVenueAdmin extends Component {
     return (
       <form
         className="c-invite-venue-admin o-container o-container--medium"
-        ref={(form) => { this.inviteVenueAdminForm = form; }}
+        ref={this.setForm}
         onSubmit={this.handleSubmit}
       >
         <div className="o-grid">

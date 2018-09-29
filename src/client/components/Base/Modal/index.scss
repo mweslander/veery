@@ -8,16 +8,4 @@
   &__form {
     min-width: 300px;
   }
-
-  &__radio-container {
-    &:first-child {
-      label {
-        padding-bottom: 0;
-      }
-    }
-  }
-
-  &__radio-explanation {
-    margin-left: .5em;
-  }
 }

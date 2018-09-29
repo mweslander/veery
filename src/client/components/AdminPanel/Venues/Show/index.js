@@ -37,36 +37,12 @@ const propTypes = {
 */
 
 class Venue extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      venue: {
-        events: []
-      }
-    };
-  }
-
-  componentWillMount() {
-    if (this.state.venue.events.length === 0) {
-      return this.props.updateVenues();
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const venue = nextProps.venues.find((nextVenue) => {
-      return nextVenue._id === this.props.router.params.id;
-    });
-
-    return this.setState({ venue });
-  }
-
   componentWillUnmount() {
     return this.props.removeAlert();
   }
 
   render() {
-    const { venue } = this.state;
+    const { venue } = this.props;
 
     return (
       <div className="c-admin-venues-show">

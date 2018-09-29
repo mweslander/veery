@@ -15,14 +15,11 @@ import adminVenuesService from '../../services/admin/venues';
 import usersService from '../../services/users';
 
 // PropTypes
+import basePropTypes from '../../constants/propTypes/adminPanel/base';
+
 const propTypes = {
-  children: PropTypes.node,
-  location: PropTypes.shape({
-    pathname: PropTypes.string
-  }),
-  router: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  })
+  ...basePropTypes,
+  children: PropTypes.node
 };
 
 /*
@@ -34,7 +31,9 @@ class AdminPanel extends Component {
   constructor() {
     super();
 
+    this.findVenue = this.findVenue.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
+    this.handleSuccessfulCreation = this.handleSuccessfulCreation.bind(this);
     this.isAuthRoute = this.isAuthRoute.bind(this);
     this.removeAlert = this.removeAlert.bind(this);
     this.setAlertMessage = this.setAlertMessage.bind(this);
@@ -44,12 +43,35 @@ class AdminPanel extends Component {
       events: [],
       isMobileScreen: screen.width <= 500,
       signedIn: false,
+      venue: {
+        events: []
+      },
       venues: []
     };
   }
 
   componentWillMount() {
-    return this.updateVenues();
+    return this.updateVenues()
+      .then(this.findVenue);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.router.params.id) {
+      this.findVenue();
+    }
+  }
+
+  findVenue() {
+    const venue = this.state.venues.find((nextVenue) => {
+      return nextVenue._id === this.props.router.params.id;
+    }) || { events: [] };
+
+    return this.setState({ venue });
+  }
+
+  handleSuccessfulCreation(itemName, pathname) {
+    this.setAlertMessage({ successMessage: `${itemName} successfully created.` });
+    return this.props.router.push(pathname);
   }
 
   setAlertMessage({ errorMessage, successMessage }) {
@@ -70,7 +92,7 @@ class AdminPanel extends Component {
   updateVenues() {
     return adminVenuesService.showAll()
       .then((venues) => {
-        this.setState({ venues });
+        return this.setState({ venues });
       });
   }
 
@@ -123,11 +145,13 @@ class AdminPanel extends Component {
         {this.props.children &&
           cloneElement(this.props.children, {
             events: this.state.events,
+            handleSuccessfulCreation: this.handleSuccessfulCreation,
             isMobileScreen: this.state.isMobileScreen,
             removeAlert: this.removeAlert,
             setAlertMessage: this.setAlertMessage,
             updateEvents: this.updateEvents,
             updateVenues: this.updateVenues,
+            venue: this.state.venue,
             venues: this.state.venues
           })}
       </div>

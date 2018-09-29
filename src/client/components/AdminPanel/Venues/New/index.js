@@ -16,14 +16,9 @@ import adminVenuesService from '../../../../services/admin/venues';
 import mapFormValues from '../../../../utils/mapFormValues';
 
 // PropTypes
+import venueFormPropTypes from '../../../../constants/propTypes/adminPanel/venueForm';
 const propTypes = {
-  removeAlert: PropTypes.func,
-  router: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string
-    }),
-    push: PropTypes.func.isRequired
-  }),
+  ...venueFormPropTypes,
   setAlertMessage: PropTypes.func
 };
 
@@ -35,8 +30,8 @@ const propTypes = {
 class NewVenue extends Component {
   constructor() {
     super();
-
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setForm = (form) => this.newVenueForm = form;
   }
 
   handleSubmit(event) {
@@ -46,8 +41,7 @@ class NewVenue extends Component {
     return adminVenuesService
       .createVenue(values)
       .then(() => {
-        this.props.setAlertMessage({ successMessage: 'Venue successfully created.' });
-        return this.props.router.push('/admin');
+        return this.props.handleSuccessfulCreation('Venue', '/admin');
       });
   }
 
@@ -55,7 +49,7 @@ class NewVenue extends Component {
     return (
       <form
         className="c-new-venue o-container o-container--small"
-        ref={(form) => { this.newVenueForm = form; }}
+        ref={this.setForm}
         onSubmit={this.handleSubmit}
       >
         <VenueForm
