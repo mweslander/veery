@@ -20,6 +20,7 @@ import usersService from '../../../services/users';
 
 // Utils
 import mapFormValues from '../../../utils/mapFormValues';
+import transitionToNextPage from '../../../utils/transitionToNextPage';
 
 const propTypes = {
   baseClassName: PropTypes.string,
@@ -38,6 +39,7 @@ class SignIn extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setForm = (form) => this.signInForm = form;
   }
 
   handleSubmit(event) {
@@ -48,24 +50,11 @@ class SignIn extends Component {
       .signIn(values)
       .then(() => {
         this.props.setAlertMessage({ successMessage: 'Sign in successful.' });
-        return this.transitionToNextPage();
+        return transitionToNextPage(this.props, '/admin/venues');
       })
       .catch(() => {
         return this.props.setAlertMessage({ errorMessage: 'Your password and email do not match.' });
       });
-  }
-
-  transitionToNextPage() {
-    const query = { ...this.props.location.query };
-
-    if (query.next) {
-      delete query.next;
-    }
-
-    this.props.router.replace({
-      query,
-      pathname: '/admin/venues'
-    });
   }
 
   render() {
@@ -75,7 +64,7 @@ class SignIn extends Component {
 
         <form
           className="o-container o-container--small"
-          ref={(form) => { this.signInForm = form; }}
+          ref={this.setForm}
           onSubmit={this.handleSubmit}
         >
           <LabelGroup

@@ -37,7 +37,6 @@ const propTypes = {
 class Venues extends Component {
   constructor() {
     super();
-
     this.handleDestroy = this.handleDestroy.bind(this);
   }
 

@@ -17,6 +17,7 @@ import usersService from '../../../services/users';
 
 // Utils
 import mapFormValues from '../../../utils/mapFormValues';
+import transitionToNextPage from '../../../utils/transitionToNextPage';
 
 const propTypes = {
   location: PropTypes.shape({
@@ -36,6 +37,7 @@ class Register extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setForm = (form) => this.registerForm = form;
   }
 
   handleSubmit(event) {
@@ -52,24 +54,11 @@ class Register extends Component {
         });
 
         this.props.setAlertMessage({ successMessage: 'Registration successful.' });
-        return this.transitionToNextPage();
+        return transitionToNextPage(this.props, '/admin/venues');
       })
       .catch(({ response }) => {
         return this.props.setAlertMessage({ errorMessage: response.data.error });
       });
-  }
-
-  transitionToNextPage() {
-    const query = { ...this.props.location.query };
-
-    if (query.next) {
-      delete query.next;
-    }
-
-    this.props.router.replace({
-      query,
-      pathname: '/admin/venues'
-    });
   }
 
   render() {
@@ -79,7 +68,7 @@ class Register extends Component {
       <div className="c-register o-container o-container--small">
         <form
           className="o-container o-container--small"
-          ref={(form) => { this.registerForm = form; }}
+          ref={this.setForm}
           onSubmit={this.handleSubmit}
         >
           <label className="c-label" htmlFor="email">

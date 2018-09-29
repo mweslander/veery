@@ -39,7 +39,7 @@ function NavDesktop({ isAuthRoute, handleSignOut }) {
 
           <a
             className="c-nav__item c-nav__item--right"
-            onClick={() => handleSignOut(() => {})}
+            onClick={handleSignOut}
           >
             Sign Out
           </a>
