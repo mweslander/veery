@@ -6,18 +6,19 @@ const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNig
 const url = 'http://www.andersonmillpub.com/';
 
 function andersonMillPub($, venue) {
-  searchForOpenMicNights('Karaoke', $, 'span');
+  // TODO: re-add this once they have karoake again
+  // searchForOpenMicNights('Karaoke', $, 'span');
   searchForOpenMicNights('Open Mic on Wednesdays', $, 'span');
   searchForOpenMicNights('Open Mic Comedy on Thursdays', $, 'span');
 
   return [
-    {
-      frequency: 'weekly',
-      startDate: moment().isoWeekday(2).format('MM-DD-YYYY'),
-      startTime: '8:00 pm',
-      title: 'Karaoke Tuesdays',
-      venue: venue._id
-    },
+    // {
+    //   frequency: 'weekly',
+    //   startDate: moment().isoWeekday(2).format('MM-DD-YYYY'),
+    //   startTime: '8:00 pm',
+    //   title: 'Karaoke Tuesdays',
+    //   venue: venue._id
+    // },
     {
       frequency: 'weekly',
       startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
