@@ -1,6 +1,8 @@
 'use strict';
 
 const moment = require('moment');
+
+const buildWeekly = require('../../../utils/eventObjects/buildWeekly');
 const Venue = require('../../../app/models/venue');
 
 function events() {
@@ -10,12 +12,10 @@ function events() {
       // This can now be scraped
       return [
         {
-          frequency: 'weekly',
-          startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
+          ...buildWeekly(3, venue),
           startTime: '10:00pm',
           title: 'Open Mic Night',
           type: 'open',
-          venue: venue._id
         }
       ];
     });

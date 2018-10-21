@@ -2,6 +2,8 @@
 
 const _ = require('lodash');
 const moment = require('moment');
+
+const buildWeekly = require('../../../utils/eventObjects/buildWeekly');
 const Venue = require('../../../app/models/venue');
 
 function buildKaraokeWeekdays(venue) {
@@ -9,11 +11,9 @@ function buildKaraokeWeekdays(venue) {
 
   for (let i = 3; i < 6; i++) {
     weekdays.push({
-      frequency: 'weekly',
-      startDate: moment().isoWeekday(i).format('MM-DD-YYYY'),
+      ...buildWeekly(i, venue),
       startTime: '8pm - close',
-      title: 'Karaoke',
-      venue: venue._id
+      title: 'Karaoke'
     });
   }
 
@@ -28,26 +28,20 @@ function events() {
 
       return [
         {
-          frequency: 'weekly',
-          startDate: moment().isoWeekday(2).format('MM-DD-YYYY'),
+          ...buildWeekly(2, venue),
           startTime: '8pm - 11pm',
-          title: 'Open Mic',
-          venue: venue._id
+          title: 'Open Mic'
         },
         ...weekdays,
         {
-          frequency: 'weekly',
-          startDate: moment().isoWeekday(6).format('MM-DD-YYYY'),
+          ...buildWeekly(6, venue),
           startTime: '9pm - close',
-          title: 'Karaoke',
-          venue: venue._id
+          title: 'Karaoke'
         },
         {
-          frequency: 'weekly',
-          startDate: moment().isoWeekday(7).format('MM-DD-YYYY'),
+          ...buildWeekly(7, venue),
           startTime: '5:30pm - 9:30pm',
-          title: 'Karaoke',
-          venue: venue._id
+          title: 'Karaoke'
         }
       ];
     });

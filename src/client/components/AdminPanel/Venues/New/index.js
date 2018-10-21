@@ -1,6 +1,5 @@
 // Imports
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 // Components
 import VenueForm from '../../../Base/VenueForm';
@@ -16,11 +15,7 @@ import adminVenuesService from '../../../../services/admin/venues';
 import mapFormValues from '../../../../utils/mapFormValues';
 
 // PropTypes
-import venueFormPropTypes from '../../../../constants/propTypes/adminPanel/venueForm';
-const propTypes = {
-  ...venueFormPropTypes,
-  setAlertMessage: PropTypes.func
-};
+import propTypes from '../../../../constants/propTypes/adminPanel/venueForm';
 
 /*
   New
@@ -31,7 +26,11 @@ class NewVenue extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.setForm = (form) => this.newVenueForm = form;
+    this.setForm = this.setForm.bind(this);
+  }
+
+  setForm(form) {
+    this.newVenueForm = form;
   }
 
   handleSubmit(event) {

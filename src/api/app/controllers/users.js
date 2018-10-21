@@ -131,7 +131,7 @@ function register(req, res) {
     .findById(req.body.invitationId)
     .then((foundInvitation) => {
       invitation = foundInvitation;
-      return registerUser(foundInvitation, password)
+      return registerUser(foundInvitation, password);
     })
     .then((user) => handleInvitation(req, res, { invitation, user }))
     .catch((err) => handleError(err, res));

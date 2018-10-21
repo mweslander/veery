@@ -61,12 +61,8 @@ class AdminPanel extends Component {
     }
   }
 
-  findVenue() {
-    const venue = this.state.venues.find((nextVenue) => {
-      return nextVenue._id === this.props.router.params.id;
-    }) || { events: [] };
-
-    return this.setState({ venue });
+  setAlertMessage({ errorMessage, successMessage }) {
+    return this.setState({ alertFlash: { errorMessage, successMessage } });
   }
 
   handleSuccessfulCreation(itemName, pathname) {
@@ -74,8 +70,12 @@ class AdminPanel extends Component {
     return this.props.router.push(pathname);
   }
 
-  setAlertMessage({ errorMessage, successMessage }) {
-    return this.setState({ alertFlash: { errorMessage, successMessage } });
+  findVenue() {
+    const venue = this.state.venues.find((nextVenue) => {
+      return nextVenue._id === this.props.router.params.id;
+    }) || { events: [] };
+
+    return this.setState({ venue });
   }
 
   removeAlert() {

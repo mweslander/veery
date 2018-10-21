@@ -15,7 +15,7 @@ import usersService from '../../../services/users';
 import mapFormValues from '../../../utils/mapFormValues';
 
 // PropTypes
-import propTypes from '../../../constants/propTypes/adminPanel//passwordForm';
+import propTypes from '../../../constants/propTypes/adminPanel/passwordForm';
 
 /*
   ForgotPassword
@@ -26,13 +26,17 @@ class ForgotPassword extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.setForm = (form) => this.forgotPasswordForm = form;
+    this.setForm = this.setForm.bind(this);
   }
 
   componentWillMount() {
     if (this.props.router.location.query.token === 'expired') {
       return this.props.setAlertMessage({ errorMessage: 'Your reset password link has expired but don\'t worry, you can send another.' });
     }
+  }
+
+  setForm(form) {
+    this.forgotPasswordForm = form;
   }
 
   handleSubmit(event) {

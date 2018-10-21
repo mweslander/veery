@@ -33,6 +33,7 @@ function NavDesktop({ isAuthRoute, handleSignOut }) {
             <img className="c-nav__img o-grid__cell" src={logo} alt="Veery logo" />
             <h3 className="c-heading c-nav__heading o-grid__cell">VEERY</h3>
           </Link>
+
           <Link className="c-nav__item" to="/admin/venues">Venues</Link>
           <Link className="c-nav__item" to="/admin/events">Events</Link>
           <Link className="c-nav__item" to="/admin/invite-venue-admin">Invite a Venue Admin</Link>

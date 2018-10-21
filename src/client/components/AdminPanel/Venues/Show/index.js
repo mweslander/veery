@@ -28,6 +28,7 @@ const propTypes = {
   setAlertMessage: PropTypes.func,
   updateEvents: PropTypes.func,
   updateVenues: PropTypes.func,
+  venue: PropTypes.object,
   venues: PropTypes.array
 };
 

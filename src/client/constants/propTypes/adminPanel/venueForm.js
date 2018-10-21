@@ -7,7 +7,8 @@ const propTypes = {
       id: PropTypes.string
     }),
     push: PropTypes.func.isRequired
-  })
+  }),
+  setAlertMessage: PropTypes.func
 };
 
 export default propTypes;

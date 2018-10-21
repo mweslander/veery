@@ -10,14 +10,13 @@ import RadioButton from '../../../Base/RadioButton';
 import adminVenuesService from '../../../../services/admin/venues';
 
 // PropTypes
-import baseVenuesPropTypes from '../../../../constants/propTypes/adminPanel/baseVenues';
 import venueFormPropTypes from '../../../../constants/propTypes/adminPanel/venueForm';
 const propTypes = {
-  ...baseVenuesPropTypes,
   ...venueFormPropTypes,
   events: PropTypes.array,
   updateEvents: PropTypes.func,
-  updateVenues: PropTypes.func
+  updateVenues: PropTypes.func,
+  venues: PropTypes.array
 };
 
 /*

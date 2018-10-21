@@ -10,7 +10,6 @@ import LabelGroup from '../LabelGroup';
 
 // PropTypes
 const propTypes = {
-  handleChange: PropTypes.func,
   venue: PropTypes.object
 };
 
@@ -19,7 +18,7 @@ const propTypes = {
   <VenueForm/>
 */
 
-function VenueForm({ handleChange, venue }) {
+function VenueForm({ venue }) {
   return (
     <div className="c-venue-form">
       <LabelGroup

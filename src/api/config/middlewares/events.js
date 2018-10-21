@@ -1,7 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
-
 const venuesMiddleware = require('./venues');
 const Event = require('../../app/models/event');
 const Venue = require('../../app/models/venue');

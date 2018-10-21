@@ -9,7 +9,8 @@ import './index.scss';
 const propTypes = {
   explanationText: PropTypes.string,
   id: PropTypes.string,
-  input: PropTypes.object
+  input: PropTypes.object,
+  inputProps: PropTypes.object
 };
 
 function RadioButton({ explanationText, id, inputProps }) {

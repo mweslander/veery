@@ -1,7 +1,6 @@
 'use strict';
 
-const moment = require('moment');
-
+const buildDaily = require('../../../../../utils/eventObjects/buildDaily');
 const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNights');
 const url = 'https://redgarter1962.com/karaoke/';
 
@@ -10,11 +9,9 @@ function redGarter($, venue) {
 
   return [
     {
-      frequency: 'daily',
-      startDate: moment().format('MM-DD-YYYY'),
+      ...buildDaily(venue),
       startTime: '21:30',
-      title: 'LIVE KARAOKE SHOW',
-      venue: venue._id
+      title: 'LIVE KARAOKE SHOW'
     }
   ];
 }

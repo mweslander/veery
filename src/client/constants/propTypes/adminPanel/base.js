@@ -7,6 +7,6 @@ const propTypes = {
   router: PropTypes.shape({
     push: PropTypes.func.isRequired
   })
-}
+};
 
 export default propTypes;

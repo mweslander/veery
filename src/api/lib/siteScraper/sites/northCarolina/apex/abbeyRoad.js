@@ -1,6 +1,6 @@
 'use strict';
 
-const moment = require('moment');
+const buildWeekly = require('../../../../../utils/eventObjects/buildWeekly');
 const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNights');
 const url = 'http://abbeyroadnc.com/open-mic/';
 
@@ -11,12 +11,10 @@ function abbeyRoad($, venue) {
   if (noMoreTuesdays) { throw new Error('Abbey Road - Apex no longer has open mic nights on Tuesdays'); }
 
   return [{
-    frequency: 'weekly',
-    startDate: moment().isoWeekday(2).format('MM-DD-YYYY'),
+    ...buildWeekly(2, venue),
     startTime: '8pm - 11pm',
     title: 'OPEN MIC - APEX',
-    type: 'open',
-    venue: venue._id
+    type: 'open'
   }];
 }
 

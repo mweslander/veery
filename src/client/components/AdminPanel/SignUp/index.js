@@ -34,7 +34,11 @@ class SignUp extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.setForm = (form) => this.signUpForm = form;
+    this.setForm = this.setForm.bind(this);
+  }
+
+  setForm(form) {
+    this.signUpForm = form;
   }
 
   handleSubmit(event) {

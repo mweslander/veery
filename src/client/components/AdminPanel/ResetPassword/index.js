@@ -1,6 +1,5 @@
 // Imports
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 // Components
 import Button from '../../Base/Button';
@@ -27,7 +26,11 @@ class ResetPassword extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.setForm = (form) => this.resetPasswordForm = form;
+    this.setForm = this.setForm.bind(this);
+  }
+
+  setForm(form) {
+    this.resetPasswordForm = form;
   }
 
   handleSubmit(event) {

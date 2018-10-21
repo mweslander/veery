@@ -1,6 +1,8 @@
 'use strict';
 
 const moment = require('moment');
+
+const buildDaily = require('../../../utils/eventObjects/buildDaily');
 const Venue = require('../../../app/models/venue');
 
 function events() {
@@ -9,12 +11,10 @@ function events() {
     .then((venue) => {
       return [
         {
+          ...buildDaily(venue),
           ageRestriction: true,
-          frequency: 'daily',
-          startDate: moment().isoWeekday(i).format('MM-DD-YYYY'),
           startTime: '9:00pm',
-          title: 'Karaoke',
-          venue: venue._id
+          title: 'Karaoke'
         }
       ];
     });

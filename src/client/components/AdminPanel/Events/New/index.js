@@ -3,6 +3,7 @@ import React, {
   Component
 } from 'react';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 
 // Components
 import EventForm from '../../../Base/EventForm';
@@ -17,8 +18,10 @@ import adminEventsService from '../../../../services/admin/events';
 // Utils
 import mapFormValues from '../../../../utils/mapFormValues';
 
-// PropTypes
-import propTypes from '../../../../constants/propTypes/adminPanel/baseVenues';
+const propTypes = {
+  handleSuccessfulCreation: PropTypes.func,
+  venues: PropTypes.array
+};
 
 /*
   NewEvent
@@ -31,10 +34,14 @@ class NewEvent extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
-    this.setForm = (form) => this.newEventForm = form;
+    this.setForm = this.setForm.bind(this);
     this.state = {
       startDate: moment().add(1, 'day')
     };
+  }
+
+  setForm(form) {
+    this.newEventForm = form;
   }
 
   handleStartDateChange(startDate) {

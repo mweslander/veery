@@ -37,7 +37,11 @@ class Register extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.setForm = (form) => this.registerForm = form;
+    this.setForm = this.setForm.bind(this);
+  }
+
+  setForm(form) {
+    this.registerForm = form;
   }
 
   handleSubmit(event) {

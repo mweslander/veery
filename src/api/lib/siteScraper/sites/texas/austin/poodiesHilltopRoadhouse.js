@@ -1,7 +1,6 @@
 'use strict';
 
-const moment = require('moment');
-
+const buildWeekly = require('../../../../../utils/eventObjects/buildWeekly');
 const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNights');
 const url = 'http://www.poodies.net/';
 
@@ -10,11 +9,9 @@ function poodiesHilltopRoadhouse($, venue) {
 
   return [
     {
-      frequency: 'weekly',
-      startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
+      ...buildWeekly(3, venue),
       startTime: '8PM',
-      title: 'Open Mic @8PM',
-      venue: venue._id
+      title: 'Open Mic @8PM'
     }
   ];
 }

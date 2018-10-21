@@ -1,9 +1,7 @@
-import api from './api';
+import showAllCall from './helpers/showAll';
 
 function showAll(params) {
-  return api
-    .get('/venues', { params })
-    .then(({ data }) => data.venues);
+  return showAllCall('venues', params);
 }
 
 export default {

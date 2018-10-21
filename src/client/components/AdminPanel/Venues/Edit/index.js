@@ -1,6 +1,5 @@
 // Imports
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 // Components
 import VenueForm from '../../../Base/VenueForm';
@@ -16,18 +15,7 @@ import adminVenuesService from '../../../../services/admin/venues';
 import mapFormValues from '../../../../utils/mapFormValues';
 
 // PropTypes
-import baseVenuesPropTypes from '../../../../constants/propTypes/adminPanel/baseVenues';
-import venueFormPropTypes from '../../../../constants/propTypes/adminPanel/venueForm';
-const propTypes = {
-  ...baseVenuesPropTypes,
-  ...venueFormPropTypes,
-  router: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string
-    }),
-    push: PropTypes.func.isRequired
-  }),
-};
+import propTypes from '../../../../constants/propTypes/adminPanel/venueForm';
 
 /*
   Edit
@@ -38,11 +26,15 @@ class Edit extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.setForm = (form) => this.editForm = form;
+    this.setForm = this.setForm.bind(this);
   }
 
   componentWillUnmount() {
     return this.props.removeAlert();
+  }
+
+  setForm(form) {
+    this.editForm = form;
   }
 
   handleSubmit(event) {

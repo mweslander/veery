@@ -3,6 +3,8 @@
 const moment = require('moment');
 
 const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNights');
+const buildWeekly = require('../../../../../utils/eventObjects/buildWeekly');
+
 const url = 'http://www.andersonmillpub.com/';
 
 function andersonMillPub($, venue) {
@@ -20,11 +22,9 @@ function andersonMillPub($, venue) {
     //   venue: venue._id
     // },
     {
-      frequency: 'weekly',
-      startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
+      ...buildWeekly(3, venue),
       startTime: '8:00 pm',
-      title: 'Open Mic on Wednesdays',
-      venue: venue._id
+      title: 'Open Mic on Wednesdays'
     },
     {
       frequency: 'weekly',

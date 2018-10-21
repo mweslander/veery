@@ -4,6 +4,7 @@ import {
   IndexRedirect,
   Route
 } from 'react-router';
+import PropTypes from 'prop-types';
 
 // Components
 import EventsDeletionModal from '../../components/AdminPanel/Events/DeletionModal';
@@ -13,6 +14,10 @@ import VenuesEdit from '../../components/AdminPanel/Venues/Edit';
 import VenuesNew from '../../components/AdminPanel/Venues/New';
 import VenuesShow from '../../components/AdminPanel/Venues/Show';
 import VenuesShowAll from '../../components/AdminPanel/Venues/ShowAll';
+
+const propTypes = {
+  requireSignIn: PropTypes.requireSignIn
+};
 
 function adminVenueRoutes({ requireSignIn }) {
   return (
@@ -27,7 +32,9 @@ function adminVenueRoutes({ requireSignIn }) {
         <Route path="events/:eventId/delete" component={EventsDeletionModal} />
       </Route>
     </Route>
-  )
+  );
 }
+
+adminVenueRoutes.propTypes = propTypes;
 
 export default adminVenueRoutes;
