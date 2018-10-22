@@ -41,7 +41,11 @@ const siteScraper = {
     return _.flattenDeep(sites).map((site) => {
       return new Promise((resolve, reject) => {
         const requestCallback = (error, __, html) => {
-          return siteScraper.scrape(site, error, html, resolve, reject);
+          if (error) {
+            return reject(emailJordanAboutHisBadScraper(site, error));
+          }
+
+          return siteScraper.scrape(site, html, resolve);
         };
 
         return request(site.url, requestCallback);
@@ -49,11 +53,7 @@ const siteScraper = {
     });
   },
 
-  scrape(site, error, html, resolve, reject) {
-    if (error) {
-      return reject(emailJordanAboutHisBadScraper(site, error));
-    }
-
+  scrape(site, html, resolve) {
     // htmlparser2 is what's used in the cheerio library
     if (!htmlparser.parseDOM(html)[0]) {
       const message = `${site.url} did not return any html`;

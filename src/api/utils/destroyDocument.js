@@ -7,8 +7,8 @@ function destroyDocument(resource, res, next, options = {}) {
       res.status(200).json({ message: 'Successfully deleted' });
       next();
     })
-    .catch((err) => {
-      res.status(404).json({ error: err.message });
+    .catch(({ message }) => {
+      res.status(404).json({ error: message });
       next();
     });
 }

@@ -1,6 +1,5 @@
 // Imports
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 // Components
 import VenueForm from '../../../Base/VenueForm';
@@ -16,16 +15,7 @@ import adminVenuesService from '../../../../services/admin/venues';
 import mapFormValues from '../../../../utils/mapFormValues';
 
 // PropTypes
-const propTypes = {
-  removeAlert: PropTypes.func,
-  router: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string
-    }),
-    push: PropTypes.func.isRequired
-  }),
-  setAlertMessage: PropTypes.func
-};
+import propTypes from '../../../../constants/propTypes/adminPanel/venueForm';
 
 /*
   New
@@ -35,8 +25,12 @@ const propTypes = {
 class NewVenue extends Component {
   constructor() {
     super();
-
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setForm = this.setForm.bind(this);
+  }
+
+  setForm(form) {
+    this.newVenueForm = form;
   }
 
   handleSubmit(event) {
@@ -46,8 +40,7 @@ class NewVenue extends Component {
     return adminVenuesService
       .createVenue(values)
       .then(() => {
-        this.props.setAlertMessage({ successMessage: 'Venue successfully created.' });
-        return this.props.router.push('/admin');
+        return this.props.handleSuccessfulCreation('Venue', '/admin');
       });
   }
 
@@ -55,7 +48,7 @@ class NewVenue extends Component {
     return (
       <form
         className="c-new-venue o-container o-container--small"
-        ref={(form) => { this.newVenueForm = form; }}
+        ref={this.setForm}
         onSubmit={this.handleSubmit}
       >
         <VenueForm

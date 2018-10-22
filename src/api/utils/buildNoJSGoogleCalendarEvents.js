@@ -2,10 +2,8 @@
 
 const _ = require('lodash');
 
-function buildNoJSGoogleCalendarEvents($, title, venue) {
-  const micNights = $(`.event-summary:contains(${title})`);
-
-  const events =  micNights.map((i, micNight) => {
+function buildEventCallback($, title, venue) {
+  return function(i, micNight) {
     const columnIndex = $(micNight)
       .closest('td')
       .first()
@@ -43,7 +41,15 @@ function buildNoJSGoogleCalendarEvents($, title, venue) {
       title,
       venue: venue._id
     };
-  }).toArray();
+  };
+}
+
+function buildNoJSGoogleCalendarEvents($, title, venue) {
+  const micNights = $(`.event-summary:contains(${title})`);
+
+  const events =  micNights
+    .map(buildEventCallback($, title, venue))
+    .toArray();
 
   return _.compact(events);
 }

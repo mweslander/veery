@@ -95,7 +95,6 @@ describe('siteScraper', function() {
           promise = new Promise((resolve, reject) => {
             siteScraper.scrape(
               mockSite,
-              null,
               '<html></html>',
               resolve,
               reject

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 // Components
 import Modal from '../../../Base/Modal';
+import RadioButton from '../../../Base/RadioButton';
 
 // Services
 import adminEventsService from '../../../../services/admin/events';
@@ -34,7 +35,8 @@ class DeletionModal extends Component {
     super();
 
     this.closeModal = this.closeModal.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleDestroyAll = () => this.handleChange(true);
+    this.handleDestroyOne = () => this.handleChange(false);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       destroyAll: false,
@@ -95,32 +97,24 @@ class DeletionModal extends Component {
         isLoading={this.state.isLoading}
       >
         <div className="c-card__body">
-          <div className="c-modal__radio-container">
-            <label className="c-label" htmlFor="destroyAllFalseButton">
-              <input
-                checked={!this.state.destroyAll}
-                type="radio"
-                id="destroyAllFalseButton"
-                onChange={() => this.handleChange(false)}
-              />
-
-              <span className="c-modal__radio-explanation">This event</span>
-            </label>
-          </div>
+          <RadioButton
+            explanationText="This event"
+            id="destroyAllFalseButton"
+            inputProps={{
+              checked: !this.state.destroyAll,
+              onChange: this.handleDestroyOne
+            }}
+          />
 
           {!oneTime &&
-            <div className="c-modal__radio-container">
-              <label className="c-label" htmlFor="destroyAllTrueButton">
-                <input
-                  checked={this.state.destroyAll}
-                  type="radio"
-                  id="destroyAllTrueButton"
-                  onChange={() => this.handleChange(true)}
-                />
-
-                <span className="c-modal__radio-explanation">This and following {event.title} events</span>
-              </label>
-            </div>}
+            <RadioButton
+              explanationText={`This and all ${event.title} events`}
+              id="destroyAllTrueButton"
+              inputProps={{
+                checked: this.state.destroyAll,
+                onChange: this.handleDestroyAll
+              }}
+            />}
         </div>
       </Modal>
     );

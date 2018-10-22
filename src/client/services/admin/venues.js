@@ -1,9 +1,8 @@
+import adminPOST from '../helpers/adminPOST';
 import api from '../api';
 
 function createVenue(params) {
-  return api
-    .post('/admin/venues', params)
-    .then(({ data }) => data.venue);
+  return adminPOST('venue', params);
 }
 
 function destroyVenue(id) {

@@ -1,8 +1,10 @@
 'use strict';
 
-const moment = require('moment');
+// const moment = require('moment');
 
 const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNights');
+const buildWeekly = require('../../../../../utils/eventObjects/buildWeekly');
+
 const url = 'http://www.hardtailsbarandgrill.com/';
 
 function hardtailsBarAndGrill($, venue) {
@@ -19,11 +21,9 @@ function hardtailsBarAndGrill($, venue) {
     //   venue: venue._id
     // },
     {
-      frequency: 'weekly',
-      startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
+      ...buildWeekly(3, venue),
       startTime: '8pm',
-      title: 'Karaoke',
-      venue: venue._id
+      title: 'Karaoke'
     }
   ];
 }

@@ -1,7 +1,6 @@
 'use strict';
 
-const moment = require('moment');
-
+const buildWeekly = require('../../../../../utils/eventObjects/buildWeekly');
 const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNights');
 const url = 'http://www.dudleysonann.com/facilities';
 
@@ -10,11 +9,9 @@ function dudleys($, venue) {
 
   return [
     {
-      frequency: 'weekly',
-      startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
+      ...buildWeekly(3, venue),
       startTime: '10:00pm',
-      title: 'Karaoke',
-      venue: venue._id
+      title: 'Karaoke'
     }
   ];
 }

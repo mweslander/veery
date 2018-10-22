@@ -15,14 +15,11 @@ import './index.scss';
 import usersService from '../../../services/users';
 
 // PropTypes
+import basePropTypes from '../../../constants/propTypes/adminPanel/base';
+
 const propTypes = {
-  isMobileScreen: PropTypes.bool,
-  location: PropTypes.shape({
-    pathname: PropTypes.string
-  }),
-  router: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  })
+  ...basePropTypes,
+  isMobileScreen: PropTypes.bool
 };
 
 /*
@@ -41,7 +38,7 @@ class Nav extends Component {
     };
   }
 
-  handleSignOut(toggleDrawer) {
+  handleSignOut(toggleDrawer = () => {}) {
     const router = this.props.router;
 
     return usersService

@@ -1,6 +1,5 @@
 // Imports
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 // Components
 import VenueForm from '../../../Base/VenueForm';
@@ -16,17 +15,7 @@ import adminVenuesService from '../../../../services/admin/venues';
 import mapFormValues from '../../../../utils/mapFormValues';
 
 // PropTypes
-const propTypes = {
-  removeAlert: PropTypes.func,
-  router: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string
-    }),
-    push: PropTypes.func.isRequired
-  }),
-  setAlertMessage: PropTypes.func,
-  venues: PropTypes.array
-};
+import propTypes from '../../../../constants/propTypes/adminPanel/venueForm';
 
 /*
   Edit
@@ -36,35 +25,22 @@ const propTypes = {
 class Edit extends Component {
   constructor() {
     super();
-
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { venue: {} };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const venue = nextProps.venues.find((nextVenue) => {
-      return nextVenue._id === this.props.router.params.id;
-    });
-
-    return this.setState({ venue });
+    this.setForm = this.setForm.bind(this);
   }
 
   componentWillUnmount() {
     return this.props.removeAlert();
   }
 
-  handleChange({ target }) {
-    const venue = this.state.venue;
-    venue[target.name] = target.value;
-
-    return this.setState({ venue });
+  setForm(form) {
+    this.editForm = form;
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const values = mapFormValues(this.editForm.elements);
-    const route = `/admin/venues/${this.state.venue._id}`;
+    const route = `/admin/venues/${this.props.router.params.id}`;
 
     return adminVenuesService
       .updateVenue(values, route)
@@ -75,19 +51,16 @@ class Edit extends Component {
   }
 
   render() {
-    const { venue } = this.state;
+    const { venue } = this.props;
 
     return (
       <form
         className="c-edit-venue o-container o-container--small"
-        ref={(form) => { this.editForm = form; }}
+        ref={this.setForm}
         onSubmit={this.handleSubmit}
       >
         {venue._id &&
-          <VenueForm
-            handleChange={this.handleChange}
-            venue={venue}
-          />}
+          <VenueForm venue={venue} />}
 
         <Button value="Update Venue" />
       </form>

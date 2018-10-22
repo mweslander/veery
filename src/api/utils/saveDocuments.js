@@ -6,8 +6,8 @@ function saveDocuments(promises, res, next) {
       res.status(201).json({ message: 'Successful document(s) creation' });
       next();
     })
-    .catch((err) => {
-      res.status(res.statusCode || 404).json({ error: err.message });
+    .catch(({ message }) => {
+      res.status(res.statusCode || 404).json({ error: message });
       next();
     });
 }
