@@ -28,21 +28,21 @@ function ensureVenueAccessibility(res, done, { user, venues }) {
 }
 
 function ensureAccessibility(req, res, done) {
-  const { body, user } = req;
+  const { body: { role, venues }, user } = req;
 
   if (user && user.role === 'admin') {
     return done(null);
   }
 
-  if (body.role === 'admin') {
+  if (role === 'admin') {
     return done(res.status(401).send(), false);
   }
 
-  if (!body.venues || body.venues.length === 0) {
+  if (!venues || venues.length === 0) {
     return done(null);
   }
 
-  return ensureVenueAccessibility(res, done, { user, venues: body.venues });
+  return ensureVenueAccessibility(res, done, { user, venues });
 }
 
 module.exports = {
