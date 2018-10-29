@@ -1,4 +1,0 @@
----
-dependencies:
-  - role: jnv.unattended-upgrades
-  - role: tersmitten.htop
