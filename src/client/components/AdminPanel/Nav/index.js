@@ -41,14 +41,18 @@ class Nav extends Component {
   handleSignOut(toggleDrawer = () => {}) {
     const router = this.props.router;
 
+    const checkAndToggle = () => {
+      if (typeof toggleDrawer === 'function') { toggleDrawer(); }
+    };
+
     return usersService
       .signOut()
       .then(() => {
-        toggleDrawer();
+        checkAndToggle();
         return this.signOut(router);
       })
       .catch(() => {
-        toggleDrawer();
+        checkAndToggle();
         return this.signOut(router);
       });
   }

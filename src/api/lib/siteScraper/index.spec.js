@@ -8,6 +8,7 @@ const siteScraper = require('./index.js');
 const seedVenues = require('../../database/seeds/venues');
 
 const sites = [
+  require('./sites/colorado'),
   require('./sites/italy'),
   require('./sites/northCarolina'),
   require('./sites/southCarolina'),
