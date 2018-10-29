@@ -37,8 +37,7 @@ const database = {
 
   connect() {
     return new Promise((resolve, reject) => {
-      // const databaseName = "mongodb://heroku_1ngnr5qr:c4honmtckk5dhd6jkcdsod0bdf@ds237932.mlab.com:37932/heroku_1ngnr5qr";
-      const databaseName = process.env.MONGODB_URI;
+      const databaseName = config.database.mongodbUri;
 
       mongoose.connect(databaseName, {
         useMongoClient: true

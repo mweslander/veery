@@ -79,6 +79,45 @@ function validatePassword(password, passwordConfirmation) {
   }
 }
 
+function registerUser(invitation, password) {
+  const params =  {
+    email: invitation.email,
+    password,
+    role: 'venueAdmin',
+    venues: invitation.venues
+  };
+
+  return new User(params).save();
+}
+
+function handleInvitation(req, res, { invitation, user }) {
+  // Just so I can be notified if someone signs up
+  mailgun.sendEmail(
+    'jahammo2@gmail.com',
+    'Someone Signed Up!',
+    `${user}`
+  );
+
+  return req.login(user, (err) => {
+    if (err) { throw new Error(err); }
+
+    res.status(201).json({ user });
+    return invitation.remove();
+  });
+}
+
+function handleError(err, res) {
+  console.log('Error:', err && err.message); // eslint-disable-line no-console
+  let errorMessage = err.message;
+  const statusCode = err.statusCode || 404;
+
+  if (statusCode === 404) {
+    errorMessage = 'This invitation no longer exists.';
+  }
+
+  return res.status(statusCode).json({ error: errorMessage });
+}
+
 function register(req, res) {
   let invitation;
   const password = req.body.password;
@@ -92,42 +131,10 @@ function register(req, res) {
     .findById(req.body.invitationId)
     .then((foundInvitation) => {
       invitation = foundInvitation;
-
-      const params =  {
-        email: invitation.email,
-        password,
-        role: 'venueAdmin',
-        venues: invitation.venues
-      };
-
-      return new User(params).save();
+      return registerUser(foundInvitation, password);
     })
-    .then((user) => {
-      // Just so I can be notified if someone signs up
-      mailgun.sendEmail(
-        'jahammo2@gmail.com',
-        'Someone Signed Up!',
-        `${user}`
-      );
-
-      return req.login(user, (err) => {
-        if (err) { throw new Error(err); }
-
-        res.status(201).json({ user });
-        return invitation.remove();
-      });
-    })
-    .catch((err) => {
-      console.log('Error:', err && err.message); // eslint-disable-line no-console
-      let errorMessage = err.message;
-      const statusCode = err.statusCode || 404;
-
-      if (statusCode === 404) {
-        errorMessage = 'This invitation no longer exists.';
-      }
-
-      return res.status(statusCode).json({ error: errorMessage });
-    });
+    .then((user) => handleInvitation(req, res, { invitation, user }))
+    .catch((err) => handleError(err, res));
 }
 
 function findUserForPasswordReset(token) {

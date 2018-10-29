@@ -4,24 +4,19 @@ import PropTypes from 'prop-types';
 
 // Components
 import Modal from '../../../Base/Modal';
+import RadioButton from '../../../Base/RadioButton';
 
 // Services
 import adminVenuesService from '../../../../services/admin/venues';
 
 // PropTypes
+import venueFormPropTypes from '../../../../constants/propTypes/adminPanel/venueForm';
 const propTypes = {
+  ...venueFormPropTypes,
   events: PropTypes.array,
-  removeAlert: PropTypes.func,
-  router: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string
-    }),
-    push: PropTypes.func.isRequired
-  }),
-  setAlertMessage: PropTypes.func,
-  venues: PropTypes.array,
   updateEvents: PropTypes.func,
-  updateVenues: PropTypes.func
+  updateVenues: PropTypes.func,
+  venues: PropTypes.array
 };
 
 /*
@@ -34,7 +29,8 @@ class DeletionModal extends Component {
     super();
 
     this.closeModal = this.closeModal.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleNoClick = () => this.handleClick(false);
+    this.handleYesClick = () => this.handleClick(true);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       destroy: false,
@@ -89,31 +85,23 @@ class DeletionModal extends Component {
         isLoading={this.state.isLoading}
       >
         <div className="c-card__body">
-          <div className="c-modal__radio-container">
-            <label className="c-label" htmlFor="destroyFalseButton">
-              <input
-                checked={this.state.destroy}
-                type="radio"
-                id="destroyFalseButton"
-                onClick={() => this.handleClick(true)}
-              />
+          <RadioButton
+            explanationText="Yes"
+            id="destroyFalseButton"
+            inputProps={{
+              checked: this.state.destroy,
+              onClick: this.handleYesClick
+            }}
+          />
 
-              <span className="c-modal__radio-explanation">Yes</span>
-            </label>
-          </div>
-
-          <div className="c-modal__radio-container">
-            <label className="c-label" htmlFor="destroyTrueButton">
-              <input
-                checked={!this.state.destroy}
-                type="radio"
-                id="destroyTrueButton"
-                onClick={() => this.handleClick(false)}
-              />
-
-              <span className="c-modal__radio-explanation">No</span>
-            </label>
-          </div>
+          <RadioButton
+            explanationText="No"
+            id="destroyTrueButton"
+            inputProps={{
+              checked: !this.state.destroy,
+              onClick: this.handleNoClick
+            }}
+          />
         </div>
       </Modal>
     );

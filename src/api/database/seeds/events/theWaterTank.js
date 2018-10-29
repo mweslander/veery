@@ -2,54 +2,46 @@
 
 const _ = require('lodash');
 const moment = require('moment');
+
+const buildWeekly = require('../../../utils/eventObjects/buildWeekly');
 const Venue = require('../../../app/models/venue');
+
+function buildKaraokeWeekdays(venue) {
+  const weekdays = [];
+
+  for (let i = 3; i < 6; i++) {
+    weekdays.push({
+      ...buildWeekly(i, venue),
+      startTime: '8pm - close',
+      title: 'Karaoke'
+    });
+  }
+
+  return weekdays;
+}
 
 function events() {
   return Venue
     .findOne({ name: 'The Water Tank', city: 'Austin' })
     .then((venue) => {
+      const weekdays = buildKaraokeWeekdays(venue);
+
       return [
         {
-          frequency: 'weekly',
-          startDate: moment().isoWeekday(2).format('MM-DD-YYYY'),
+          ...buildWeekly(2, venue),
           startTime: '8pm - 11pm',
-          title: 'Open Mic',
-          venue: venue._id
+          title: 'Open Mic'
         },
+        ...weekdays,
         {
-          frequency: 'weekly',
-          startDate: moment().isoWeekday(3).format('MM-DD-YYYY'),
-          startTime: '8pm - close',
-          title: 'Karaoke',
-          venue: venue._id
-        },
-        {
-          frequency: 'weekly',
-          startDate: moment().isoWeekday(4).format('MM-DD-YYYY'),
-          startTime: '8pm - close',
-          title: 'Karaoke',
-          venue: venue._id
-        },
-        {
-          frequency: 'weekly',
-          startDate: moment().isoWeekday(5).format('MM-DD-YYYY'),
-          startTime: '8pm - close',
-          title: 'Karaoke',
-          venue: venue._id
-        },
-        {
-          frequency: 'weekly',
-          startDate: moment().isoWeekday(6).format('MM-DD-YYYY'),
+          ...buildWeekly(6, venue),
           startTime: '9pm - close',
-          title: 'Karaoke',
-          venue: venue._id
+          title: 'Karaoke'
         },
         {
-          frequency: 'weekly',
-          startDate: moment().isoWeekday(7).format('MM-DD-YYYY'),
+          ...buildWeekly(7, venue),
           startTime: '5:30pm - 9:30pm',
-          title: 'Karaoke',
-          venue: venue._id
+          title: 'Karaoke'
         }
       ];
     });

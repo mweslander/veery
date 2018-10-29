@@ -1,0 +1,11 @@
+.c-radio-button {
+  &:first-child {
+    label {
+      padding-bottom: 0;
+    }
+  }
+
+  &__explanation {
+    margin-left: .5em;
+  }
+}

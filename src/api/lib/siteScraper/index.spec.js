@@ -8,6 +8,7 @@ const siteScraper = require('./index.js');
 const seedVenues = require('../../database/seeds/venues');
 
 const sites = [
+  require('./sites/colorado'),
   require('./sites/italy'),
   require('./sites/northCarolina'),
   require('./sites/southCarolina'),
@@ -95,7 +96,6 @@ describe('siteScraper', function() {
           promise = new Promise((resolve, reject) => {
             siteScraper.scrape(
               mockSite,
-              null,
               '<html></html>',
               resolve,
               reject

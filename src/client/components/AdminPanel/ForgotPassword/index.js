@@ -1,6 +1,5 @@
 // Imports
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 // Components
 import Button from '../../Base/Button';
@@ -16,17 +15,7 @@ import usersService from '../../../services/users';
 import mapFormValues from '../../../utils/mapFormValues';
 
 // PropTypes
-const propTypes = {
-  router: PropTypes.shape({
-    location: PropTypes.shape({
-      query: PropTypes.shape({
-        token: PropTypes.string
-      })
-    }),
-    push: PropTypes.func.isRequired
-  }),
-  setAlertMessage: PropTypes.func
-};
+import propTypes from '../../../constants/propTypes/adminPanel/passwordForm';
 
 /*
   ForgotPassword
@@ -36,14 +25,18 @@ const propTypes = {
 class ForgotPassword extends Component {
   constructor() {
     super();
-
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setForm = this.setForm.bind(this);
   }
 
   componentWillMount() {
     if (this.props.router.location.query.token === 'expired') {
       return this.props.setAlertMessage({ errorMessage: 'Your reset password link has expired but don\'t worry, you can send another.' });
     }
+  }
+
+  setForm(form) {
+    this.forgotPasswordForm = form;
   }
 
   handleSubmit(event) {
@@ -69,7 +62,7 @@ class ForgotPassword extends Component {
     return (
       <form
         className="c-invite-venue-admin o-container o-container--small"
-        ref={(form) => { this.forgotPasswordForm = form; }}
+        ref={this.setForm}
         onSubmit={this.handleSubmit}
       >
         <h2>Forgot Password?</h2>

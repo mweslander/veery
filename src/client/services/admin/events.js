@@ -1,9 +1,8 @@
+import adminPOST from '../helpers/adminPOST';
 import api from '../api';
 
 function createEvent(params) {
-  return api
-    .post('/admin/events', params)
-    .then(({ data }) => data.event);
+  return adminPOST('event', params);
 }
 
 function destroyEvent(id, params = {}) {

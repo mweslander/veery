@@ -1,14 +1,16 @@
 'use strict';
 
 const express = require('express');
+const path = require('path');
 const logger = require('morgan');
 const passport = require('passport');
 const pathfinderUI = require('pathfinder-ui');
 const session = require('express-session');
 
+const config = require('./index.js');
+
 const app = express();
 const apiRouter = require('../app/routes');
-const config = require('./index.js');
 
 require('../config/initializers/database');
 
@@ -46,6 +48,15 @@ if (process.env.NODE_ENV !== 'production') {
     pathfinderUI(app);
     next();
   }, pathfinderUI.router);
+}
+
+if (process.env.NODE_ENV !== 'development') {
+  const staticFilesPath = path.join(__dirname, '../../../dist');
+
+  app.use(express.static(staticFilesPath));
+  app.get('/', (req, res) => {
+    res.sendFile(staticFilesPath);
+  });
 }
 
 module.exports = app;

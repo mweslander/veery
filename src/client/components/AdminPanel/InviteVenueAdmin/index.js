@@ -34,9 +34,14 @@ class InviteVenueAdmin extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.setForm = this.setForm.bind(this);
     this.state = {
       venueIdsForSubmission: []
     };
+  }
+
+  setForm(form) {
+    this.inviteVenueAdminForm = form;
   }
 
   handleCheckboxChange(event) {
@@ -72,7 +77,7 @@ class InviteVenueAdmin extends Component {
     return (
       <form
         className="c-invite-venue-admin o-container o-container--medium"
-        ref={(form) => { this.inviteVenueAdminForm = form; }}
+        ref={this.setForm}
         onSubmit={this.handleSubmit}
       >
         <div className="o-grid">

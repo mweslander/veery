@@ -10,7 +10,6 @@ import LabelGroup from '../LabelGroup';
 
 // PropTypes
 const propTypes = {
-  handleChange: PropTypes.func,
   venue: PropTypes.object
 };
 
@@ -19,26 +18,24 @@ const propTypes = {
   <VenueForm/>
 */
 
-function VenueForm({ handleChange, venue }) {
+function VenueForm({ venue }) {
   return (
     <div className="c-venue-form">
       <LabelGroup
         name="name"
         options={{
-          onChange: handleChange,
           placeholder: 'IS JOHN CENA',
           type: 'text',
-          value: venue.name
+          defaultValue: venue.name
         }}
       />
 
       <LabelGroup
         name="address"
         options={{
-          onChange: handleChange,
           placeholder: '316 Austin',
           type: 'text',
-          value: venue.address
+          defaultValue: venue.address
         }}
       />
 
@@ -49,10 +46,9 @@ function VenueForm({ handleChange, venue }) {
           }}
           name="city"
           options={{
-            onChange: handleChange,
             placeholder: 'Where The Rock has come back to',
             type: 'text',
-            value: venue.city
+            defaultValue: venue.city
           }}
         />
 
@@ -62,10 +58,9 @@ function VenueForm({ handleChange, venue }) {
           }}
           name="state"
           options={{
-            onChange: handleChange,
             placeholder: 'Solid',
             type: 'text',
-            value: venue.state
+            defaultValue: venue.state
           }}
         />
       </div>
@@ -73,10 +68,9 @@ function VenueForm({ handleChange, venue }) {
       <LabelGroup
         name="zipCode"
         options={{
-          onChange: handleChange,
           placeholder: '23456',
           type: 'number',
-          value: venue.zipCode
+          defaultValue: venue.zipCode
         }}
       />
     </div>

@@ -1,7 +1,6 @@
 'use strict';
 
-const moment = require('moment');
-
+const buildWeekly = require('../../../../../utils/eventObjects/buildWeekly');
 const searchForOpenMicNights = require('../../../../../utils/searchForOpenMicNights');
 const url = 'http://bigguncharleston.com/';
 
@@ -10,13 +9,11 @@ function bigGunBurger($, venue) {
 
   return [
     {
+      ...buildWeekly(1, venue),
       ageRestriction: false,
       cover: true,
-      frequency: 'weekly',
-      startDate: moment().isoWeekday(1).format('MM-DD-YYYY'),
       startTime: '9:30pm',
-      title: 'Monday Night Karaoke',
-      venue: venue._id
+      title: 'Monday Night Karaoke'
     }
   ];
 }

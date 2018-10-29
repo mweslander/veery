@@ -2,8 +2,8 @@
 import React, {
   Component
 } from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 
 // Components
 import EventForm from '../../../Base/EventForm';
@@ -18,12 +18,8 @@ import adminEventsService from '../../../../services/admin/events';
 // Utils
 import mapFormValues from '../../../../utils/mapFormValues';
 
-// PropTypes
 const propTypes = {
-  router: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }),
-  setAlertMessage: PropTypes.func,
+  handleSuccessfulCreation: PropTypes.func,
   venues: PropTypes.array
 };
 
@@ -38,9 +34,14 @@ class NewEvent extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
+    this.setForm = this.setForm.bind(this);
     this.state = {
       startDate: moment().add(1, 'day')
     };
+  }
+
+  setForm(form) {
+    this.newEventForm = form;
   }
 
   handleStartDateChange(startDate) {
@@ -55,8 +56,7 @@ class NewEvent extends Component {
     return adminEventsService
       .createEvent(values)
       .then(() => {
-        this.props.setAlertMessage({ successMessage: 'Event successfully created.' });
-        return this.props.router.push('/admin/events');
+        return this.props.handleSuccessfulCreation('Event', '/admin/events');
       });
   }
 
@@ -64,12 +64,11 @@ class NewEvent extends Component {
     return (
       <form
         className="c-new-event o-container o-container--small"
-        ref={(form) => { this.newEventForm = form; }}
+        ref={this.setForm}
         onSubmit={this.handleSubmit}
       >
         <EventForm
-          event={{}}
-          form={this.newEventForm}
+          event={this}
           handleStartDateChange={this.handleStartDateChange}
           venues={this.props.venues}
         />

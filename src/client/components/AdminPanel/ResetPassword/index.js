@@ -1,9 +1,9 @@
 // Imports
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 // Components
 import Button from '../../Base/Button';
+import PasswordLabelGroup from '../../Base/PasswordLabelGroup';
 
 // CSS
 import './index.scss';
@@ -15,17 +15,7 @@ import usersService from '../../../services/users';
 import mapFormValues from '../../../utils/mapFormValues';
 
 // PropTypes
-const propTypes = {
-  router: PropTypes.shape({
-    location: PropTypes.shape({
-      query: PropTypes.shape({
-        token: PropTypes.string
-      })
-    }),
-    push: PropTypes.func.isRequired
-  }),
-  setAlertMessage: PropTypes.func
-};
+import propTypes from '../../../constants/propTypes/adminPanel/passwordForm';
 
 /*
   ResetPassword
@@ -35,8 +25,12 @@ const propTypes = {
 class ResetPassword extends Component {
   constructor() {
     super();
-
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setForm = this.setForm.bind(this);
+  }
+
+  setForm(form) {
+    this.resetPasswordForm = form;
   }
 
   handleSubmit(event) {
@@ -50,11 +44,13 @@ class ResetPassword extends Component {
         return this.props.router.push('/admin/venues');
       })
       .catch(({ response }) => {
-        if (response.status === 401) {
-          return this.props.setAlertMessage({ errorMessage: 'Your reset password link has expired.' });
+        let errorMessage = 'Your reset password link has expired.';
+
+        if (response.status !== 401) {
+          errorMessage = response.data.error;
         }
 
-        return this.props.setAlertMessage({ errorMessage: response.data.error });
+        return this.props.setAlertMessage({ errorMessage });
       });
   }
 
@@ -62,28 +58,18 @@ class ResetPassword extends Component {
     return (
       <form
         className="c-invite-venue-admin o-container o-container--small"
-        ref={(form) => { this.resetPasswordForm = form; }}
+        ref={this.setForm}
         onSubmit={this.handleSubmit}
       >
-        <label className="c-label" htmlFor="password">
-          Enter your new password:
-          <input
-            className="c-field o-grid__cell"
-            name="password"
-            type="password"
-            placeholder="password"
-          />
-        </label>
+        <PasswordLabelGroup
+          inputName="password"
+          labelText="Enter your new password:"
+        />
 
-        <label className="c-label" htmlFor="password">
-          Confirm your new password:
-          <input
-            className="c-field o-grid__cell"
-            name="passwordConfirmation"
-            type="password"
-            placeholder="password"
-          />
-        </label>
+        <PasswordLabelGroup
+          inputName="passwordConfirmation"
+          labelText="Confirm your new password:"
+        />
 
         <Button classes="c-reset-password__button" value="Submit" />
       </form>

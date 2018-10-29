@@ -1,9 +1,7 @@
-import api from '../api';
+import adminPOST from '../helpers/adminPOST';
 
 function inviteVenueAdmin(params) {
-  return api
-    .post('/admin/invitations', params)
-    .then(({ data }) => data.invitation);
+  return adminPOST('invitation', params);
 }
 
 export default {

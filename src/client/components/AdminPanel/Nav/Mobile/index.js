@@ -23,6 +23,7 @@ class MobileNav extends Component {
   constructor() {
     super();
 
+    this.handleSignOut = this.handleSignOut.bind(this);
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.state = {
       isDrawerOpen: false
@@ -39,6 +40,10 @@ class MobileNav extends Component {
         {text}
       </Link>
     );
+  }
+
+  handleSignOut() {
+    return this.props.handleSignOut(this.toggleDrawer);
   }
 
   toggleDrawer() {
@@ -97,7 +102,7 @@ class MobileNav extends Component {
 
                   <div
                     className="c-card__item c-nav__hamburger-item"
-                    onClick={() => this.props.handleSignOut(this.toggleDrawer)}
+                    onClick={this.handleSignOut}
                   >
                     <div className="c-button c-nav__button">Sign Out</div>
                   </div>
