@@ -9,6 +9,7 @@ const emailJordanAboutHisBadScraper = require('../../utils/emailJordanAboutHisBa
 const Venue = require('../../app/models/venue');
 
 const sites = [
+  require('./sites/colorado'),
   require('./sites/italy'),
   require('./sites/northCarolina'),
   require('./sites/southCarolina'),
