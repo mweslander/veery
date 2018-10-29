@@ -2,6 +2,8 @@
 
 ## Find open mics, open jams and karaoke nights when you're feeling impulsive.
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/2d08400bdc68386fe9c5/maintainability)](https://codeclimate.com/github/jahammo2/veery/maintainability)
+
 [Website.](http://veery.cool/#/)
 
 [Check out the wiki for the long-winded description of the project.](https://github.com/mweslander/veery/wiki)
